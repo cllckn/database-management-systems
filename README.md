@@ -34,15 +34,15 @@ The course will cover the following topics:
     SQL DDL Statements (CREATE, ALTER, DROP)
     Constraints
 ### Module 5: Advanced SQL
-Grouping and aggregate functions (GROUP BY, HAVING, SUM, AVG)
-Subqueries, set operations
-Views and indexing
-Database performance optimization 
-Introduction To SQL Programming
-Procedures, functions, and triggers
-Cursors and transaction management
-User roles, permissions, and access control
-Encryption and backup strategies
+    Grouping and aggregate functions (GROUP BY, HAVING, SUM, AVG)
+    Subqueries, set operations
+    Views and indexing
+    Database performance optimization 
+    Introduction To SQL Programming
+    Procedures, functions, and triggers
+    Cursors and transaction management
+    User roles, permissions, and access control
+    Encryption and backup strategies
 
 ### Evaluation Method
 ?
