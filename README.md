@@ -60,7 +60,7 @@ The course will cover the following topics:
     Communication: All course-related communication will be done via the university’s learning management system (LMS) or instructor’s e-mail. Check your university email regularly for updates and announcements.
 
 ### Tools:
-    PostgreSQL, pgAdmin  (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) Version 15.10
+    PostgreSQL, pgAdmin  (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) version 15.10 or any other version that installs without issues.
 
 ### Resources
     Main:
