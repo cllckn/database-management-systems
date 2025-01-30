@@ -1,9 +1,6 @@
 # Database Management Systems
 
-# Description
-
 This course provides a comprehensive introduction to database systems, covering fundamental concepts, design principles, and practical implementation. Students will learn about data models, relational database structures, and SQL programming while exploring best practices in database security, optimization, and management. Hands-on experience with PostgreSQL will enhance understanding through practical implementation.
-
 
 ## Course Objectives
 
