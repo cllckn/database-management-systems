@@ -1,48 +1,57 @@
 # Database Management Systems
 
-This course introduces the fundamental principles of database systems and the skills necessary for designing, implementing, and managing databases. Topics include data models, relational database concepts, SQL programming, normalization, and database security. Students will gain practical experience through assignments and projects using PostgreSQL and pgAdmin.
+# Description
+
+This course provides a comprehensive introduction to database systems, covering fundamental concepts, design principles, and practical implementation. Students will learn about data models, relational database structures, and SQL programming while exploring best practices in database security, optimization, and management. Hands-on experience with PostgreSQL will enhance understanding through practical implementation.
 
 
 ## Course Objectives
 
 By the end of this course, students will be able to:
 
-    Understand the fundamental concepts and architecture of database systems.
-    Design data models and implement databases using the Entity-Relationship (ER) model.
-    Master relational database concepts and advanced SQL queries.
-    Write and manage database queries using Structured Query Language (SQL).
+    Understand the fundamental principles and architecture of database systems.
+    Design and implement data models using the Entity-Relationship (ER) model.
+    Apply relational database concepts and write advanced SQL queries.
+    Utilize PostgreSQL and pgAdmin to manage and optimize databases.
+    Implement database security, access control, and performance optimization techniques.
 
 
 ## Course Content
 The course will cover the following topics:
 ### Module 1: Database Systems
     Introduction to database systems
-    Database architecture and components
-    Advantages and components of Database Management Systems (DBMS)
-    Hierarchical and network data models
-    Object-oriented data models
-    Entity-Relationship (ER) model
-### Module 2: Entity-Relationship Model
-    Entity, attributes, and relationships
-    ER diagrams and database design
+    Database System
+    Database System Environment
+    Essential Features of a Database Management System (DBMS)
+### Module 2: Entity-Relationship (ER) Model
+    Database Development Lifecycle
+    Business Rules
+    Data Model
+    Entity-Relationship Model
+    Entity, Attributes, Relationships, Constraints
+    Designing ER Diagrams Using Crow's Foot Notation
 ### Module 3: Relational Database Model
-    Fundamental concepts of the relational model
-    Transforming ER models into relational models
+    Fundamentals of the Relational Model
+    Tables and Their Structure
+    Integrity Rules (Primary Key, Foreign Key, Unique, Not Null)
+    Best Practices for Primary Keys
+    Indexes and Their Importance
+    System Catalog and Metadata
 ### Module 4: Structured Query Language (SQL)
     Introduction to SQL 
-    SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)
-    SQL DDL Statements (CREATE, ALTER, DROP)
-    Constraints
+    SQL Data Manipulation Language (DML) Statements (SELECT, INSERT, UPDATE, DELETE)
+    SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
+    Defining Constraints in SQL
 ### Module 5: Advanced SQL
-    Grouping and aggregate functions (GROUP BY, HAVING, SUM, AVG)
-    Subqueries, set operations
-    Views and indexing
-    Database performance optimization 
-    Introduction To SQL Programming
-    Procedures, functions, and triggers
-    Cursors and transaction management
-    User roles, permissions, and access control
-    Encryption and backup strategies
+    Grouping and Aggregate Functions (GROUP BY, HAVING, SUM, AVG)
+    Subqueries and Set Operations
+    Views
+    Performance Optimization and Indexing
+    Transaction Management
+    Introduction to SQL Programming
+    Procedures, Functions, and Triggers
+    Cursors
+    Security and Access Control (User Roles, Permissions, and Encryption)
 
 ### Evaluation Method
 ?
@@ -53,15 +62,22 @@ The course will cover the following topics:
     Academic Integrity: Plagiarism or cheating will result in disciplinary action as per university policy.
     Communication: All course-related communication will be done via the university’s learning management system (LMS) or instructor’s e-mail. Check your university email regularly for updates and announcements.
 
+### Tools:
+    PostgreSQL, pgAdmin  (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) Version 15.10
+
 ### Resources
     Main:
-    https://github.com/cllckn/database-management-systems
-    Textbooks:
-   
-    Tools:
-    PostgreSQL, pgAdmin
+        https://github.com/cllckn/database-management-systems
+    Textbooks & Online Resources:
+        Carlos Coronel, Steven Morris, and Peter Rob, Database Systems: Design, Implementation, and Management, Cengage Learning.
+        http://www.digitalinformationworld.com/2015/02/fascinating- social-networking-stats-2015.html
+        https://www.forbes.com/sites/bernardmarr/2018/05/21/how- much-data-do-we-create-every-day-the-mind-blowing-stats- everyone-should-read/#230ac18d60ba
+        Apache Spark Tutorial | Spark Tutorial for Beginners | Apache Spark Training | Edureka
+        https://www.youtube.com/watch?v=9mELEARcxJo
 
-    Online Resources:
+    
+
+ 
     
 
 
