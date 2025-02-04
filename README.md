@@ -51,13 +51,29 @@ The course will cover the following topics:
     Security and Access Control (User Roles, Permissions, and Encryption)
 
 ### Evaluation Method
-?
+
+Students will be evaluated based on the following components:  
+
+| **Component**                  | **Weight** |
+|--------------------------------|-----------|
+| Midterm Exam | 50%       |
+| Final Project & Oral Examination | 50%       |
+
+## Assignments and Exams Schedule  
+
+| **Assignment**   | **Release Date** | **Due Date**  |
+|-----------------|-----------------|--------------|
+| Midterm Exam    | TBA              | Week 8      |
+| Final Project  | TBA              | Week 14      |
+
 
 ### Course Policies
-    Attendance: ?
-    Late Submissions: ?
-    Academic Integrity: Plagiarism or cheating will result in disciplinary action as per university policy.
-    Communication: All course-related communication will be done via the university’s learning management system (LMS) or instructor’s e-mail. Check your university email regularly for updates and announcements.
+
+- **Attendance:** Regular attendance is **mandatory**. More than **three unexcused absences** may result in a **grade penalty**.  
+- **Late Submissions & Defense:** Submission policies, penalties, and defense requirements will be **detailed in assignment documents**.  
+- **Academic Integrity:** Any form of **plagiarism or cheating** will result in **disciplinary action** as per **university policy**.  
+- **Communication:** All course-related communication will take place via the **university’s Learning Management System (LMS)** or the **instructor’s email** (`cceken@ku.edu.kz`). Students are expected to **check their university email regularly** for updates and announcements.  
+
 
 ### Tools:
     PostgreSQL, pgAdmin  (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) version 15.10 or any other version that installs without issues.
