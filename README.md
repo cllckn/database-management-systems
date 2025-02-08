@@ -27,6 +27,7 @@ The course will cover the following topics:
     Entity-Relationship Model
     Entity, Attributes, Relationships, Constraints
     Designing ER Diagrams Using Crow's Foot Notation
+    Exercises.
 ### Module 3: Relational Database Model
     Fundamentals of the Relational Model
     Tables and Their Structure
@@ -34,11 +35,13 @@ The course will cover the following topics:
     Best Practices for Primary Keys
     Indexes and Their Importance
     System Catalog and Metadata
+    Hands-on exercises
 ### Module 4: Structured Query Language (SQL)
     Introduction to SQL 
     SQL Data Manipulation Language (DML) Statements (SELECT, INSERT, UPDATE, DELETE)
     SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
     Defining Constraints in SQL
+    Hands-on exercises
 ### Module 5: Advanced SQL
     Grouping and Aggregate Functions (GROUP BY, HAVING, SUM, AVG)
     Subqueries and Set Operations
@@ -49,6 +52,7 @@ The course will cover the following topics:
     Procedures, Functions, and Triggers
     Cursors
     Security and Access Control (User Roles, Permissions, and Encryption)
+    Hands-on exercises
 
 ### Evaluation Method
 
