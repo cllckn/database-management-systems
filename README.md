@@ -27,7 +27,7 @@ The course will cover the following topics:
     Entity-Relationship Model
     Entity, Attributes, Relationships, Constraints
     Designing ER Diagrams Using Crow's Foot Notation
-    Exercises.
+    Hands-on exercises
 ### Module 3: Relational Database Model
     Fundamentals of the Relational Model
     Tables and Their Structure
