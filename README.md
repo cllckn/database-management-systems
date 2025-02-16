@@ -36,21 +36,23 @@ The course will cover the following topics:
     Indexes and Their Importance
     System Catalog and Metadata
     Hands-on exercises
-### Module 4: Structured Query Language (SQL)
+### Module 4: Fundamentals of Structured Query Language (SQL)
     Introduction to SQL 
     SQL Data Manipulation Language (DML) Statements (SELECT, INSERT, UPDATE, DELETE)
     SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
     Defining Constraints in SQL
     Hands-on exercises
-### Module 5: Advanced SQL
-    Grouping and Aggregate Functions (GROUP BY, HAVING, SUM, AVG)
+### Module 5: Intermediate SQL & Query Optimization
+    Aggregate Functions And Grouping
     Subqueries and Set Operations
     Views
-    Performance Optimization and Indexing
     Transaction Management
+    Performance Optimization and Indexing
+    Hands-on exercises
+### Module 6: SQL Programming & Security
     Introduction to SQL Programming
-    Procedures, Functions, and Triggers
-    Cursors
+    Functions and Stored Procedures
+    Cursors and Triggers
     Security and Access Control (User Roles, Permissions, and Encryption)
     Hands-on exercises
 
@@ -65,10 +67,11 @@ Students will be evaluated based on the following components:
 
 ## Assignments and Exams Schedule  
 
-| **Assignment**   | **Release Date** | **Due Date**  |
+| **Assignment**   | **Exam Date** | **Due Date**  |
 |-----------------|-----------------|--------------|
-| Midterm Exam    | TBA              | Week 8      |
-| Final Project  | TBA              | Week 14      |
+| Midterm Exam for ISU(US)23|12.03.2025 12:50–14:20pm | Week 8 |
+| Midterm Exam for ISU(US)22|14.03.2025 10:30–12:20pm | Week 8 |
+| Final Project  | TBA              | Week 15      |
 
 
 ### Course Policies
