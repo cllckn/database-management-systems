@@ -4,4 +4,4 @@
 ![](../resources/figures/ecommerce-v1.png)
 
 ## E-Commerce V3
-![](../resources
+![](../resources/figures/ecommerce-v1.png)
