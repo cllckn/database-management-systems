@@ -12,10 +12,7 @@
 
 SQL is the standard language for managing and querying relational databases.
 
-SQL is used in applications to interact with relational database management systems (DBMS). This includes:
-- **Web applications** (e.g., retrieving and storing user data).
-- **Enterprise systems** (e.g., customer relationship management, inventory systems).
-- **Data analytics** (e.g., querying large datasets for insights).
+SQL is used in applications to interact with relational database management systems (DBMS).
 
 **Efficient use of SQL improves database performance, optimizes queries, and ensures data integrity.**
 
@@ -57,13 +54,13 @@ pgAdmin is the most commonly used graphical management tool for PostgreSQL.
 
 SQL functions can be divided into two main categories:
 
-### **1. Data Definition Language (DDL)** – Structural Commands
+### **1. Data Definition Language (DDL)** – Structural Statements
 DDL includes commands that define and modify database structures:
 - Defining, altering, and deleting **databases, tables, and relationships**.
 
-### **2. Data Manipulation Language (DML)** – Data Processing Commands
+### **2. Data Manipulation Language (DML)** – Data Processing Statements
 DML includes commands that manipulate data within tables:
-- Inserting, deleting, updating, and querying **data**.
+- Inserting, deleting, updating, and querying (selcting) **data**.
 
 
 ## Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)
@@ -132,7 +129,7 @@ SELECT DISTINCT "OrderID", "Discount" FROM "order_details" ORDER BY "OrderID";
 
 ## **ORDER BY**
 
-The **ORDER BY** clause is used to sort the query results in either **ascending (ASC)** or **descending (DESC)** order based on one or more columns. Sorting can be applied to both **alphabetic (text)** and **numeric** values.
+The **ORDER BY** clause is used to sort the query results in either **ascending (ASC)** or **descending (DESC)** order based on one or more columns. Sorting can be applied to both **string** and **numeric** values.
 
 **Sorting in Ascending Order (Default Behavior)**
 ```sql
@@ -157,8 +154,8 @@ The **LIKE** and **NOT LIKE** operators are used with the **WHERE** clause to fi
 - **LIKE**: Returns records that match the specified pattern.
 - **NOT LIKE**: Returns records that do not match the specified pattern (excludes `NULL` values).
 - **Wildcard Characters**:
-    - `%` : Represents **zero or more** characters. It stands for any sequence of characters (including an empty sequence).
-    - `_` : Represents **exactly one** character. It stands for a single character, which can be any value.
+    - `%` : Percent sign represents **zero or more** characters. It stands for any sequence of characters (including an empty sequence).
+    - `_` : Underscore represents **exactly one** character. It stands for a single character, which can be any value.
 
 ### **Examples:**
 
