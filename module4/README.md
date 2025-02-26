@@ -180,7 +180,7 @@ SELECT * FROM "customers" WHERE "Country" LIKE '%pa%';
 
 ## **BETWEEN**
 
-The **BETWEEN** operator is used in the **WHERE** clause to filter records within a specified range. It works with **numeric, date, and text values**.
+The **BETWEEN** operator is used in the **WHERE** clause to filter records within a specified range.
 
 - **BETWEEN X AND Y**: Includes values **greater than or equal to X** and **less than or equal to Y**.
 - Can be used with **numbers, dates, and text values**.
