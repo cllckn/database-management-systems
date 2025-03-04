@@ -12,7 +12,10 @@
 
 SQL is the standard language for managing and querying relational databases.
 
-SQL is used in applications to interact with relational database management systems (DBMS).
+SQL is used in applications to interact with relational database management systems (DBMS). This includes:
+- **Web applications** (e.g., retrieving and storing user data).
+- **Enterprise systems** (e.g., customer relationship management, inventory systems).
+- **Data analytics** (e.g., querying large datasets for insights).
 
 **Efficient use of SQL improves database performance, optimizes queries, and ensures data integrity.**
 
@@ -54,13 +57,13 @@ pgAdmin is the most commonly used graphical management tool for PostgreSQL.
 
 SQL functions can be divided into two main categories:
 
-### **1. Data Definition Language (DDL)** – Structural Statements
+### **1. Data Definition Language (DDL)** – Structural Commands
 DDL includes commands that define and modify database structures:
 - Defining, altering, and deleting **databases, tables, and relationships**.
 
-### **2. Data Manipulation Language (DML)** – Data Processing Statements
+### **2. Data Manipulation Language (DML)** – Data Processing Commands
 DML includes commands that manipulate data within tables:
-- Inserting, deleting, updating, and querying (selcting) **data**.
+- Inserting, deleting, updating, and querying **data**.
 
 
 ## Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)
@@ -129,7 +132,7 @@ SELECT DISTINCT "OrderID", "Discount" FROM "order_details" ORDER BY "OrderID";
 
 ## **ORDER BY**
 
-The **ORDER BY** clause is used to sort the query results in either **ascending (ASC)** or **descending (DESC)** order based on one or more columns. Sorting can be applied to both **string** and **numeric** values.
+The **ORDER BY** clause is used to sort the query results in either **ascending (ASC)** or **descending (DESC)** order based on one or more columns. Sorting can be applied to both **alphabetic (text)** and **numeric** values.
 
 **Sorting in Ascending Order (Default Behavior)**
 ```sql
@@ -154,8 +157,8 @@ The **LIKE** and **NOT LIKE** operators are used with the **WHERE** clause to fi
 - **LIKE**: Returns records that match the specified pattern.
 - **NOT LIKE**: Returns records that do not match the specified pattern (excludes `NULL` values).
 - **Wildcard Characters**:
-    - `%` : Percent sign represents **zero or more** characters. It stands for any sequence of characters (including an empty sequence).
-    - `_` : Underscore represents **exactly one** character. It stands for a single character, which can be any value.
+    - `%` : Represents **zero or more** characters. It stands for any sequence of characters (including an empty sequence).
+    - `_` : Represents **exactly one** character. It stands for a single character, which can be any value.
 
 ### **Examples:**
 
@@ -180,7 +183,7 @@ SELECT * FROM "customers" WHERE "Country" LIKE '%pa%';
 
 ## **BETWEEN**
 
-The **BETWEEN** operator is used in the **WHERE** clause to filter records within a specified range.
+The **BETWEEN** operator is used in the **WHERE** clause to filter records within a specified range. It works with **numeric, date, and text values**.
 
 - **BETWEEN X AND Y**: Includes values **greater than or equal to X** and **less than or equal to Y**.
 - Can be used with **numbers, dates, and text values**.
@@ -260,6 +263,7 @@ WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 | 1          | Beverages      |
 | 2          | Condiments     |
 | 3          | Dairy Products |
+| 4          | Electronics |  
 
 ### **Products Table**
 | ProductID | ProductName      | CategoryID |
@@ -286,14 +290,14 @@ INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 #### **Products and Categories Tables (Side by Side)**
 
-| ProductID | ProductName | CategoryName | M<------->1 |CategoryID | CategoryName    |
-|-----------|------------|--------------|----|--|--|
-| 101       | Coffee     | 1            |    |1          | Beverages      |
-| 102       | Tea        | 1            |    |2          | Condiments     |
-| 103       | Mustard    | 2            |    |3          | Dairy Products |
-| 104       | Cheese     | 3            |  |
-| 105       | Yogurt     | 3            |  |
-
+| ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
+|-----------|------------|--------------|-------------|--|--|
+| 101       | Coffee     | 1            |             |1          | Beverages      |
+| 102       | Tea        | 1            |             |2          | Condiments     |
+| 103       | Mustard    | 2            |             |3          | Dairy Products |
+| 104       | Cheese     | 3            |             | 4          | Electronics |  
+| 105       | Yogurt     | 3            |             |
+| 106       | Honey           | NULL     |             |
 
 
 #### **Result Table:**
@@ -343,13 +347,14 @@ LEFT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 ```
 #### **Products and Categories Tables (Side by Side)**
 
-| ProductID | ProductName | CategoryName | M<------->1 |CategoryID | CategoryName    |
+| ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|----|--|--|
 | 101       | Coffee     | 1            |    |1          | Beverages      |
 | 102       | Tea        | 1            |    |2          | Condiments     |
 | 103       | Mustard    | 2            |    |3          | Dairy Products |
-| 104       | Cheese     | 3            |  |
+| 104       | Cheese     | 3            |  | 4          | Electronics |  
 | 105       | Yogurt     | 3            |  |
+| 106       | Honey           | NULL     |             |
 
 #### **Result Table:**
 | ProductID | ProductName | CategoryName    |
@@ -386,13 +391,14 @@ RIGHT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 ```
 #### **Products and Categories Tables (Side by Side)**
 
-| ProductID | ProductName | CategoryName | M<------->1 | CategoryID | CategoryName   |
+| ProductID | ProductName | CategoryID | M<------->1 | CategoryID | CategoryName   |
 |-----------|------------|--------------|----|------------|----------------|
 | 101       | Coffee     | 1            |    | 1          | Beverages      |
 | 102       | Tea        | 1            |    | 2          | Condiments     |
 | 103       | Mustard    | 2            |    | 3          | Dairy Products |
 | 104       | Cheese     | 3            |  | 4          | Electronics    |
 | 105       | Yogurt     | 3            |  |
+| 106       | Honey           | NULL     |             |
 
 #### **Result Table:**
 | ProductID | ProductName | CategoryName   |
@@ -438,23 +444,25 @@ FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 #### **Products and Categories Tables (Side by Side)**
 
-| ProductID | ProductName | CategoryName | M<------->1 |CategoryID | CategoryName    |
+| ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|----|--|--|
 | 101       | Coffee     | 1            |    |1          | Beverages      |
 | 102       | Tea        | 1            |    |2          | Condiments     |
 | 103       | Mustard    | 2            |    |3          | Dairy Products |
-| 104       | Cheese     | 3            |  |
+| 104       | Cheese     | 3            |  | 4          | Electronics    |
 | 105       | Yogurt     | 3            |  |
+| 106       | Honey           | NULL     |             |
 
 #### **Result Table:**
-| ProductID | ProductName | CategoryName    |
-|-----------|------------|----------------|
-| 101       | Coffee     | Beverages      |
-| 102       | Tea        | Beverages      |
-| 103       | Mustard    | Condiments     |
-| 104       | Cheese     | Dairy Products |
-| 105       | Yogurt     | Dairy Products |
-| 106       | Honey      | NULL           |
+| ProductID | ProductName | CategoryName   |
+|-----------|-------------|----------------|
+| 101       | Coffee      | Beverages      |
+| 102       | Tea         | Beverages      |
+| 103       | Mustard     | Condiments     |
+| 104       | Cheese      | Dairy Products |
+| 105       | Yogurt      | Dairy Products |
+| 106       | Honey       | NULL           |
+| NULL      | NULL        | Electronics    |
 
 - In this case, the result is similar to **LEFT JOIN** because all categories have products.
 - If there were a category without products, it would appear in the table with `NULL` values in `ProductID` and `ProductName`.
@@ -481,12 +489,12 @@ Copies the `CompanyName` and `ContactName` columns from the `customers` table in
 **Note:** If `Backup` already exists, the operation will fail.
 
 ```sql
-SELECT "CompanyName", "ContactName" INTO "MusteriYedek" FROM "customers";
+SELECT "CompanyName", "ContactName" INTO "Backup" FROM "customers";
 ```
 
 ## **INSERT**
 
-The **INSERT** statement is used to add new records to a table.
+Add new records to a table.
 - **Data integrity constraints** are enforced during the insertion process.
 - It is possible to insert values into only specific columns.
 - Columns that are not explicitly assigned a value will be set to **NULL** (empty).
@@ -507,10 +515,10 @@ VALUES (9, 'Health', 'Health Products'),
 
 ## **INSERT INTO ... SELECT**
 
-Used to copy data from an existing table into an **existing table**.
-- Unlike `SELECT ... INTO`, the target table **must already exist** before executing the query.
+Copies data from one table into another **existing table**.
+- Unlike `SELECT ... INTO`, the target table **must exist** before executing the query.
 - The number and types of columns in the `SELECT` statement must match the target table.
-- **Data integrity constraints** are enforced during the deletion process.
+- **Data integrity constraints** are enforced during this operation.
 
 
 ```sql
@@ -523,7 +531,7 @@ INSERT INTO "Backup" SELECT "CompanyName", "ContactName" FROM "customers";
 The **UPDATE** statement is used to modify existing records in a table.
 - **Data integrity constraints** are enforced during the update process.
 - The `WHERE` clause is used to specify which records should be updated.
-- If the `WHERE` clause is **not** included, **all rows** in the table will be updated.
+- If the `WHERE` clause is **not** included, **all rows** in the table are updated.
 
 
 
@@ -540,7 +548,7 @@ WHERE "CustomerID" = '1';
 The **DELETE** statement is used to remove one or more records from a table.
 - **Data integrity constraints** are enforced during the deletion process.
 - The `WHERE` clause specifies which records should be deleted.
-- If the `WHERE` clause is **not** included, **all records** in the table will be deleted.
+- If the `WHERE` clause is **not** included, **all records** in the table are deleted.
 
 ### **Example 1: Deleting a Specific Record**
 
@@ -560,12 +568,10 @@ This query removes all records from the customers table without deleting the tab
 **Warning: Omitting the WHERE clause will delete all records from the table. If you want to remove all records and reset identity values, consider using TRUNCATE TABLE instead.**
 
 
----
 
 ## **Database Operations with Application Programs**
 
-To perform database operations using application programs, **database drivers** are required to establish communication between the programming language and the database.
-
+To perform database operations using application programs, **database drivers** are essential. These drivers facilitate communication between the programming language and the database.
 ### **Database Drivers Provide the Following Core Functions:**
 - **Establishing a connection** to the database.
 - **Executing queries** (such as SELECT, INSERT, UPDATE, DELETE).
@@ -575,7 +581,9 @@ To perform database operations using application programs, **database drivers** 
 
 ### **Database Operations with Java and PostgreSQL**
 
-By using the JDBC driver, Java applications can interact with PostgreSQL databases, allowing efficient data retrieval, manipulation, and transaction management.
+Java applications can seamlessly interact with PostgreSQL databases using the JDBC driver. 
+JDBC is a standard API that enables Java programs to connect to and perform operations on relational databases like PostgreSQL. 
+It provides a robust framework for efficient data retrieval, manipulation, and transaction management.
 
 The **PostgreSQL JDBC driver** can be downloaded from:  
 [https://jdbc.postgresql.org](https://jdbc.postgresql.org)
@@ -587,7 +595,7 @@ The **PostgreSQL JDBC driver** can be downloaded from:
  * */
 import java.sql.*;  // Database Driver
 
-public class DatabaseOperations {
+public class DatabaseOperationsWithJava {
 
   public static void main(String[] args)
   {
