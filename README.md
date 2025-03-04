@@ -58,28 +58,28 @@ The course will cover the following topics:
 
 ### Evaluation Method
 
-Students will be evaluated based on the following components:  
+Students will be evaluated based on the following components:
 
 | **Component**                  | **Weight** |
 |--------------------------------|-----------|
 | Midterm Exam | 50%       |
 | Final Project & Oral Examination | 50%       |
 
-## Assignments and Exams Schedule  
+## Assignments and Exams Schedule
 
 | **Assignment**   | **Exam Date** | **Due Date**  |
 |-----------------|-----------------|--------------|
 | Midterm Exam for ISU(US)23|12.03.2025 12:50–14:20pm | Week 8 |
 | Midterm Exam for ISU(US)22|14.03.2025 10:30–12:20pm | Week 8 |
-| Final Project  | TBA              | Week 15      |
+| Final Project  | TBA              | During Final Exams     |
 
 
 ### Course Policies
 
-- **Attendance:** Regular attendance is **mandatory**. More than **three unexcused absences** may result in a **grade penalty**.  
-- **Late Submissions & Defense:** Submission policies, penalties, and defense requirements will be **detailed in assignment documents**.  
-- **Academic Integrity:** Any form of **plagiarism or cheating** will result in **disciplinary action** as per **university policy**.  
-- **Communication:** All course-related communication will take place via the **university’s Learning Management System (LMS)** or the **instructor’s email** (`cceken@ku.edu.kz`). Students are expected to **check their university email regularly** for updates and announcements.  
+- **Attendance:** Regular attendance is **mandatory**. More than **three unexcused absences** may result in a **grade penalty**.
+- **Late Submissions & Defense:** Submission policies, penalties, and defense requirements will be **detailed in assignment documents**.
+- **Academic Integrity:** Any form of **plagiarism or cheating** will result in **disciplinary action** as per **university policy**.
+- **Communication:** All course-related communication will take place via the **university’s Learning Management System (LMS)** or the **instructor’s email** (`cceken@ku.edu.kz`). Students are expected to **check their university email regularly** for updates and announcements.
 
 
 ### Tools:
@@ -94,10 +94,3 @@ Students will be evaluated based on the following components:
         https://www.forbes.com/sites/bernardmarr/2018/05/21/how- much-data-do-we-create-every-day-the-mind-blowing-stats- everyone-should-read/#230ac18d60ba
         Apache Spark Tutorial | Spark Tutorial for Beginners | Apache Spark Training | Edureka
         https://www.youtube.com/watch?v=9mELEARcxJo
-
-    
-
- 
-    
-
-
