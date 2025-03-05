@@ -645,3 +645,66 @@ public class DatabaseOperationsWithJava {
   }
 }
 ```
+
+## Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
+
+### CREATE
+
+Used to define database objects such as databases, schemas, tables, views, functions, etc.
+
+#### CREATE DATABASE
+
+Used to define a database.
+
+```sql
+CREATE DATABASE "ShoppingApplicationDB"
+ENCODING='UTF-8'
+LC_COLLATE='tr_TR.UTF-8' -- This property cannot be changed later (affects sorting and comparisons).
+LC_CTYPE='tr_TR.UTF-8'   -- This property cannot be changed later (affects case conversion and character classification).
+OWNER postgres
+TEMPLATE=template0;
+
+```
+
+### CREATE SCHEMA
+
+Used to logically divide a database into sections, similar to a folder structure on a hard disk. 
+
+Facilitates database management, multi-user collaboration on the same project (namespace management), and ensuring security.
+
+```sql
+CREATE SCHEMA "schema1";
+
+```
+
+### CREATE TABLE
+
+Used to define a table.
+
+When constructing a table, data types of each column must be specified.
+
+For the list of PostgreSQL data types:
+[PostgreSQL Data Types](https://www.postgresql.org/docs/10/static/datatype.html)
+
+Choosing appropriate data types for columns is crucial because:
+
+* It improves performance and optimizes resource utilization.
+* It ensures data consistency (validation).
+* It provides protection against certain types of security attacks.
+
+```sql
+CREATE TABLE "schema1"."Products" (
+    "productID" SERIAL,
+    "code" CHAR(6) NOT NULL,
+    "name" VARCHAR(40) NOT NULL,
+    "date" DATE DEFAULT '2019-01-01',
+    "unitPrice" MONEY,
+    "quantity" SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY("productID"),
+    CONSTRAINT "productsUnique" UNIQUE("code"),
+    CONSTRAINT "productsCheck" CHECK("quantity" >= 0)
+);
+
+```
+
+## Defining Constraints in SQL
