@@ -69,8 +69,7 @@ Students may form groups of up to two members.
 
 All group members will receive a common grade for the assignment.
 
-Instructors may ask questions to any group member during the oral exam, so it is essential that every member understands all aspects of the project.
-Therefore, each group member must be well-versed in every detail related to the project.
+Instructors may question any group member during the oral exam, so it is essential that each member has a thorough understanding of all aspects of the project.
 
 ## Report Structure
 While there is no standard template for the report, it must include the following essential components:
