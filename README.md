@@ -62,8 +62,8 @@ Students will be evaluated based on the following components:
 
 | **Component**                  | **Weight** |
 |--------------------------------|-----------|
-| Midterm Exam | 50%       |
-| Final Project & Oral Examination | 50%       |
+| Midterm Exam |       |
+| Final Project & Oral Examination |       |
 
 ## Assignments and Exams Schedule
 
