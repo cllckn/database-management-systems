@@ -12,10 +12,7 @@
 
 SQL is the standard language for managing and querying relational databases.
 
-SQL is used in applications to interact with relational database management systems (DBMS). This includes:
-- **Web applications** (e.g., retrieving and storing user data).
-- **Enterprise systems** (e.g., customer relationship management, inventory systems).
-- **Data analytics** (e.g., querying large datasets for insights).
+SQL is used to interact with relational database management systems (RDBMS).
 
 **Efficient use of SQL improves database performance, optimizes queries, and ensures data integrity.**
 
@@ -63,7 +60,7 @@ DDL includes commands that define and modify database structures:
 
 ### **2. Data Manipulation Language (DML)** – Data Processing Commands
 DML includes commands that manipulate data within tables:
-- Inserting, deleting, updating, and querying **data**.
+- Inserting, deleting, updating, and retrieving(querying) **data**.
 
 
 ## Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)
@@ -132,7 +129,8 @@ SELECT DISTINCT "OrderID", "Discount" FROM "order_details" ORDER BY "OrderID";
 
 ## **ORDER BY**
 
-The **ORDER BY** clause is used to sort the query results in either **ascending (ASC)** or **descending (DESC)** order based on one or more columns. Sorting can be applied to both **alphabetic (text)** and **numeric** values.
+The **ORDER BY** clause is used to sort the query results in either **ascending (ASC)** or **descending (DESC)** order 
+based on one or more columns. Sorting can be applied to both **alphabetic (text)** and **numeric** values.
 
 **Sorting in Ascending Order (Default Behavior)**
 ```sql
@@ -152,7 +150,8 @@ SELECT * FROM "customers" ORDER BY "Country", "ContactName";
 
 ## **LIKE / NOT LIKE**
 
-The **LIKE** and **NOT LIKE** operators are used with the **WHERE** clause to filter records based on a specified pattern. These operators are particularly useful for searching text data in a flexible manner.
+The **LIKE** and **NOT LIKE** operators are used with the **WHERE** clause to filter records based on a specified pattern. 
+These operators are particularly useful for searching text data in a flexible manner.
 
 - **LIKE**: Returns records that match the specified pattern.
 - **NOT LIKE**: Returns records that do not match the specified pattern (excludes `NULL` values).
@@ -183,7 +182,8 @@ SELECT * FROM "customers" WHERE "Country" LIKE '%pa%';
 
 ## **BETWEEN**
 
-The **BETWEEN** operator is used in the **WHERE** clause to filter records within a specified range. It works with **numeric, date, and text values**.
+The **BETWEEN** operator is used in the **WHERE** clause to filter records within a specified range. 
+It works with **numeric, date, and text values**.
 
 - **BETWEEN X AND Y**: Includes values **greater than or equal to X** and **less than or equal to Y**.
 - Can be used with **numbers, dates, and text values**.
@@ -609,8 +609,8 @@ public class DatabaseOperationsWithJava {
       else
         System.out.println("Connection attempt failed!");
 
-        //String sql = "SELECT \"CustomerID\", \"CompanyName\", \"Country\" FROM \"customers\"";
-        String sql = "SELECT * FROM customers";
+      //String sql = "SELECT \"CustomerID\", \"CompanyName\", \"Country\" FROM \"customers\"";
+      String sql = "SELECT * FROM customers";
 
 
       /***** Executing Query *****/
@@ -647,3 +647,112 @@ public class DatabaseOperationsWithJava {
   }
 }
 ```
+
+## Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
+
+### CREATE
+
+Used to define database objects such as databases, schemas, tables, views, functions, etc.
+
+#### CREATE DATABASE
+
+Used to define a database.
+
+```sql
+CREATE DATABASE "ShoppingApplicationDB"
+ENCODING='UTF-8'
+LC_COLLATE='tr_TR.UTF-8' -- This property cannot be changed later (affects sorting and comparisons).
+LC_CTYPE='tr_TR.UTF-8'   -- This property cannot be changed later (affects case conversion and character classification).
+OWNER postgres
+TEMPLATE=template0;
+
+```
+
+### CREATE SCHEMA
+
+Used to logically divide a database into sections, similar to a folder structure on a hard disk. 
+
+Facilitates database management, multi-user collaboration on the same project (namespace management), and ensuring security.
+
+```sql
+CREATE SCHEMA "schema1";
+
+```
+
+### CREATE TABLE
+
+Used to define a table.
+
+When constructing a table, data types of each column must be specified.
+
+For the list of PostgreSQL data types:
+[PostgreSQL Data Types](https://www.postgresql.org/docs/10/static/datatype.html)
+
+Choosing appropriate data types for columns is crucial because:
+
+* It improves performance and optimizes resource utilization.
+  * Choose the smallest possible data type for each column to save space and boost performance.
+* It ensures data consistency and accuracy (validation).
+  * If we choose **INT** for the quantity field, sending a string is impossible.
+* It provides protection against certain types of security attacks.
+  * If we use a **JSON** type instead of **TEXT**, data that doesn't follow the JSON format cannot be stored.
+  * This prevents the storage of potentially harmful scripts like `"<script>..."`, thereby mitigating the risk of stored XSS attacks.
+
+  
+#### Commonly Used SQL and PostgreSQL Data Types
+
+- **Numeric Types**:
+  - `SMALLINT`, `INTEGER`, and `BIGINT` store whole numbers (integers) without fractional parts.
+  - `DECIMAL` and `NUMERIC` store exact decimal values with user-defined precision.
+  - `REAL` and `DOUBLE PRECISION` store floating-point numbers with approximate precision.
+
+- **String Types**:
+  - `CHAR(n)` / `CHARACTER(n)` and `VARCHAR(n)` / `CHARACTER VARYING(n)` store fixed-length and variable-length character strings, respectively.
+  - `TEXT` stores variable-length character data without a length limit (PostgreSQL-specific).
+
+- **Bit String Types**:
+  - `BIT(n)` stores fixed-length bit strings.
+  - `BIT VARYING(n)` stores variable-length bit strings.
+
+- **Date/Time Types**:
+  - `DATE` stores calendar dates (year, month, day).
+  - `TIME [(p)] [WITH | WITHOUT TIME ZONE]` stores time of day (hours, minutes, seconds, optional fractional seconds).
+  - `TIMESTAMP [(p)] [WITH | WITHOUT TIME ZONE]` stores both date and time values.
+  - `INTERVAL` stores time spans (e.g., days, hours, minutes).
+
+- **Boolean Type**:
+  - `BOOLEAN` stores `TRUE`, `FALSE`, or `NULL`.
+
+- **SERIALs** (PostgreSQL-specific)
+  - The data types SMALLSERIAL, SERIAL, and BIGSERIAL are not true types but shorthand for defining integer 
+  columns with auto-incrementing values, commonly used for unique identifiers.
+
+#### Best Practices for Choosing Data Types
+
+- **Use the smallest suitable type** to optimize storage and performance (e.g., `SMALLINT` instead of `INTEGER` if values fit).
+- **Prefer `NUMERIC` or `DECIMAL`** for exact precision in financial and monetary data.
+- **Use `TEXT` sparingly**; prefer `VARCHAR(n)` if a reasonable length limit is known.
+- **Choose `TIMESTAMP WITH TIME ZONE`** for time-sensitive applications to avoid timezone issues.
+- **Use `BOOLEAN`** instead of small integer flags for true/false values, as it improves readability, 
+enforces stricter validation, and prevents unintended values (e.g., `2` or `-1`).
+- **Avoid `DOUBLE PRECISION`** for exact calculations due to floating-point precision errors.
+- **Use `BIT` types** only when working with binary data or flags requiring bitwise operations.
+
+
+```sql
+CREATE TABLE "schema1"."Products" (
+    "productID" SERIAL,
+    "code" CHAR(6) NOT NULL,
+    "name" VARCHAR(40) NOT NULL,
+    "date" DATE DEFAULT '2019-01-01',
+    "unitPrice" MONEY,
+    "quantity" SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY("productID"),
+    CONSTRAINT "productsUnique" UNIQUE("code"),
+    CONSTRAINT "productsCheck" CHECK("quantity" >= 0)
+);
+
+```
+
+## Defining Constraints in SQL
+
