@@ -61,17 +61,17 @@ The course will cover the following topics:
 Students will be evaluated based on the following components:
 
 | **Component**                  | **Weight** |
-|--------------------------------|-----------|
-| Midterm Exam |       |
-| Final Project & Oral Examination |       |
+|--------------------------------|--------|
+| Midterm Exam |        |
+| Final Project & Oral Examination |        |
 
 ## Assignments and Exams Schedule
 
-| **Assignment**   | **Exam Date** | **Due Date**  |
-|-----------------|-----------------|--------------|
-| Midterm Exam for ISU(US)23|12.03.2025 12:50–14:20pm | Week 8 |
-| Midterm Exam for ISU(US)22|14.03.2025 10:30–12:20pm | Week 8 |
-| Final Project  | TBA              | During Final Exams     |
+| **Assignment**   | **Exam Date**            | **Due Date**       |
+|-----------------|--------------------------|--------------------|
+| Midterm Exam for ISU(US)23| 12.03.2025 12:50–14:20pm | Week 8             |
+| Midterm Exam for ISU(US)22| 04.04.2025 10:30–12:20pm | Week 11            |
+| Final Project  | TBA                      | During Final Exams |
 
 
 ### Course Policies
