@@ -56,7 +56,7 @@ SQL functions can be divided into two main categories:
 
 ### **1. Data Definition Language (DDL)** – Structural Commands
 DDL includes commands that define and modify database structures:
-- Defining, altering, and deleting **databases, tables, and relationships**.
+- Defining, altering, and deleting database objects such as **database, table, view, function, etc.**.
 
 ### **2. Data Manipulation Language (DML)** – Data Processing Commands
 DML includes commands that manipulate data within tables:
@@ -492,7 +492,13 @@ Copies the `CompanyName` and `ContactName` columns from the `customers` table in
 SELECT "CompanyName", "ContactName" INTO "Backup" FROM "customers";
 ```
 
+
 ## **INSERT**
+
+---
+**Data integrity constraints are enforced when insert, update, and delete statements are executed. If a data integrity violation occurs,
+the operation is aborted, ensuring that data remains consistent and accurate.**
+---
 
 Add new records to a table.
 - **Data integrity constraints** are enforced during the insertion process.
@@ -650,13 +656,22 @@ public class DatabaseOperationsWithJava {
 
 ## Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
 
+Used to define, modify, and remove database objects such as databases, tables, views, etc.
+
+---
+**Data integrity constraints are enforced when DDL statements are executed. If a data integrity violation occurs, 
+the operation is aborted, ensuring that data remains consistent and accurate.**
+---
+
 ### CREATE
 
-Used to define database objects such as databases, schemas, tables, views, functions, etc.
+The `CREATE` statement is used to define and initialize various database objects, including databases, 
+schemas, tables, views, indexes, stored procedures, functions, etc. 
+It establishes the structure and properties of these objects within the database.
 
 #### CREATE DATABASE
 
-Used to define a database.
+Constructs a new database.
 
 ```sql
 CREATE DATABASE "ShoppingApplicationDB"
@@ -672,9 +687,9 @@ CREATE DATABASE "ShoppingApplicationDB"
   TEMPLATE=template0; -- Creates a clean database without default template settings.
 ```
 
-### CREATE SCHEMA
+#### CREATE SCHEMA
 
-Used to logically divide a database into sections, similar to a folder structure on a hard disk. 
+A schema logically divides a database into sections, similar to a folder structure on a hard disk. 
 
 Facilitates database management, multi-user collaboration on the same project (namespace management), and ensuring security.
 
@@ -683,7 +698,7 @@ CREATE SCHEMA "schema1";
 
 ```
 
-### CREATE TABLE
+#### CREATE TABLE
 
 Used to define a table.
 
@@ -744,7 +759,7 @@ enforces stricter validation, and prevents unintended values (e.g., `2` or `-1`)
 
 
 ```sql
-CREATE TABLE "schema1"."Products" (
+CREATE TABLE "Products" (  --CREATE TABLE schema1."Products"
     "productID" SERIAL,
     "code" CHAR(6) NOT NULL,
     "name" VARCHAR(40) NOT NULL,
@@ -758,22 +773,65 @@ CREATE TABLE "schema1"."Products" (
 
 ```
 
+* Adding new product
+
+```sql
+INSERT INTO "Products"
+("code","name", "unitPrice", "date", "quantity") VALUES
+    ('ELO001','TV', 1300, '2019-10-30', 5);
+```
+
+
+### ALTER
+
+The `ALTER` statement is used to modify the structure of existing database objects, such as tables, schemas, constraints, etc. 
+It allows adding, deleting, or modifying columns, constraints, and other properties without affecting the stored data.
+
+* Add a new column
+```sql
+ALTER TABLE "Products" ADD COLUMN "manufacturingCountry" VARCHAR(30);
+```
+
+* Modify an existing column
+```sql
+ALTER TABLE "Products" ALTER COLUMN "manufacturingCountry" TYPE CHAR(20);
+```
+
+* Remove an existing column from a table
+```sql
+ALTER TABLE "Products" DROP COLUMN "manufacturingCountry";
+
+```
+
+
+### DROP
+The `DROP` statement is used to permanently remove database objects such as tables, schemas, views, indexes, etc. 
+Once an object is dropped, all associated data and dependencies are lost and cannot be recovered unless a backup exists.
+
+```sql
+
+DROP TABLE "Products";
+
+DROP SCHEMA "schema1";
+
+DROP DATABASE "ShoppingApplicationDB";
+
+```
 
 
 
 
-
-## Defining Constraints in SQL
+### Defining Constraints in SQL
 
 SQL constraints help maintain data integrity by enforcing rules on table columns.
 
-The following table structure will be utilized throughout the constraints subject.
+The following table structure will be utilized throughout the constraints section.
 ```sql
 CREATE TABLE "Products" (
     "productID" SERIAL,
     "code" CHAR(6) NOT NULL,
     "name" VARCHAR(40) NOT NULL,
-    "manufactureDate" DATE DEFAULT '2019-01-01',
+    "date" DATE DEFAULT '2019-01-01',
     "unitPrice" MONEY,
     "quantity" SMALLINT DEFAULT 0,
     CONSTRAINT "productsPK" PRIMARY KEY("productID"),
@@ -782,16 +840,16 @@ CREATE TABLE "Products" (
 );
 ```
 
-### NOT NULL Constraint
+#### NOT NULL Constraint
 
 - Ensures that a column cannot contain NULL values.
-- Data must be provided for the column when inserting a record.
+- Data must be provided for the column when inserting/updating a record.
 
 If no value is provided for the `"code"` column, an error occurs.
 
 ```sql
 INSERT INTO "Products"
-("name", "unitPrice", "manufactureDate", "quantity") VALUES
+("name", "unitPrice", "date", "quantity") VALUES
 ('TV', 1300, '2019-10-30', 5);
 
 ```
@@ -802,7 +860,7 @@ To remove the NOT NULL constraint from the `"code"` column:
 ALTER TABLE "Products" ALTER COLUMN "code" DROP NOT NULL;
 
 ```
-To add the NOT NULL constraint back to the `"code"` column:
+To add the NOT NULL constraint to the `"code"` column:
 
 ```sql
 ALTER TABLE "Products" ALTER COLUMN "code" SET NOT NULL;
@@ -810,7 +868,7 @@ ALTER TABLE "Products" ALTER COLUMN "code" SET NOT NULL;
 ```
 
 
-### DEFAULT Constraint
+#### DEFAULT Constraint
 
 - Assigns a default value to a column when no value is provided during an insert operation.
 
@@ -821,17 +879,17 @@ INSERT INTO "Products"
 
 ```
 
-- If no value is given for `"productionDate"`, it will default to `'2019-01-01'`.
+- If no value is provided for "date", '2019-01-01' is assigned.
 
-To remove the DEFAULT constraint from the `"productionDate"` column:
+To remove the DEFAULT constraint from the `"date"` column:
 ```sql
-ALTER TABLE "Products" ALTER COLUMN "manufactureDate" DROP DEFAULT;
+ALTER TABLE "Products" ALTER COLUMN "date" DROP DEFAULT;
 
 ```
 
-To add the DEFAULT constraint back to the `"productionDate"` column:
+To add the DEFAULT constraint to the `"date"` column:
 ```sql
-ALTER TABLE "Products" ALTER COLUMN "manufactureDate" SET DEFAULT '2019-01-01';
+ALTER TABLE "Products" ALTER COLUMN "date" SET DEFAULT '2019-01-01';
 
 ```
 
@@ -844,7 +902,7 @@ ALTER TABLE "Products" ALTER COLUMN "manufactureDate" SET DEFAULT '2019-01-01';
 - The `"code"` column must contain unique values.
 ```sql
 INSERT INTO "Products"
-("code","name", "unitPrice", "manufactureDate", "quantity") VALUES
+("code","name", "unitPrice", "date", "quantity") VALUES
 ('ELO001','TV', 1300, '2019-10-30', 5);
 ```
 
@@ -856,7 +914,7 @@ ALTER TABLE "Products" DROP CONSTRAINT "productsUnique";
 ```
 
 
-To add the UNIQUE constraint back to the `"code"` column:
+To add the UNIQUE constraint to the `"code"` column:
 
 ```sql
 ALTER TABLE "Products" ADD CONSTRAINT "productsUnique" UNIQUE ("code");
@@ -880,7 +938,7 @@ CREATE TABLE "Products" (
     "productID" SERIAL,
     "code" CHAR(6) NOT NULL,
     "name" VARCHAR(40) NOT NULL,
-    "manufactureDate" DATE DEFAULT '2019-01-01',
+    "date" DATE DEFAULT '2019-01-01',
     "unitPrice" MONEY,
     "quantity" SMALLINT DEFAULT 0,
     CONSTRAINT "productsPK" PRIMARY KEY("productID"),
@@ -903,16 +961,16 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsCheck" CHECK ("quantity" >= 0);
 
 ```
 
-- If an attempt is made to insert a record where `"quantity"` is `-3`, it will fail due to the constraint.
+- If an attempt is made to insert a record where `"quantity"` is `-3`, it will fail due to the CHECK constraint.
 ```sql
 INSERT INTO "Products"
-("code", "name", "unitPrice", "manufactureDate", "quantity") VALUES
+("code", "name", "unitPrice", "date", "quantity") VALUES
 ('ELO004', 'Computer', 1300, '2016-04-05', -3);
 
 ```
 
 
-## PRIMARY KEY Constraint
+### PRIMARY KEY Constraint
 
 - Uniquely identifies each record in a table.
 - A table can have only one primary key, which can consist of a single column or multiple columns.
@@ -922,7 +980,7 @@ CREATE TABLE "Products" (
     "productID" SERIAL,
     "code" CHAR(6) NOT NULL,
     "name" VARCHAR(40) NOT NULL,
-    "manufactureDate" DATE DEFAULT '2019-01-01',
+    "date" DATE DEFAULT '2019-01-01',
     "unitPrice" MONEY,
     "quantity" SMALLINT DEFAULT 0,
     CONSTRAINT "productsPK" PRIMARY KEY("productID"),
@@ -941,14 +999,14 @@ ALTER TABLE "Products" DROP CONSTRAINT "productsPK";
 
 ```
 
-To add the PRIMARY KEY constraint back to the `"productID"` column:
+To add the PRIMARY KEY constraint  to the `"productID"` column:
 
 ```sql
 ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID");
 
 ```
 
-### Composite PRIMARY KEY
+#### Composite PRIMARY KEY
 
 - A primary key defined using multiple columns (e.g., `"productID"` and `"code"` together form the primary key).
 
@@ -963,6 +1021,13 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID","code
 - Establishes a relationship between two tables by linking a foreign key column in one table to a primary key in another table.
 - Helps enforce referential integrity.
 
+---
+**The data types of Foreign Key (FK) and Primary Key (PK) fields must be compatible to establish a relationship.**
+
+---
+
+#### Example
+
 ![](../resources/figures/fk1.png)
 
 | id   | ProductName | CategoryID | M<------->1 | id | CategoryName    |
@@ -976,7 +1041,7 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID","code
 
 
 ```sql
-CREATE TABLE "ProductCategory" (
+CREATE TABLE "ProductCategories" (
     id SERIAL,
     name VARCHAR(30) NOT NULL,
     CONSTRAINT "productCategoryPK" PRIMARY KEY(id)
@@ -990,20 +1055,20 @@ CREATE TABLE "Products" (
     "code" CHAR(6) NOT NULL,
     "name" VARCHAR(40) NOT NULL,
     "category" INTEGER NOT NULL, 
-    "manufactureDate" DATE DEFAULT '2019-01-01',
+    "date" DATE DEFAULT '2019-01-01',
     "unitPrice" MONEY,
     "quantity" SMALLINT DEFAULT 0,
     CONSTRAINT "productsPK" PRIMARY KEY("id"),
     CONSTRAINT "productsUnique" UNIQUE("code"),
     CONSTRAINT "productsCheck" CHECK("quantity" >= 0),
-    CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategory"(id)
+    CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"(id)
 );
 
 ```
 
 
 
-- The `"categoryID"` column in the `"Products"` table references the `"categoryID"` column in the `"ProductCategories"` table.
+- The `"category"` column in the `"Products"` table references the `"id"` column in the `"ProductCategories"` table.
 
 By default, `ON DELETE` and `ON UPDATE` actions are adjusted as `NO ACTION`.
 
@@ -1015,7 +1080,7 @@ By default, `ON DELETE` and `ON UPDATE` actions are adjusted as `NO ACTION`.
 - **SET NULL:** Sets the foreign key column to `NULL` when the referenced record is deleted.
 - **SET DEFAULT:** Sets the foreign key column to its default value when the referenced record is deleted.
 
-To remove the FOREIGN KEY constraint from the `"categoryID"` column:
+To remove the FOREIGN KEY constraint from the `"category"` column:
 ```sql
 ALTER TABLE "Products" DROP CONSTRAINT "productCategoryFK";
 
@@ -1025,7 +1090,7 @@ To add the FOREIGN KEY constraint with `NO ACTION` behavior:
 
 ```sql
 ALTER TABLE "Products"
-ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategory"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ```
 
@@ -1035,8 +1100,6 @@ To add the FOREIGN KEY constraint with `CASCADE` behavior:
 
 ```sql
 ALTER TABLE "Products"
-ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ```
-
-
