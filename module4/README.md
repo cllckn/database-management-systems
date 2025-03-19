@@ -660,12 +660,16 @@ Used to define a database.
 
 ```sql
 CREATE DATABASE "ShoppingApplicationDB"
-ENCODING='UTF-8'
-LC_COLLATE='tr_TR.UTF-8' -- This property cannot be changed later (affects sorting and comparisons).
-LC_CTYPE='tr_TR.UTF-8'   -- This property cannot be changed later (affects case conversion and character classification).
-OWNER postgres
-TEMPLATE=template0;
+  ENCODING='UTF-8' -- Specifies UTF-8 character encoding for supporting Kazakh characters.
+  
+  LC_COLLATE='kk_KZ.UTF-8' -- Defines Kazakh-specific sorting and comparison rules.
+  --Affects ORDER BY, LIKE, ILIKE, and index behavior.
+  
+  LC_CTYPE='kk_KZ.UTF-8' -- Sets Kazakh-specific character classification and case conversion.
+  -- Affects case conversions (UPPER(), LOWER()), character classification (ISALPHA(), ISDIGIT()), and regular expressions.
 
+  OWNER postgres -- Assigns the database owner to the postgres user.
+  TEMPLATE=template0; -- Creates a clean database without default template settings.
 ```
 
 ### CREATE SCHEMA
@@ -754,5 +758,285 @@ CREATE TABLE "schema1"."Products" (
 
 ```
 
+
+
+
+
+
 ## Defining Constraints in SQL
+
+SQL constraints help maintain data integrity by enforcing rules on table columns.
+
+The following table structure will be utilized throughout the constraints subject.
+```sql
+CREATE TABLE "Products" (
+    "productID" SERIAL,
+    "code" CHAR(6) NOT NULL,
+    "name" VARCHAR(40) NOT NULL,
+    "manufactureDate" DATE DEFAULT '2019-01-01',
+    "unitPrice" MONEY,
+    "quantity" SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY("productID"),
+    CONSTRAINT "productsUnique" UNIQUE("code"),
+    CONSTRAINT "productsCheck" CHECK("quantity" >= 0)
+);
+```
+
+### NOT NULL Constraint
+
+- Ensures that a column cannot contain NULL values.
+- Data must be provided for the column when inserting a record.
+
+If no value is provided for the `"code"` column, an error occurs.
+
+```sql
+INSERT INTO "Products"
+("name", "unitPrice", "manufactureDate", "quantity") VALUES
+('TV', 1300, '2019-10-30', 5);
+
+```
+
+
+To remove the NOT NULL constraint from the `"code"` column:
+```sql
+ALTER TABLE "Products" ALTER COLUMN "code" DROP NOT NULL;
+
+```
+To add the NOT NULL constraint back to the `"code"` column:
+
+```sql
+ALTER TABLE "Products" ALTER COLUMN "code" SET NOT NULL;
+
+```
+
+
+### DEFAULT Constraint
+
+- Assigns a default value to a column when no value is provided during an insert operation.
+
+```sql
+INSERT INTO "Products"
+("code", "name", "unitPrice", "quantity") VALUES
+('ELO004', 'TV', 1300, 5);
+
+```
+
+- If no value is given for `"productionDate"`, it will default to `'2019-01-01'`.
+
+To remove the DEFAULT constraint from the `"productionDate"` column:
+```sql
+ALTER TABLE "Products" ALTER COLUMN "manufactureDate" DROP DEFAULT;
+
+```
+
+To add the DEFAULT constraint back to the `"productionDate"` column:
+```sql
+ALTER TABLE "Products" ALTER COLUMN "manufactureDate" SET DEFAULT '2019-01-01';
+
+```
+
+
+### UNIQUE Constraint
+
+- Ensures that all values in a column (or combination of columns) are unique across the table.
+
+
+- The `"code"` column must contain unique values.
+```sql
+INSERT INTO "Products"
+("code","name", "unitPrice", "manufactureDate", "quantity") VALUES
+('ELO001','TV', 1300, '2019-10-30', 5);
+```
+
+
+To remove the UNIQUE constraint from the `"code"` column:
+
+```sql
+ALTER TABLE "Products" DROP CONSTRAINT "productsUnique";
+```
+
+
+To add the UNIQUE constraint back to the `"code"` column:
+
+```sql
+ALTER TABLE "Products" ADD CONSTRAINT "productsUnique" UNIQUE ("code");
+```
+
+#### Multi-Column UNIQUE Constraint
+
+- Ensures that a combination of `"code"` and `"name"` is unique across the table.
+```sql
+ALTER TABLE "Products" ADD CONSTRAINT "productsUnique" UNIQUE ("code,name");
+```
+
+
+### CHECK Constraint
+
+- Restricts the values allowed in a column based on a specific condition.
+
+
+```sql
+CREATE TABLE "Products" (
+    "productID" SERIAL,
+    "code" CHAR(6) NOT NULL,
+    "name" VARCHAR(40) NOT NULL,
+    "manufactureDate" DATE DEFAULT '2019-01-01',
+    "unitPrice" MONEY,
+    "quantity" SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY("productID"),
+    CONSTRAINT "productsUnique" UNIQUE("code"),
+    CONSTRAINT "productsCheck" CHECK("quantity" >= 0)
+);
+```
+
+- Ensures that `"quantity"` is always greater than or equal to zero.
+
+To remove the CHECK constraint on the `"quantity"` column:
+```sql
+ALTER TABLE "Products" DROP CONSTRAINT "productsCheck";
+
+```
+To add the CHECK constraint back to the `"quantity"` column:
+
+```sql
+ALTER TABLE "Products" ADD CONSTRAINT "productsCheck" CHECK ("quantity" >= 0);
+
+```
+
+- If an attempt is made to insert a record where `"quantity"` is `-3`, it will fail due to the constraint.
+```sql
+INSERT INTO "Products"
+("code", "name", "unitPrice", "manufactureDate", "quantity") VALUES
+('ELO004', 'Computer', 1300, '2016-04-05', -3);
+
+```
+
+
+## PRIMARY KEY Constraint
+
+- Uniquely identifies each record in a table.
+- A table can have only one primary key, which can consist of a single column or multiple columns.
+
+```sql
+CREATE TABLE "Products" (
+    "productID" SERIAL,
+    "code" CHAR(6) NOT NULL,
+    "name" VARCHAR(40) NOT NULL,
+    "manufactureDate" DATE DEFAULT '2019-01-01',
+    "unitPrice" MONEY,
+    "quantity" SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY("productID"),
+    CONSTRAINT "productsUnique" UNIQUE("code"),
+    CONSTRAINT "productsCheck" CHECK("quantity" >= 0)
+);
+```
+
+
+- `"productID"` is the primary key of the `"Products"` table.
+
+To remove the PRIMARY KEY constraint from the `"productID"` column:
+
+```sql
+ALTER TABLE "Products" DROP CONSTRAINT "productsPK";
+
+```
+
+To add the PRIMARY KEY constraint back to the `"productID"` column:
+
+```sql
+ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID");
+
+```
+
+### Composite PRIMARY KEY
+
+- A primary key defined using multiple columns (e.g., `"productID"` and `"code"` together form the primary key).
+
+```sql
+ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID","code");
+
+```
+
+
+### FOREIGN KEY Constraint
+
+- Establishes a relationship between two tables by linking a foreign key column in one table to a primary key in another table.
+- Helps enforce referential integrity.
+
+![](../resources/figures/fk1.png)
+
+| id   | ProductName | CategoryID | M<------->1 | id | CategoryName    |
+|-----|------------|--------------|-------------|----|--|
+| 101 | Coffee     | 1            |             | 1  | Beverages      |
+| 102 | Tea        | 1            |             | 2  | Condiments     |
+| 103 | Mustard    | 2            |             | 3  | Dairy Products |
+| 104 | Cheese     | 3            |             | 4  | Electronics |  
+| 105 | Yogurt     | 3            |             |
+| 106 | Honey           | NULL     |             |
+
+
+```sql
+CREATE TABLE "ProductCategory" (
+    id SERIAL,
+    name VARCHAR(30) NOT NULL,
+    CONSTRAINT "productCategoryPK" PRIMARY KEY(id)
+);
+
+```
+
+```sql
+CREATE TABLE "Products" (
+    "id" SERIAL,
+    "code" CHAR(6) NOT NULL,
+    "name" VARCHAR(40) NOT NULL,
+    "category" INTEGER NOT NULL, 
+    "manufactureDate" DATE DEFAULT '2019-01-01',
+    "unitPrice" MONEY,
+    "quantity" SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY("id"),
+    CONSTRAINT "productsUnique" UNIQUE("code"),
+    CONSTRAINT "productsCheck" CHECK("quantity" >= 0),
+    CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategory"(id)
+);
+
+```
+
+
+
+- The `"categoryID"` column in the `"Products"` table references the `"categoryID"` column in the `"ProductCategories"` table.
+
+By default, `ON DELETE` and `ON UPDATE` actions are adjusted as `NO ACTION`.
+
+### Different Foreign Key Behaviors
+
+- **NO ACTION (default):** Prevents deletion or update of a referenced record if related records exist.
+- **RESTRICT:** Similar to `NO ACTION`, explicitly prevents the operation.
+- **CASCADE:** Automatically deletes or updates child records when the parent record is deleted or updated.
+- **SET NULL:** Sets the foreign key column to `NULL` when the referenced record is deleted.
+- **SET DEFAULT:** Sets the foreign key column to its default value when the referenced record is deleted.
+
+To remove the FOREIGN KEY constraint from the `"categoryID"` column:
+```sql
+ALTER TABLE "Products" DROP CONSTRAINT "productCategoryFK";
+
+```
+
+To add the FOREIGN KEY constraint with `NO ACTION` behavior:
+
+```sql
+ALTER TABLE "Products"
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategory"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+```
+
+
+To add the FOREIGN KEY constraint with `CASCADE` behavior:  
+
+
+```sql
+ALTER TABLE "Products"
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+```
+
 
