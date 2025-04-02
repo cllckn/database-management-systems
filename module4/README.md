@@ -8,6 +8,82 @@
 ---
 
 
+<!-- TOC -->
+* [**Module 4: Fundamentals of Structured Query Language (SQL)**](#module-4-fundamentals-of-structured-query-language-sql)
+* [**Introduction to Structured Query Language (SQL)**](#introduction-to-structured-query-language-sql)
+  * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
+    * [**Installing PostgreSQL**](#installing-postgresql)
+    * [**Installing pgAdmin**](#installing-pgadmin)
+    * [**Importing and Exporting Sample Databases**](#importing-and-exporting-sample-databases)
+      * [**Northwind Sample Database**](#northwind-sample-database)
+      * [**Pagila Sample Database**](#pagila-sample-database)
+  * [**SQL Functions and Categories**](#sql-functions-and-categories)
+    * [**1. Data Definition Language (DDL)** – Structural Commands](#1-data-definition-language-ddl--structural-commands)
+    * [**2. Data Manipulation Language (DML)** – Data Processing Commands](#2-data-manipulation-language-dml--data-processing-commands)
+  * [Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)](#basic-sql-dml-statements-select-insert-update-delete)
+  * [**SELECT**](#select)
+  * [**WHERE**](#where)
+  * [**DISTINCT**](#distinct)
+  * [**ORDER BY**](#order-by)
+  * [**LIKE / NOT LIKE**](#like--not-like)
+    * [**Examples:**](#examples)
+  * [**BETWEEN**](#between)
+  * [**IN**](#in)
+  * [**Querying NULL and Non-NULL Values**](#querying-null-and-non-null-values)
+  * [**AS (Alias for Columns and Tables) for Columns**](#as-alias-for-columns-and-tables-for-columns)
+      * [**Assign an alias to a column**](#assign-an-alias-to-a-column)
+  * [JOIN](#join-)
+    * [**Categories Table**](#categories-table)
+    * [**Products Table**](#products-table)
+  * [**JOIN Operations and Their Results**](#join-operations-and-their-results)
+    * [**1. INNER JOIN**](#1-inner-join)
+      * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side)
+      * [**Result Table:**](#result-table)
+    * [**2. LEFT JOIN (LEFT OUTER JOIN)**](#2-left-join-left-outer-join)
+      * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-1)
+      * [**Result Table:**](#result-table-1)
+    * [**3. RIGHT JOIN (RIGHT OUTER JOIN)**](#3-right-join-right-outer-join)
+      * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-2)
+      * [**Result Table:**](#result-table-2)
+    * [**4. FULL JOIN (FULL OUTER JOIN)**](#4-full-join-full-outer-join)
+      * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-3)
+      * [**Result Table:**](#result-table-3)
+    * [**Summary of Join Operations**](#summary-of-join-operations)
+  * [**SELECT ... INTO**](#select--into)
+  * [**INSERT**](#insert)
+    * [**Example 1: Inserting a Customer Record**](#example-1-inserting-a-customer-record)
+  * [**INSERT INTO ... SELECT**](#insert-into--select)
+  * [**UPDATE**](#update)
+  * [**DELETE**](#delete)
+    * [**Example 1: Deleting a Specific Record**](#example-1-deleting-a-specific-record)
+    * [**Example 2: Deleting All Records in a Table**](#example-2-deleting-all-records-in-a-table)
+  * [**Database Operations with Application Programs**](#database-operations-with-application-programs)
+    * [**Database Drivers Provide the Following Core Functions:**](#database-drivers-provide-the-following-core-functions)
+    * [**Database Operations with Java and PostgreSQL**](#database-operations-with-java-and-postgresql)
+  * [Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)](#basic-sql-data-definition-language-ddl-statements-create-alter-drop)
+    * [CREATE](#create)
+      * [CREATE DATABASE](#create-database)
+      * [CREATE SCHEMA](#create-schema)
+      * [CREATE TABLE](#create-table)
+      * [Commonly Used SQL and PostgreSQL Data Types](#commonly-used-sql-and-postgresql-data-types)
+      * [Best Practices for Choosing Data Types](#best-practices-for-choosing-data-types)
+    * [ALTER](#alter)
+    * [DROP](#drop)
+    * [Defining Constraints in SQL](#defining-constraints-in-sql)
+      * [NOT NULL Constraint](#not-null-constraint)
+      * [DEFAULT Constraint](#default-constraint)
+    * [UNIQUE Constraint](#unique-constraint)
+      * [Multi-Column UNIQUE Constraint](#multi-column-unique-constraint)
+    * [CHECK Constraint](#check-constraint)
+    * [PRIMARY KEY Constraint](#primary-key-constraint)
+      * [Composite PRIMARY KEY](#composite-primary-key)
+    * [FOREIGN KEY Constraint](#foreign-key-constraint)
+      * [Example](#example)
+    * [Different Foreign Key Behaviors](#different-foreign-key-behaviors)
+  * [Hands-on Exercise 1](#hands-on-exercise-1)
+  * [Hands-on Exercise 2](#hands-on-exercise-2)
+<!-- TOC -->
+
 # **Introduction to Structured Query Language (SQL)**
 
 SQL is the standard language for managing and querying relational databases.
@@ -949,6 +1025,14 @@ CREATE TABLE "Products" (
 
 - Ensures that `"quantity"` is always greater than or equal to zero.
 
+- If an attempt is made to insert a record where `"quantity"` is `-3`, it will fail due to the CHECK constraint.
+```sql
+INSERT INTO "Products"
+("code", "name", "unitPrice", "date", "quantity") VALUES
+('ELO004', 'Computer', 1300, '2016-04-05', -3);
+
+```
+
 To remove the CHECK constraint on the `"quantity"` column:
 ```sql
 ALTER TABLE "Products" DROP CONSTRAINT "productsCheck";
@@ -958,14 +1042,6 @@ To add the CHECK constraint back to the `"quantity"` column:
 
 ```sql
 ALTER TABLE "Products" ADD CONSTRAINT "productsCheck" CHECK ("quantity" >= 0);
-
-```
-
-- If an attempt is made to insert a record where `"quantity"` is `-3`, it will fail due to the CHECK constraint.
-```sql
-INSERT INTO "Products"
-("code", "name", "unitPrice", "date", "quantity") VALUES
-('ELO004', 'Computer', 1300, '2016-04-05', -3);
 
 ```
 
@@ -1103,3 +1179,17 @@ ALTER TABLE "Products"
 ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ```
+
+
+---
+
+## Hands-on Exercise 1
+
+---
+
+
+---
+
+## Hands-on Exercise 2
+
+---
