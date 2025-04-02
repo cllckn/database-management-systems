@@ -72,14 +72,13 @@
     * [Defining Constraints in SQL](#defining-constraints-in-sql)
       * [NOT NULL Constraint](#not-null-constraint)
       * [DEFAULT Constraint](#default-constraint)
-    * [UNIQUE Constraint](#unique-constraint)
+      * [UNIQUE Constraint](#unique-constraint)
       * [Multi-Column UNIQUE Constraint](#multi-column-unique-constraint)
-    * [CHECK Constraint](#check-constraint)
-    * [PRIMARY KEY Constraint](#primary-key-constraint)
-      * [Composite PRIMARY KEY](#composite-primary-key)
-    * [FOREIGN KEY Constraint](#foreign-key-constraint)
-      * [Example](#example)
-    * [Different Foreign Key Behaviors](#different-foreign-key-behaviors)
+      * [CHECK Constraint](#check-constraint)
+      * [PRIMARY KEY Constraint](#primary-key-constraint)
+        * [Composite PRIMARY KEY](#composite-primary-key)
+      * [FOREIGN KEY Constraint](#foreign-key-constraint)
+        * [Example](#example)
   * [Hands-on Exercise 1](#hands-on-exercise-1)
   * [Hands-on Exercise 2](#hands-on-exercise-2)
 <!-- TOC -->
@@ -970,7 +969,7 @@ ALTER TABLE "Products" ALTER COLUMN "date" SET DEFAULT '2019-01-01';
 ```
 
 
-### UNIQUE Constraint
+#### UNIQUE Constraint
 
 - Ensures that all values in a column (or combination of columns) are unique across the table.
 
@@ -1004,7 +1003,7 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsUnique" UNIQUE ("code,name");
 ```
 
 
-### CHECK Constraint
+#### CHECK Constraint
 
 - Restricts the values allowed in a column based on a specific condition.
 
@@ -1046,7 +1045,7 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsCheck" CHECK ("quantity" >= 0);
 ```
 
 
-### PRIMARY KEY Constraint
+#### PRIMARY KEY Constraint
 
 - Uniquely identifies each record in a table.
 - A table can have only one primary key, which can consist of a single column or multiple columns.
@@ -1082,7 +1081,7 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID");
 
 ```
 
-#### Composite PRIMARY KEY
+##### Composite PRIMARY KEY
 
 - A primary key defined using multiple columns (e.g., `"productID"` and `"code"` together form the primary key).
 
@@ -1092,7 +1091,7 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID","code
 ```
 
 
-### FOREIGN KEY Constraint
+#### FOREIGN KEY Constraint
 
 - Establishes a relationship between two tables by linking a foreign key column in one table to a primary key in another table.
 - Helps enforce referential integrity.
@@ -1102,7 +1101,7 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID","code
 
 ---
 
-#### Example
+##### Example
 
 ![](../resources/figures/fk1.png)
 
@@ -1148,13 +1147,13 @@ CREATE TABLE "Products" (
 
 By default, `ON DELETE` and `ON UPDATE` actions are adjusted as `NO ACTION`.
 
-### Different Foreign Key Behaviors
+* Different Foreign Key Behaviors
 
-- **NO ACTION (default):** Prevents deletion or update of a referenced record if related records exist.
-- **RESTRICT:** Similar to `NO ACTION`, explicitly prevents the operation.
-- **CASCADE:** Automatically deletes or updates child records when the parent record is deleted or updated.
-- **SET NULL:** Sets the foreign key column to `NULL` when the referenced record is deleted.
-- **SET DEFAULT:** Sets the foreign key column to its default value when the referenced record is deleted.
+  - **NO ACTION (default):** Prevents deletion or update of a referenced record if related records exist.
+  - **RESTRICT:** Similar to `NO ACTION`, explicitly prevents the operation.
+  - **CASCADE:** Automatically deletes or updates child records when the parent record is deleted or updated.
+  - **SET NULL:** Sets the foreign key column to `NULL` when the referenced record is deleted.
+  - **SET DEFAULT:** Sets the foreign key column to its default value when the referenced record is deleted.
 
 To remove the FOREIGN KEY constraint from the `"category"` column:
 ```sql
