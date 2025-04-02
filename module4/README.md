@@ -11,52 +11,52 @@
 <!-- TOC -->
 * [**Module 4: Fundamentals of Structured Query Language (SQL)**](#module-4-fundamentals-of-structured-query-language-sql)
 * [**Introduction to Structured Query Language (SQL)**](#introduction-to-structured-query-language-sql)
-  * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
-    * [**Installing PostgreSQL**](#installing-postgresql)
-    * [**Installing pgAdmin**](#installing-pgadmin)
-    * [**Importing and Exporting Sample Databases**](#importing-and-exporting-sample-databases)
-      * [**Northwind Sample Database**](#northwind-sample-database)
-      * [**Pagila Sample Database**](#pagila-sample-database)
+    * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
+      * [**Installing PostgreSQL**](#installing-postgresql)
+      * [**Installing pgAdmin**](#installing-pgadmin)
+      * [**Importing and Exporting Sample Databases**](#importing-and-exporting-sample-databases)
+        * [**Northwind Sample Database**](#northwind-sample-database)
+        * [**Pagila Sample Database**](#pagila-sample-database)
   * [**SQL Functions and Categories**](#sql-functions-and-categories)
     * [**1. Data Definition Language (DDL)** – Structural Commands](#1-data-definition-language-ddl--structural-commands)
     * [**2. Data Manipulation Language (DML)** – Data Processing Commands](#2-data-manipulation-language-dml--data-processing-commands)
-  * [Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)](#basic-sql-dml-statements-select-insert-update-delete)
-  * [**SELECT**](#select)
-  * [**WHERE**](#where)
-  * [**DISTINCT**](#distinct)
-  * [**ORDER BY**](#order-by)
-  * [**LIKE / NOT LIKE**](#like--not-like)
-    * [**Examples:**](#examples)
-  * [**BETWEEN**](#between)
-  * [**IN**](#in)
-  * [**Querying NULL and Non-NULL Values**](#querying-null-and-non-null-values)
-  * [**AS (Alias for Columns and Tables) for Columns**](#as-alias-for-columns-and-tables-for-columns)
+  * [**Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)**](#basic-sql-dml-statements-select-insert-update-delete)
+    * [**SELECT**](#select)
+    * [**WHERE**](#where)
+    * [**DISTINCT**](#distinct)
+    * [**ORDER BY**](#order-by)
+    * [**LIKE / NOT LIKE**](#like--not-like)
+      * [**Examples:**](#examples)
+    * [**BETWEEN**](#between)
+    * [**IN**](#in)
+    * [**Querying NULL and Non-NULL Values**](#querying-null-and-non-null-values)
+    * [**AS (Alias for Columns and Tables) for Columns**](#as-alias-for-columns-and-tables-for-columns)
       * [**Assign an alias to a column**](#assign-an-alias-to-a-column)
-  * [JOIN](#join-)
-    * [**Categories Table**](#categories-table)
-    * [**Products Table**](#products-table)
-  * [**JOIN Operations and Their Results**](#join-operations-and-their-results)
-    * [**1. INNER JOIN**](#1-inner-join)
-      * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side)
-      * [**Result Table:**](#result-table)
-    * [**2. LEFT JOIN (LEFT OUTER JOIN)**](#2-left-join-left-outer-join)
-      * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-1)
-      * [**Result Table:**](#result-table-1)
-    * [**3. RIGHT JOIN (RIGHT OUTER JOIN)**](#3-right-join-right-outer-join)
-      * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-2)
-      * [**Result Table:**](#result-table-2)
-    * [**4. FULL JOIN (FULL OUTER JOIN)**](#4-full-join-full-outer-join)
-      * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-3)
-      * [**Result Table:**](#result-table-3)
-    * [**Summary of Join Operations**](#summary-of-join-operations)
-  * [**SELECT ... INTO**](#select--into)
-  * [**INSERT**](#insert)
-    * [**Example 1: Inserting a Customer Record**](#example-1-inserting-a-customer-record)
-  * [**INSERT INTO ... SELECT**](#insert-into--select)
-  * [**UPDATE**](#update)
-  * [**DELETE**](#delete)
-    * [**Example 1: Deleting a Specific Record**](#example-1-deleting-a-specific-record)
-    * [**Example 2: Deleting All Records in a Table**](#example-2-deleting-all-records-in-a-table)
+    * [JOIN](#join-)
+      * [**Categories Table**](#categories-table)
+      * [**Products Table**](#products-table)
+    * [**JOIN Operations and Their Results**](#join-operations-and-their-results)
+      * [**1. INNER JOIN**](#1-inner-join)
+        * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side)
+        * [**Result Table:**](#result-table)
+      * [**2. LEFT JOIN (LEFT OUTER JOIN)**](#2-left-join-left-outer-join)
+        * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-1)
+        * [**Result Table:**](#result-table-1)
+      * [**3. RIGHT JOIN (RIGHT OUTER JOIN)**](#3-right-join-right-outer-join)
+        * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-2)
+        * [**Result Table:**](#result-table-2)
+      * [**4. FULL JOIN (FULL OUTER JOIN)**](#4-full-join-full-outer-join)
+        * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-3)
+        * [**Result Table:**](#result-table-3)
+      * [**Summary of Join Operations**](#summary-of-join-operations)
+    * [**SELECT ... INTO**](#select--into)
+    * [**INSERT**](#insert)
+      * [**Example 1: Inserting a Customer Record**](#example-1-inserting-a-customer-record)
+    * [**INSERT INTO ... SELECT**](#insert-into--select)
+    * [**UPDATE**](#update)
+    * [**DELETE**](#delete)
+      * [**Example 1: Deleting a Specific Record**](#example-1-deleting-a-specific-record)
+      * [**Example 2: Deleting All Records in a Table**](#example-2-deleting-all-records-in-a-table)
   * [**Database Operations with Application Programs**](#database-operations-with-application-programs)
     * [**Database Drivers Provide the Following Core Functions:**](#database-drivers-provide-the-following-core-functions)
     * [**Database Operations with Java and PostgreSQL**](#database-operations-with-java-and-postgresql)
@@ -95,30 +95,30 @@ SQL is used to interact with relational database management systems (RDBMS).
 ![](../resources/figures/database-system.png)
 
 
-## **Setting Up the Working Environment**
+### **Setting Up the Working Environment**
 
 To work with SQL databases efficiently, a proper working environment is required.
 
-### **Installing PostgreSQL**
+#### **Installing PostgreSQL**
 PostgreSQL is an open-source and powerful relational database management system.
 - **Download Link**: [Download PostgreSQL](https://www.postgresql.org/download)
 - Supports Windows, macOS, and Linux.
 - Complies with SQL standards and offers extensive plugin support.
 
-### **Installing pgAdmin**
+#### **Installing pgAdmin**
 pgAdmin is the most commonly used graphical management tool for PostgreSQL.
 - It is distributed along with PostgreSQL.
 - Provides a user-friendly interface for managing databases, executing queries, and visualizing schemas.
 
 
-### **Importing and Exporting Sample Databases**
+#### **Importing and Exporting Sample Databases**
 
-#### **Northwind Sample Database**
+##### **Northwind Sample Database**
 - A well-known example database that simulates a trading company's operations.
 - Can be imported using **pgAdmin**.
 - [Download](../resources/dbs/northwind.backup)
 
-#### **Pagila Sample Database**
+##### **Pagila Sample Database**
 - A PostgreSQL-specific sample database inspired by Sakila (used in MySQL).
 - Contains data related to a fictional DVD rental store.
 - Can be imported using **pgAdmin**.
@@ -139,7 +139,7 @@ DML includes commands that manipulate data within tables:
 - Inserting, deleting, updating, and retrieving(querying) **data**.
 
 
-## Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)
+## **Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)**
 
 | Command  | Description |
 |----------|------------|
@@ -152,7 +152,7 @@ DML includes commands that manipulate data within tables:
 
 **The following queries use the Northwind Sample Database.**
 
-## **SELECT**
+### **SELECT**
 The **SELECT** statement is used to retrieve data from the database (searching/listing).
 
 ```sql
@@ -163,7 +163,7 @@ SELECT * FROM "customers";
 SELECT "CompanyName", "ContactName" FROM "customers";
 ```
 
-## **WHERE**
+### **WHERE**
 
 The WHERE clause is used to filter records based on specified conditions, returning only the rows that meet the query condition.
 
@@ -189,7 +189,7 @@ SELECT * FROM "order_details" WHERE "UnitPrice" >= 14;
 SELECT * FROM "order_details" WHERE "UnitPrice" > 14;
 ```
 
-## **DISTINCT**
+### **DISTINCT**
 
 The **DISTINCT** keyword is used to eliminate duplicate rows from the query results, ensuring that only unique records are retrieved.
 
@@ -203,7 +203,7 @@ SELECT DISTINCT "OrderID", "Discount" FROM "order_details" ORDER BY "OrderID";
 --Retrieves unique combinations of OrderID and Discount values from the order_details table.
 ```
 
-## **ORDER BY**
+### **ORDER BY**
 
 The **ORDER BY** clause is used to sort the query results in either **ascending (ASC)** or **descending (DESC)** order 
 based on one or more columns. Sorting can be applied to both **alphabetic (text)** and **numeric** values.
@@ -224,7 +224,7 @@ SELECT * FROM "customers" ORDER BY "ContactName" DESC, "CompanyName";
 SELECT * FROM "customers" ORDER BY "Country", "ContactName";
 ```
 
-## **LIKE / NOT LIKE**
+### **LIKE / NOT LIKE**
 
 The **LIKE** and **NOT LIKE** operators are used with the **WHERE** clause to filter records based on a specified pattern. 
 These operators are particularly useful for searching text data in a flexible manner.
@@ -235,7 +235,7 @@ These operators are particularly useful for searching text data in a flexible ma
     - `%` : Represents **zero or more** characters. It stands for any sequence of characters (including an empty sequence).
     - `_` : Represents **exactly one** character. It stands for a single character, which can be any value.
 
-### **Examples:**
+#### **Examples:**
 
 
 ```sql
@@ -256,7 +256,7 @@ SELECT * FROM "customers" WHERE "Country" LIKE '%pa%';
 --Retrieves all records where the Country name contains 'pa' anywhere.
 ```
 
-## **BETWEEN**
+### **BETWEEN**
 
 The **BETWEEN** operator is used in the **WHERE** clause to filter records within a specified range. 
 It works with **numeric, date, and text values**.
@@ -275,7 +275,7 @@ SELECT * FROM "products" WHERE "ProductName" BETWEEN 'C' AND 'M';
 --Example matches: 'Cheese', 'Honey', 'Juice', 'Milk', but not 'Apple' or 'Banana'.
 ```
 
-## **IN**
+### **IN**
 
 The **IN** operator is used in the **WHERE** clause to filter records that match **any** value in a given list. 
 It is an alternative to using multiple **OR** conditions.
@@ -286,7 +286,7 @@ WHERE "public"."customers"."Country" IN ('Argentina', 'Kazakhstan');
 --Find all customers from Argentina or Kazakhstan
 ```
 
-## **Querying NULL and Non-NULL Values**
+### **Querying NULL and Non-NULL Values**
 
 In SQL, **NULL** represents missing or undefined data. A field containing **NULL** does not hold any value, including an empty string (`''`) or zero (`0`).
 
@@ -301,7 +301,7 @@ SELECT * FROM "customers" WHERE "Region" IS NULL;
 --Retrieves all records where the Region field does not have a value (is NULL).
 ```
 
-## **AS (Alias for Columns and Tables) for Columns**
+### **AS (Alias for Columns and Tables) for Columns**
 
 The **AS** keyword is used to assign an **alias (temporary name)** to columns or tables in SQL queries. 
 Aliases improve readability and make query results more user-friendly.
@@ -328,12 +328,12 @@ WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 --Filters orders where the OrderDate is between July 4, 1996, and July 9, 1996.
 ```
 
-## JOIN 
+### JOIN 
 
 **SQL JOIN Operations (Using Products and Categories Tables)**
 
 
-### **Categories Table**
+#### **Categories Table**
 | CategoryID | CategoryName    |
 |------------|----------------|
 | 1          | Beverages      |
@@ -341,7 +341,7 @@ WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 | 3          | Dairy Products |
 | 4          | Electronics |  
 
-### **Products Table**
+#### **Products Table**
 | ProductID | ProductName      | CategoryID |
 |-----------|-----------------|------------|
 | 101       | Coffee          | 1          |
@@ -351,9 +351,9 @@ WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 | 105       | Yogurt          | 3          |
 | 106       | Honey           | NULL       |
 
-## **JOIN Operations and Their Results**
+### **JOIN Operations and Their Results**
 
-### **1. INNER JOIN**
+#### **1. INNER JOIN**
 Returns only the records that have matching values in both tables.
 - Only products with a valid `CategoryID` in the **Categories** table are included.
 - Any product with a `NULL` `CategoryID` is excluded.
@@ -364,7 +364,7 @@ FROM Products
 INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 ```
 
-#### **Products and Categories Tables (Side by Side)**
+##### **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|-------------|--|--|
@@ -376,7 +376,7 @@ INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 | 106       | Honey           | NULL     |             |
 
 
-#### **Result Table:**
+##### **Result Table:**
 | ProductID | ProductName | CategoryName    |
 |-----------|------------|----------------|
 | 101       | Coffee     | Beverages      |
@@ -408,9 +408,9 @@ INNER JOIN "customers" ON "orders"."CustomerID" = "customers"."CustomerID"
 INNER JOIN "employees" ON "orders"."EmployeeID" = "employees"."EmployeeID";
 ```
 
----
 
-### **2. LEFT JOIN (LEFT OUTER JOIN)**
+
+#### **2. LEFT JOIN (LEFT OUTER JOIN)**
 Returns all records from the **Products (left)** table, and matching records from the **Categories(right)** table.
 - If a product does not have a matching category, `NULL` is returned for the category.
 - Ensures all products are included in the result.
@@ -421,7 +421,7 @@ FROM Products
 LEFT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ```
-#### **Products and Categories Tables (Side by Side)**
+##### **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|----|--|--|
@@ -432,7 +432,7 @@ LEFT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 | 105       | Yogurt     | 3            |  |
 | 106       | Honey           | NULL     |             |
 
-#### **Result Table:**
+##### **Result Table:**
 | ProductID | ProductName | CategoryName    |
 |-----------|------------|----------------|
 | 101       | Coffee     | Beverages      |
@@ -452,9 +452,9 @@ LEFT JOIN "orders" ON "orders"."CustomerID" = "customers"."CustomerID"
 ORDER BY "OrderID" DESC;
 ```
 
----
 
-### **3. RIGHT JOIN (RIGHT OUTER JOIN)**
+
+#### **3. RIGHT JOIN (RIGHT OUTER JOIN)**
 Returns all records from the **Categories** table, and matching records from the **Products** table.
 - If a category does not have a matching product, `NULL` is returned for the product fields.
 - Ensures all categories are included in the result.
@@ -465,7 +465,7 @@ FROM Products
 RIGHT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ```
-#### **Products and Categories Tables (Side by Side)**
+##### **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 | CategoryID | CategoryName   |
 |-----------|------------|--------------|----|------------|----------------|
@@ -476,7 +476,7 @@ RIGHT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 | 105       | Yogurt     | 3            |  |
 | 106       | Honey           | NULL     |             |
 
-#### **Result Table:**
+##### **Result Table:**
 | ProductID | ProductName | CategoryName   |
 |-----------|-------------|----------------|
 | 101       | Coffee      | Beverages      |
@@ -506,7 +506,7 @@ VALUES (10, 'Jack', 'Doe');
 ```
 ---
 
-### **4. FULL JOIN (FULL OUTER JOIN)**
+#### **4. FULL JOIN (FULL OUTER JOIN)**
 Returns all records from both tables.
 - If a product does not have a category, `NULL` appears in the `CategoryName`.
 - If a category does not have any products, `NULL` appears in the `ProductID` and `ProductName`.
@@ -518,7 +518,7 @@ FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ```
 
-#### **Products and Categories Tables (Side by Side)**
+##### **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|----|--|--|
@@ -529,7 +529,7 @@ FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 | 105       | Yogurt     | 3            |  |
 | 106       | Honey           | NULL     |             |
 
-#### **Result Table:**
+##### **Result Table:**
 | ProductID | ProductName | CategoryName   |
 |-----------|-------------|----------------|
 | 101       | Coffee      | Beverages      |
@@ -545,7 +545,7 @@ FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ---
 
-### **Summary of Join Operations**
+#### **Summary of Join Operations**
 - **INNER JOIN** → Only matching records from both tables.
 - **LEFT JOIN** → All products, and matching categories (`NULL` for unmatched categories).
 - **RIGHT JOIN** → All categories, and matching products (`NULL` for unmatched products).
@@ -554,7 +554,7 @@ FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 Each **JOIN** type is used based on how we want to combine the data from different tables.  
 
 
-## **SELECT ... INTO**
+### **SELECT ... INTO**
 
 Used to copy data from an existing table into a **new table**.  
 The new table **must not already exist** before executing the query.
@@ -569,7 +569,7 @@ SELECT "CompanyName", "ContactName" INTO "Backup" FROM "customers";
 ```
 
 
-## **INSERT**
+### **INSERT**
 
 ---
 **Data integrity constraints are enforced when insert, update, and delete statements are executed. If a data integrity violation occurs,
@@ -581,7 +581,7 @@ Add new records to a table.
 - It is possible to insert values into only specific columns.
 - Columns that are not explicitly assigned a value will be set to **NULL** (empty).
 
-### **Example 1: Inserting a Customer Record**
+#### **Example 1: Inserting a Customer Record**
 Inserts a new customer into the `customers` table.
 
 ```sql
@@ -595,7 +595,7 @@ VALUES (9, 'Health', 'Health Products'),
        (10, 'Cleaning', 'Cleaning Products');
 ```
 
-## **INSERT INTO ... SELECT**
+### **INSERT INTO ... SELECT**
 
 Copies data from one table into another **existing table**.
 - Unlike `SELECT ... INTO`, the target table **must exist** before executing the query.
@@ -608,7 +608,7 @@ INSERT INTO "Backup" SELECT "CompanyName", "ContactName" FROM "customers";
 
 ```
 
-## **UPDATE**
+### **UPDATE**
 
 The **UPDATE** statement is used to modify existing records in a table.
 - **Data integrity constraints** are enforced during the update process.
@@ -625,21 +625,21 @@ WHERE "CustomerID" = '1';
 
 ```
 
-## **DELETE**
+### **DELETE**
 
 The **DELETE** statement is used to remove one or more records from a table.
 - **Data integrity constraints** are enforced during the deletion process.
 - The `WHERE` clause specifies which records should be deleted.
 - If the `WHERE` clause is **not** included, **all records** in the table are deleted.
 
-### **Example 1: Deleting a Specific Record**
+#### **Example 1: Deleting a Specific Record**
 
 ```sql
 DELETE FROM "customers"
 WHERE "CustomerID" = '1';
 ```
 
-### **Example 2: Deleting All Records in a Table**
+#### **Example 2: Deleting All Records in a Table**
 
 ```sql
 DELETE FROM "customers";
