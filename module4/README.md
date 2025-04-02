@@ -15,8 +15,6 @@
       * [**Installing PostgreSQL**](#installing-postgresql)
       * [**Installing pgAdmin**](#installing-pgadmin)
       * [**Importing and Exporting Sample Databases**](#importing-and-exporting-sample-databases)
-        * [**Northwind Sample Database**](#northwind-sample-database)
-        * [**Pagila Sample Database**](#pagila-sample-database)
   * [**SQL Functions and Categories**](#sql-functions-and-categories)
     * [**1. Data Definition Language (DDL)** – Structural Commands](#1-data-definition-language-ddl--structural-commands)
     * [**2. Data Manipulation Language (DML)** – Data Processing Commands](#2-data-manipulation-language-dml--data-processing-commands)
@@ -26,37 +24,21 @@
     * [**DISTINCT**](#distinct)
     * [**ORDER BY**](#order-by)
     * [**LIKE / NOT LIKE**](#like--not-like)
-      * [**Examples:**](#examples)
     * [**BETWEEN**](#between)
     * [**IN**](#in)
     * [**Querying NULL and Non-NULL Values**](#querying-null-and-non-null-values)
     * [**AS (Alias for Columns and Tables) for Columns**](#as-alias-for-columns-and-tables-for-columns)
-      * [**Assign an alias to a column**](#assign-an-alias-to-a-column)
-    * [JOIN](#join-)
-      * [**Categories Table**](#categories-table)
-      * [**Products Table**](#products-table)
-    * [**JOIN Operations and Their Results**](#join-operations-and-their-results)
+    * [**SQL JOIN Operations**](#sql-join-operations)
       * [**1. INNER JOIN**](#1-inner-join)
-        * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side)
-        * [**Result Table:**](#result-table)
       * [**2. LEFT JOIN (LEFT OUTER JOIN)**](#2-left-join-left-outer-join)
-        * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-1)
-        * [**Result Table:**](#result-table-1)
       * [**3. RIGHT JOIN (RIGHT OUTER JOIN)**](#3-right-join-right-outer-join)
-        * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-2)
-        * [**Result Table:**](#result-table-2)
       * [**4. FULL JOIN (FULL OUTER JOIN)**](#4-full-join-full-outer-join)
-        * [**Products and Categories Tables (Side by Side)**](#products-and-categories-tables-side-by-side-3)
-        * [**Result Table:**](#result-table-3)
       * [**Summary of Join Operations**](#summary-of-join-operations)
     * [**SELECT ... INTO**](#select--into)
     * [**INSERT**](#insert)
-      * [**Example 1: Inserting a Customer Record**](#example-1-inserting-a-customer-record)
     * [**INSERT INTO ... SELECT**](#insert-into--select)
     * [**UPDATE**](#update)
     * [**DELETE**](#delete)
-      * [**Example 1: Deleting a Specific Record**](#example-1-deleting-a-specific-record)
-      * [**Example 2: Deleting All Records in a Table**](#example-2-deleting-all-records-in-a-table)
   * [**Database Operations with Application Programs**](#database-operations-with-application-programs)
     * [**Database Drivers Provide the Following Core Functions:**](#database-drivers-provide-the-following-core-functions)
     * [**Database Operations with Java and PostgreSQL**](#database-operations-with-java-and-postgresql)
@@ -78,7 +60,6 @@
       * [PRIMARY KEY Constraint](#primary-key-constraint)
         * [Composite PRIMARY KEY](#composite-primary-key)
       * [FOREIGN KEY Constraint](#foreign-key-constraint)
-        * [Example](#example)
   * [Hands-on Exercise 1](#hands-on-exercise-1)
   * [Hands-on Exercise 2](#hands-on-exercise-2)
 <!-- TOC -->
@@ -112,16 +93,16 @@ pgAdmin is the most commonly used graphical management tool for PostgreSQL.
 
 #### **Importing and Exporting Sample Databases**
 
-##### **Northwind Sample Database**
-- A well-known example database that simulates a trading company's operations.
-- Can be imported using **pgAdmin**.
-- [Download](../resources/dbs/northwind.backup)
+* **Northwind Sample Database**
+  - A well-known example database that simulates a trading company's operations.
+  - Can be imported using **pgAdmin**.
+  - [Download](../resources/dbs/northwind.backup)
 
-##### **Pagila Sample Database**
-- A PostgreSQL-specific sample database inspired by Sakila (used in MySQL).
-- Contains data related to a fictional DVD rental store.
-- Can be imported using **pgAdmin**.
-- [Download](../resources/dbs/dvdrental.zip)
+* **Pagila Sample Database**
+  - A PostgreSQL-specific sample database inspired by Sakila (used in MySQL).
+  - Contains data related to a fictional DVD rental store.
+  - Can be imported using **pgAdmin**.
+  - [Download](../resources/dbs/dvdrental.zip)
 
 
 
@@ -234,7 +215,7 @@ These operators are particularly useful for searching text data in a flexible ma
     - `%` : Represents **zero or more** characters. It stands for any sequence of characters (including an empty sequence).
     - `_` : Represents **exactly one** character. It stands for a single character, which can be any value.
 
-#### **Examples:**
+* **Examples:**
 
 
 ```sql
@@ -310,7 +291,8 @@ Aliases improve readability and make query results more user-friendly.
 
 
 
-#### **Assign an alias to a column**
+* **Assign an alias to a column**
+
 ```sql
 SELECT "CompanyName" AS "Customer Company" FROM "customers";
 --Renames the CompanyName column as "Customer Company" in the query result.
@@ -327,12 +309,11 @@ WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 --Filters orders where the OrderDate is between July 4, 1996, and July 9, 1996.
 ```
 
-### JOIN 
-
-**SQL JOIN Operations (Using Products and Categories Tables)**
+### **SQL JOIN Operations**
 
 
-#### **Categories Table**
+* **Categories Table**
+
 | CategoryID | CategoryName    |
 |------------|----------------|
 | 1          | Beverages      |
@@ -340,7 +321,8 @@ WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 | 3          | Dairy Products |
 | 4          | Electronics |  
 
-#### **Products Table**
+* **Products Table**
+
 | ProductID | ProductName      | CategoryID |
 |-----------|-----------------|------------|
 | 101       | Coffee          | 1          |
@@ -350,7 +332,7 @@ WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 | 105       | Yogurt          | 3          |
 | 106       | Honey           | NULL       |
 
-### **JOIN Operations and Their Results**
+
 
 #### **1. INNER JOIN**
 Returns only the records that have matching values in both tables.
@@ -363,7 +345,7 @@ FROM Products
 INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 ```
 
-##### **Products and Categories Tables (Side by Side)**
+* **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|-------------|--|--|
@@ -375,7 +357,8 @@ INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 | 106       | Honey           | NULL     |             |
 
 
-##### **Result Table:**
+* **Result Table:**
+
 | ProductID | ProductName | CategoryName    |
 |-----------|------------|----------------|
 | 101       | Coffee     | Beverages      |
@@ -420,7 +403,7 @@ FROM Products
 LEFT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ```
-##### **Products and Categories Tables (Side by Side)**
+* **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|----|--|--|
@@ -431,7 +414,8 @@ LEFT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 | 105       | Yogurt     | 3            |  |
 | 106       | Honey           | NULL     |             |
 
-##### **Result Table:**
+* **Result Table:**
+* 
 | ProductID | ProductName | CategoryName    |
 |-----------|------------|----------------|
 | 101       | Coffee     | Beverages      |
@@ -464,7 +448,7 @@ FROM Products
 RIGHT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ```
-##### **Products and Categories Tables (Side by Side)**
+* **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 | CategoryID | CategoryName   |
 |-----------|------------|--------------|----|------------|----------------|
@@ -475,7 +459,8 @@ RIGHT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 | 105       | Yogurt     | 3            |  |
 | 106       | Honey           | NULL     |             |
 
-##### **Result Table:**
+* **Result Table:**
+
 | ProductID | ProductName | CategoryName   |
 |-----------|-------------|----------------|
 | 101       | Coffee      | Beverages      |
@@ -517,7 +502,7 @@ FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ```
 
-##### **Products and Categories Tables (Side by Side)**
+* **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|----|--|--|
@@ -528,7 +513,8 @@ FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 | 105       | Yogurt     | 3            |  |
 | 106       | Honey           | NULL     |             |
 
-##### **Result Table:**
+* **Result Table:**
+
 | ProductID | ProductName | CategoryName   |
 |-----------|-------------|----------------|
 | 101       | Coffee      | Beverages      |
@@ -580,7 +566,8 @@ Add new records to a table.
 - It is possible to insert values into only specific columns.
 - Columns that are not explicitly assigned a value will be set to **NULL** (empty).
 
-#### **Example 1: Inserting a Customer Record**
+* **Example 1: Inserting a Customer Record**
+
 Inserts a new customer into the `customers` table.
 
 ```sql
@@ -631,14 +618,14 @@ The **DELETE** statement is used to remove one or more records from a table.
 - The `WHERE` clause specifies which records should be deleted.
 - If the `WHERE` clause is **not** included, **all records** in the table are deleted.
 
-#### **Example 1: Deleting a Specific Record**
+* **Example 1: Deleting a Specific Record**
 
 ```sql
 DELETE FROM "customers"
 WHERE "CustomerID" = '1';
 ```
 
-#### **Example 2: Deleting All Records in a Table**
+* **Example 2: Deleting All Records in a Table**
 
 ```sql
 DELETE FROM "customers";
@@ -793,7 +780,7 @@ Choosing appropriate data types for columns is crucial because:
   * This prevents the storage of potentially harmful scripts like `"<script>..."`, thereby mitigating the risk of stored XSS attacks.
 
   
-#### Commonly Used SQL and PostgreSQL Data Types
+##### Commonly Used SQL and PostgreSQL Data Types
 
 - **Numeric Types**:
   - `SMALLINT`, `INTEGER`, and `BIGINT` store whole numbers (integers) without fractional parts.
@@ -821,7 +808,7 @@ Choosing appropriate data types for columns is crucial because:
   - The data types SMALLSERIAL, SERIAL, and BIGSERIAL are not true types but shorthand for defining integer 
   columns with auto-incrementing values, commonly used for unique identifiers.
 
-#### Best Practices for Choosing Data Types
+##### Best Practices for Choosing Data Types
 
 - **Use the smallest suitable type** to optimize storage and performance (e.g., `SMALLINT` instead of `INTEGER` if values fit).
 - **Prefer `NUMERIC` or `DECIMAL`** for exact precision in financial and monetary data.
@@ -848,7 +835,7 @@ CREATE TABLE "Products" (  --CREATE TABLE schema1."Products"
 
 ```
 
-* Adding new product
+* Adding a new product
 
 ```sql
 INSERT INTO "Products"
@@ -1101,7 +1088,7 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID","code
 
 ---
 
-##### Example
+* **Example**
 
 ![](../resources/figures/fk1.png)
 
