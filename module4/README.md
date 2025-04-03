@@ -1167,4 +1167,4 @@ ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCa
 
 ## Hands-on Exercise 2
 
----]()
+---
