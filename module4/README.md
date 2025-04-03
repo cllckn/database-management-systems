@@ -1,4 +1,4 @@
-
+[
 ---
 
 # **Module 4: Fundamentals of Structured Query Language (SQL)**
@@ -9,6 +9,7 @@
 
 
 <!-- TOC -->
+  * [[](#)
 * [**Module 4: Fundamentals of Structured Query Language (SQL)**](#module-4-fundamentals-of-structured-query-language-sql)
 * [**Introduction to Structured Query Language (SQL)**](#introduction-to-structured-query-language-sql)
     * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
@@ -40,25 +41,21 @@
     * [**UPDATE**](#update)
     * [**DELETE**](#delete)
   * [**Database Operations with Application Programs**](#database-operations-with-application-programs)
-    * [**Database Drivers Provide the Following Core Functions:**](#database-drivers-provide-the-following-core-functions)
-    * [**Database Operations with Java and PostgreSQL**](#database-operations-with-java-and-postgresql)
   * [Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)](#basic-sql-data-definition-language-ddl-statements-create-alter-drop)
     * [CREATE](#create)
       * [CREATE DATABASE](#create-database)
       * [CREATE SCHEMA](#create-schema)
       * [CREATE TABLE](#create-table)
-      * [Commonly Used SQL and PostgreSQL Data Types](#commonly-used-sql-and-postgresql-data-types)
-      * [Best Practices for Choosing Data Types](#best-practices-for-choosing-data-types)
+        * [Commonly Used SQL and PostgreSQL Data Types](#commonly-used-sql-and-postgresql-data-types)
+        * [Best Practices for Choosing Data Types](#best-practices-for-choosing-data-types)
     * [ALTER](#alter)
     * [DROP](#drop)
     * [Defining Constraints in SQL](#defining-constraints-in-sql)
       * [NOT NULL Constraint](#not-null-constraint)
       * [DEFAULT Constraint](#default-constraint)
       * [UNIQUE Constraint](#unique-constraint)
-      * [Multi-Column UNIQUE Constraint](#multi-column-unique-constraint)
       * [CHECK Constraint](#check-constraint)
       * [PRIMARY KEY Constraint](#primary-key-constraint)
-        * [Composite PRIMARY KEY](#composite-primary-key)
       * [FOREIGN KEY Constraint](#foreign-key-constraint)
   * [Hands-on Exercise 1](#hands-on-exercise-1)
   * [Hands-on Exercise 2](#hands-on-exercise-2)
@@ -640,14 +637,13 @@ This query removes all records from the customers table without deleting the tab
 ## **Database Operations with Application Programs**
 
 To perform database operations using application programs, **database drivers** are essential. These drivers facilitate communication between the programming language and the database.
-### **Database Drivers Provide the Following Core Functions:**
-- **Establishing a connection** to the database.
-- **Executing queries** (such as SELECT, INSERT, UPDATE, DELETE).
-- **Closing the connection** after operations are completed.
+* **Database Drivers Provide the Following Core Functions:**
+  - **Establishing a connection** to the database.
+  - **Executing queries** (such as SELECT, INSERT, UPDATE, DELETE).
+  - **Closing the connection** after operations are completed.
 
 
-
-### **Database Operations with Java and PostgreSQL**
+**Database Operations with Java and PostgreSQL**
 
 Java applications can seamlessly interact with PostgreSQL databases using the JDBC driver. 
 JDBC is a standard API that enables Java programs to connect to and perform operations on relational databases like PostgreSQL. 
@@ -982,8 +978,7 @@ To add the UNIQUE constraint to the `"code"` column:
 ALTER TABLE "Products" ADD CONSTRAINT "productsUnique" UNIQUE ("code");
 ```
 
-#### Multi-Column UNIQUE Constraint
-
+**Multi-Column UNIQUE Constraint**
 - Ensures that a combination of `"code"` and `"name"` is unique across the table.
 ```sql
 ALTER TABLE "Products" ADD CONSTRAINT "productsUnique" UNIQUE ("code,name");
@@ -1068,8 +1063,7 @@ ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID");
 
 ```
 
-##### Composite PRIMARY KEY
-
+**Composite PRIMARY KEY**
 - A primary key defined using multiple columns (e.g., `"productID"` and `"code"` together form the primary key).
 
 ```sql
@@ -1178,4 +1172,4 @@ ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCa
 
 ## Hands-on Exercise 2
 
----
+---]()
