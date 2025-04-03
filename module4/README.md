@@ -1,15 +1,10 @@
-[
----
-
 # **Module 4: Fundamentals of Structured Query Language (SQL)**
 
 ***  
 
 ---
 
-
 <!-- TOC -->
-  * [[](#)
 * [**Module 4: Fundamentals of Structured Query Language (SQL)**](#module-4-fundamentals-of-structured-query-language-sql)
 * [**Introduction to Structured Query Language (SQL)**](#introduction-to-structured-query-language-sql)
     * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
@@ -41,7 +36,7 @@
     * [**UPDATE**](#update)
     * [**DELETE**](#delete)
   * [**Database Operations with Application Programs**](#database-operations-with-application-programs)
-  * [Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)](#basic-sql-data-definition-language-ddl-statements-create-alter-drop)
+  * [**Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)**](#basic-sql-data-definition-language-ddl-statements-create-alter-drop)
     * [CREATE](#create)
       * [CREATE DATABASE](#create-database)
       * [CREATE SCHEMA](#create-schema)
@@ -712,7 +707,7 @@ public class DatabaseOperationsWithJava {
 }
 ```
 
-## Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
+## **Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)**
 
 Used to define, modify, and remove database objects such as databases, tables, views, etc.
 
