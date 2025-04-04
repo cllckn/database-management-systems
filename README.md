@@ -70,7 +70,7 @@ Students will be evaluated based on the following components:
 | **Assignment**   | **Exam Date**            | **Due Date**       |
 |-----------------|--------------------------|--------------------|
 | Midterm Exam for ISU(US)23| 12.03.2025 12:50–14:20pm | Week 8             |
-| Midterm Exam for ISU(US)22| 04.04.2025 10:30–12:20pm | Week 11            |
+| Midterm Exam for ISU(US)22| 11.04.2025 10:30–12:20pm | Week 12            |
 | Final Project  | TBA                      | During Final Exams |
 
 
