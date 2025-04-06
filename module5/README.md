@@ -483,6 +483,5 @@ WHERE first_name = 'EXAMPLE';  -- One of the rows should have first_name set to 
 ```
 
 ---
-## Hands-on Exercise 1
-[View Details](./exercises)
+[Hands-on Exercise 1](./exercises)
 ---
