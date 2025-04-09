@@ -54,6 +54,7 @@
       * [FOREIGN KEY Constraint](#foreign-key-constraint)
   * [Hands-on Exercise 1](#hands-on-exercise-1)
   * [Hands-on Exercise 2](#hands-on-exercise-2)
+  * [Hands-on Exercise 3](#hands-on-exercise-3)
 <!-- TOC -->
 
 # **Introduction to Structured Query Language (SQL)**
@@ -94,7 +95,7 @@ pgAdmin is the most commonly used graphical management tool for PostgreSQL.
   - A PostgreSQL-specific sample database inspired by Sakila (used in MySQL).
   - Contains data related to a fictional DVD rental store.
   - Can be imported using **pgAdmin**.
-  - [Download](../resources/dbs/dvdrental.zip)
+  - [Download](../resources/dbs/pagila.backup)
 
 
 
@@ -1158,13 +1159,19 @@ ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCa
 
 ---
 
-## Hands-on Exercise 1
+## [Hands-on Exercise 1](./exercises)
 
 ---
 
 
 ---
 
-## Hands-on Exercise 2
+## [Hands-on Exercise 2](./exercises)
+
+---
+
+---
+
+## [Hands-on Exercise 3](./exercises)
 
 ---
