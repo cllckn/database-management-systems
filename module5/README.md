@@ -11,16 +11,17 @@
   * [Set Operations](#set-operations)
   * [Views](#views)
   * [Transactions](#transactions)
+  * [Hands-on Exercise 1](#hands-on-exercise-1)
   * [Performance Optimization and Indexing](#performance-optimization-and-indexing)
     * [EXPLAIN ANALYZE - Analyzing Queries and Identifying Bottlenecks](#explain-analyze---analyzing-queries-and-identifying-bottlenecks)
     * [Writing Efficient SQL Queries](#writing-efficient-sql-queries)
     * [Database Design & Server Configuration](#database-design--server-configuration)
     * [Indexing](#indexing-)
-  * [Hands-on Exercise 1](#hands-on-exercise-1)
+  * [Hands-on Exercise 2](#hands-on-exercise-2)
 <!-- TOC -->
 
 ---
-**The following queries use the Northwind Sample Database.**
+**The following queries are based on the Northwind sample database.**
 
 ---
 
@@ -297,6 +298,12 @@ COMMIT;
 ```
 
 
+---
+[Hands-on Exercise 1](./exercises)
+---
+
+
+
 ## Performance Optimization and Indexing
 
 Performance Optimization: Ensuring that your SQL queries execute efficiently and return results quickly is crucial for 
@@ -463,13 +470,13 @@ WHERE first_name = 'EXAMPLE';  -- One of the rows should have first_name set to 
 -- Planning Time: 0.085 ms
 -- Execution Time: 20.237 ms
 
--- Create index on first_name column
+-- Define index on first_name column
 CREATE INDEX first_name_idx ON public.person USING btree(first_name ASC NULLS LAST);
 
 -- Query with index: Bitmap Index Scan
 EXPLAIN ANALYZE
 SELECT * FROM person
-WHERE first_name = 'EXAMPLE';  -- One of the rows should have first_name set to 'EXAMPLE'
+WHERE first_name = 'Jane';  -- One of the rows should have first_name set to 'EXAMPLE'
 
 -- Output (with index):
 -- Bitmap Heap Scan on person  (cost=12.26..784.32 rows=496 width=38) (actual time=0.052..0.053 rows=1 loops=1)
@@ -483,5 +490,5 @@ WHERE first_name = 'EXAMPLE';  -- One of the rows should have first_name set to 
 ```
 
 ---
-[Hands-on Exercise 1](./exercises)
+[Hands-on Exercise 2](./exercises)
 ---
