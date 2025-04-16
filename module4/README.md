@@ -123,7 +123,10 @@ DML includes commands that manipulate data within tables:
 
 
 
-**The following queries use the Northwind Sample Database.**
+---
+**The following queries are based on the Northwind sample database.**
+
+---
 
 ### **SELECT**
 The **SELECT** statement is used to retrieve data from the database (searching/listing).
