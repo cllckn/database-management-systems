@@ -57,9 +57,9 @@ More focused on actions: Procedures are often used for data manipulation, transa
 - Use a **function** for a reusable operation that returns a result and can be embedded in SQL queries.
 - Use a **stored procedure**  to perform a sequence of actions, especially when including transaction control.
 
-**Examples**
 
-* Function
+
+* Defining and calling a function
 ```sql
 -- A function that adds two numbers and returns the result
 CREATE OR REPLACE FUNCTION add_numbers(a INTEGER, b INTEGER)
@@ -72,7 +72,8 @@ $$ LANGUAGE plpgsql;
 -- Call the function
 SELECT add_numbers(5, 3);  -- Output: 8
 ```
-* Stored Procedure
+* Defining and calling a stored procedure
+
 ```sql
 -- A procedure that adds two numbers and stores the result in an OUT parameter
 CREATE OR REPLACE PROCEDURE add_numbers_proc(
