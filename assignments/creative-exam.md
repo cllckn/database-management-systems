@@ -38,3 +38,24 @@ The application does not need to be complex — the evaluation will primarily fo
 * Write and execute queries with and without the index.
 * Provide a comparative performance analysis using PostgreSQL's EXPLAIN ANALYZE.
   * Include screenshots or statistics showing query plan, cost, and execution time.
+
+**Evaluation**
+
+As part of the evaluation, each student is required to prepare and present the following:
+
+- A **written report** detailing the project
+- A **presentation slide deck**
+- A **5-minute oral defense** summarizing the work
+- A **live demonstration** of the project on a personal laptop using localhost, to be shown to the committee
+
+- Report Guidelines
+
+  The **report** should provide a clear and concise explanation of your study and must include the following sections:
+
+  * Objective
+
+  Clearly state the purpose and goals of your project. What problem are you addressing, and what do you aim to achieve?
+
+  * Methodology
+
+  Describe the methods, tools, and technologies used in the development of your project.
