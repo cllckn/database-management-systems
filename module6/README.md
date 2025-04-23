@@ -36,9 +36,7 @@ meaning the database parses, analyzes, and plans the execution once, and stores 
 This results in faster execution times for repeated calls, as the overhead of parsing and planning is avoided each time.
 
 ## Functions and Stored Procedures in PL/pgSQL
-Both functions and stored procedures are named blocks of PL/pgSQL code that perform specific tasks. 
-The main difference, historically, was how they were called and whether they could be used in SQL expressions. 
-In modern PostgreSQL, the distinction is less rigid, but some differences remain in usage.
+Both functions and stored procedures are named blocks of PL/pgSQL code that perform specific tasks.
 
 **Functions**
 
@@ -56,11 +54,12 @@ They can modify data, perform actions, and optionally return data.
 More focused on actions: Procedures are often used for data manipulation, transaction control, and complex operations.
 
 **Summary**
-- Use a **function** when you need a reusable operation that returns a result and can be embedded in SQL queries.
-- Use a **stored procedure** when you need to perform a sequence of actions, especially when including transaction control.
+- Use a **function** for a reusable operation that returns a result and can be embedded in SQL queries.
+- Use a **stored procedure**  to perform a sequence of actions, especially when including transaction control.
 
 **Examples**
-*Function
+
+* Function
 ```sql
 -- A function that adds two numbers and returns the result
 CREATE OR REPLACE FUNCTION add_numbers(a INTEGER, b INTEGER)
@@ -231,7 +230,7 @@ SELECT iterate_records();
 ```sql
 -- Define or replace a function that returns a table
 CREATE OR REPLACE FUNCTION search_staff(staffid INT)
-RETURNS TABLE(id INT, first_name VARCHAR(40), last_name VARCHAR(40)) 
+RETURNS TABLE(id INT, firstname VARCHAR(40), lastname VARCHAR(40)) 
 AS 
 $$
 BEGIN
@@ -260,7 +259,7 @@ information and calculates the total payment amount for that staff member.
 ```sql
 -- Define or replace a function that returns a formatted string
 -- showing staff ID, name, and their total payments
-CREATE OR REPLACE FUNCTION public.payment_summary(staffNo INTEGER)
+CREATE OR REPLACE FUNCTION public.payment_summary(staffID INTEGER)
 RETURNS TEXT
 LANGUAGE "plpgsql"
 AS
@@ -270,17 +269,17 @@ DECLARE
     total_amount NUMERIC;    -- To store the total amount of payments
 BEGIN
     -- Call another function (search_staff) and store the returned row into staff_record
-    staff_record := search_staff(staffNo);
+    staff_record := search_staff(staffID);
 
     -- Calculate the total payment amount made by the staff member
     total_amount := (
         SELECT SUM(amount) 
         FROM payment 
-        WHERE staff_id = staffNo
+        WHERE staff_id = staffID
     );
 
     -- Return a formatted string with staff ID, name, and total payment
-    RETURN staff_record.id || E'\t' || staff_record.first_name || E'\t' || total_amount;
+    RETURN staff_record.id || E'\t' || staff_record.firstname || E'\t' || total_amount;
 END
 $$;
 
@@ -295,10 +294,19 @@ SELECT payment_summary(2);
 
 ### Triggers 
 
-A trigger is a mechanism that allows a function (typically written in PL/pgSQL) to be executed automatically:
+Triggers are used to automatically perform predefined tasks in response to specific events such as INSERT, UPDATE, or DELETE operations on a table. They help enforce rules, maintain audit trails, or perform automatic updates in a consistent and reliable manner.
 
-* Before or after a INSERT, UPDATE, DELETE, or TRUNCATE operation
-* On a specific row or statement
+A trigger definition typically consists of two parts:
+
+* Trigger Function
+
+This is a user-defined function that contains the logic to be executed automatically. It can include operations such as logging changes, validating data, or updating related tables.
+
+* Event Definition
+
+This specifies the event that activates the trigger (e.g., AFTER INSERT, BEFORE UPDATE, or AFTER DELETE) and the table to which the trigger is attached. It also specifies whether the trigger fires for each row or once per statement.
+
+
 
 **Advantages of Using Triggers**
 * Maintaining Data Integrity:
