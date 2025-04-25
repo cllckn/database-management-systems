@@ -203,15 +203,15 @@ RETURNS TEXT
 AS
 $$
 DECLARE
-    cust customer%ROWTYPE;  -- Declare a variable 'cust' with the same structure as a row in the 'customer' table
+    currentCustomer customer%ROWTYPE;  -- Declare a variable 'cust' with the same structure as a row in the 'customer' table
     result TEXT;            -- Declare a variable to accumulate the final result as text
 BEGIN
     result := '';           -- Initialize the result variable to an empty string
 
     -- Loop through each row returned by the SELECT * FROM customer query
-    FOR cust IN SELECT * FROM customer LOOP
+    FOR currentCustomer IN SELECT * FROM customer LOOP
         -- Concatenate the customer ID and first name with a tab and newline character to format the result
-        result := result || cust.customer_id || E'\t' || cust.first_name || E'\r\n';
+        result := result || currentCustomer.customer_id || E'\t' || currentCustomer.first_name || E'\r\n';
     END LOOP;
 
     -- Return the final formatted string containing all customer IDs and first names
@@ -226,7 +226,7 @@ SELECT iterate_records();
 
 ```
 
-* Table-Returning Function Example
+* Returning a Table
 
 ```sql
 -- Define or replace a function that returns a table
@@ -301,11 +301,11 @@ A trigger definition typically consists of two parts:
 
 * Trigger Function
 
-This is a user-defined function that contains the logic to be executed automatically. It can include operations such as logging changes, validating data, or updating related tables.
+  This is a user-defined function that contains the logic to be executed automatically. It can include operations such as logging changes, validating data, or updating related tables.
 
 * Event Definition
 
-This specifies the event that activates the trigger (e.g., AFTER INSERT, BEFORE UPDATE, or AFTER DELETE) and the table to which the trigger is attached. It also specifies whether the trigger fires for each row or once per statement.
+  This specifies the event that activates the trigger (e.g., AFTER INSERT, BEFORE UPDATE, or AFTER DELETE) and the table to which the trigger is attached. It also specifies whether the trigger fires for each row or once per statement.
 
 
 
