@@ -6,6 +6,7 @@
   * [Functions and Stored Procedures in PL/pgSQL](#functions-and-stored-procedures-in-plpgsql)
   * [Control Structures in PL/pgSQL](#control-structures-in-plpgsql)
   * [Triggers](#triggers-)
+  * [Hands-on Exercise 1](#hands-on-exercise-1)
 <!-- TOC -->
 
 ## Introduction to SQL Programming 
