@@ -301,7 +301,6 @@ SELECT payment_summary(2);
 
 ```
 
-
 ## Triggers 
 
 Triggers are used to automatically perform predefined tasks in response to specific events such as INSERT, UPDATE, or DELETE operations on a table. They help enforce rules, maintain audit trails, or perform automatic updates in a consistent and reliable manner.
@@ -463,5 +462,7 @@ DROP TRIGGER IF EXISTS on_unit_price_change ON "products";
 
 
 ---
-[Exercise1](./exercises)
+
+## [Exercise1](./exercises)
+
 ---
