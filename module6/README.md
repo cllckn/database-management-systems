@@ -1,5 +1,13 @@
 # Module 6: SQL Programming
 
+<!-- TOC -->
+* [Module 6: SQL Programming](#module-6-sql-programming)
+  * [Introduction to SQL Programming](#introduction-to-sql-programming-)
+  * [Functions and Stored Procedures in PL/pgSQL](#functions-and-stored-procedures-in-plpgsql)
+  * [Control Structures in PL/pgSQL](#control-structures-in-plpgsql)
+  * [Triggers](#triggers-)
+<!-- TOC -->
+
 ## Introduction to SQL Programming 
 
 - **Standard SQL** is primarily a **declarative language** designed for constructing databases and for querying 
@@ -293,7 +301,7 @@ SELECT payment_summary(2);
 ```
 
 
-### Triggers 
+## Triggers 
 
 Triggers are used to automatically perform predefined tasks in response to specific events such as INSERT, UPDATE, or DELETE operations on a table. They help enforce rules, maintain audit trails, or perform automatic updates in a consistent and reliable manner.
 
@@ -424,11 +432,11 @@ EXECUTE FUNCTION customer_before_insert_or_update();
 ```sql
 -- Example: Insert without city (will raise exception)
 INSERT INTO "customers" ("CustomerID", "CompanyName", "ContactName") 
-VALUES ('45', 'Abc Ltd.', '    Ayşe Yalın     ');
+VALUES ('45', 'XY Ltd.', '    Jane Roe     ');
 
 -- Example: Insert with all required fields
 INSERT INTO "customers" ("CustomerID", "CompanyName", "ContactName", "City") 
-VALUES ('45', 'Abc Ltd.', '    Ayşe Yalın     ', 'Sakarya');
+VALUES ('45', 'XY Ltd.', '    Jane Roe     ', 'Petropavlovsk');
 ```
 ```sql
 -- Disable a specific trigger on the products table
@@ -450,71 +458,4 @@ ENABLE TRIGGER ALL;
 -- Drop a specific trigger
 DROP TRIGGER IF EXISTS on_unit_price_change ON "products";
 
-```
-
-
-
-
-### Cursors 
-
-In SQL programming, a cursor is used to process query results row by row rather than as a whole set. This can be helpful for:
-
-* Load balancing
-* Efficient use of application server, database server, and client memory
-* Fine-grained control over row-level processing
-
-**Note:** LIMIT and OFFSET clauses also help with result segmentation but do not offer row-by-row control like cursors do.
-
-A cursor allows you to retrieve rows from a query one at a time, giving you fine-grained control over processing.
-
-Use Cases: Cursors are useful when you need to perform complex logic on each row of a result set, especially 
-when you can't do it efficiently with a single SQL statement. They are less common in modern SQL programming, 
-as set-based operations are usually preferred for performance.
-
----
-**The following SQL statements are based on the Pagila sample database.**
-
----
-
-```sql
--- Define a function that searches films by year and name using a cursor
-CREATE OR REPLACE FUNCTION search_films_by_year_and_title(releaseYear INTEGER, partialTitle TEXT)
-RETURNS TEXT
-AS
-$$
-DECLARE
-    filmTitles TEXT DEFAULT '';  -- To accumulate matched film titles
-    film RECORD;                 -- To store each row fetched by the cursor
-    -- Define a cursor that selects all films from a specific year
-    filmCursor CURSOR(releaseYear INTEGER)
-        FOR SELECT * FROM film WHERE release_year = releaseYear;
-BEGIN
-   -- Open the cursor with the provided year
-   OPEN filmCursor(releaseYear);
-   
-   -- Loop through each row fetched from the cursor
-   LOOP
-      FETCH filmCursor INTO film;      -- Get the next film
-      EXIT WHEN NOT FOUND;             -- Exit loop if no more rows
-      
-      -- Check if the film title starts with the specified partial title
-      IF film.title LIKE partialTitle || '%' THEN
-          -- Concatenate the film title and year to the result string
-          filmTitles := filmTitles || film.title || ':' || film.release_year || E'\r\n';
-      END IF;
-   END LOOP;
-
-   -- Close the cursor after processing
-   CLOSE filmCursor;
-
-   -- Return the accumulated list of matching film titles
-   RETURN filmTitles;
-END;
-$$
-LANGUAGE 'plpgsql';
-
-```
-```sql
--- Search for all films released in 2006 whose title starts with 'T'
-SELECT * FROM search_films_by_year_and_title(2006, 'T');
 ```
