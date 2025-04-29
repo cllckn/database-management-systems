@@ -299,7 +299,7 @@ COMMIT;
 
 
 ---
-[Hands-on Exercise 1](./exercises)
+[Exercise1](./exercises)
 ---
 
 
@@ -490,5 +490,5 @@ WHERE first_name = 'Jane';  -- One of the rows should have first_name set to 'EX
 ```
 
 ---
-[Hands-on Exercise 2](./exercises)
+[Exercise2](./exercises)
 ---
