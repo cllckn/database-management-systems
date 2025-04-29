@@ -459,3 +459,8 @@ ENABLE TRIGGER ALL;
 DROP TRIGGER IF EXISTS on_unit_price_change ON "products";
 
 ```
+
+
+---
+[Hands-on Exercise 1](./exercises)
+---
