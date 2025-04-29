@@ -463,5 +463,5 @@ DROP TRIGGER IF EXISTS on_unit_price_change ON "products";
 
 
 ---
-[Hands-on Exercise 1](https://github.com/cllckn/database-management-systems/tree/main/module6/exercises)
+[Exercise1](./exercises)
 ---
