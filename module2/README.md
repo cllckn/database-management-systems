@@ -204,7 +204,7 @@ This blueprint may later be translated into:
 
 ### Key Components of a Data Model
 
-![ER Model](../resources/ER-diagram.png)
+![ER Model](../resources/figures/ecommerce-er-v3.png)
 
 - **Entities**  
   Represent real-world objects about which data is stored  
