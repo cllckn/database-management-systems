@@ -1,96 +1,172 @@
 # Database Management Systems
 
-This course provides a comprehensive introduction to database systems, covering fundamental concepts, design principles, and practical implementation. Students will learn about data models, relational database structures, and SQL programming while exploring best practices in database security, optimization, and management. Hands-on experience with PostgreSQL will enhance understanding through practical implementation.
+---
+
+This course provides a **hands-on introduction to database management systems**, covering foundational 
+concepts, data modeling, query languages, and practical implementation. Students will study both **relational and NoSQL 
+database paradigms**, learning when and how each approach is applied in modern software systems. Through extensive 
+practical exercises, students will design schemas, write queries, manipulate data, and work with multiple database 
+technologies while following best practices in security, performance, and data management.
+
+---
 
 ## Course Objectives
 
 By the end of this course, students will be able to:
 
-    Understand the fundamental principles and architecture of database systems.
-    Design and implement data models using the Entity-Relationship (ER) model.
-    Apply relational database concepts and write advanced SQL queries.
-    Utilize PostgreSQL and pgAdmin to manage and optimize databases.
-    Implement database security, access control, and performance optimization techniques.
+- Understand the fundamental principles, architecture, and components of database management systems.
+- Design conceptual and logical data models using the Entity–Relationship (ER) model.
+- Apply relational database concepts and write effective SQL queries.
+- Explain the limitations of relational databases and the motivation for NoSQL systems.
+- Select appropriate database technologies based on application requirements.
+- Implement basic security and access control techniques.
 
+---
 
 ## Course Content
-The course will cover the following topics:
-### Module 1: Database Systems
-    Introduction to database systems
-    Database System
-    Database System Environment
-    Essential Features of a Database Management System (DBMS)
-### Module 2: Entity-Relationship (ER) Model
-    Database Development Lifecycle
-    Business Rules
-    Data Model
-    Entity-Relationship Model
-    Entity, Attributes, Relationships, Constraints
-    Designing ER Diagrams Using Crow's Foot Notation
-    Hands-on exercises
-### Module 3: Relational Database Model
-    Fundamentals of the Relational Model
-    Tables and Their Structure
-    Integrity Rules (Primary Key, Foreign Key, Unique, Not Null)
-    Best Practices for Primary Keys
-    Indexes and Their Importance
-    System Catalog and Metadata
-    Hands-on exercises
-### Module 4: Fundamentals of Structured Query Language (SQL)
-    Introduction to SQL 
-    SQL Data Manipulation Language (DML) Statements (SELECT, INSERT, UPDATE, DELETE)
-    SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
-    Defining Constraints in SQL
-    Hands-on exercises
-### Module 5: Intermediate SQL & Query Optimization
-    Aggregate Functions And Grouping
-    Subqueries and Set Operations
-    Views
-    Transaction Management
-    Performance Optimization and Indexing
-    Hands-on exercises
-### Module 6: SQL Programming & Security
-    Introduction to SQL Programming
-    Functions and Stored Procedures
-    Cursors and Triggers
-    Security and Access Control (User Roles, Permissions, and Encryption)
-    Hands-on exercises
 
-### Evaluation Method
+---
+
+### Module 1: Introduction to Database Systems
+* Introduction to Database Management Systems (DBMS)
+* The Use of Databases in Various Sectors 
+* Data and Information 
+* Database System 
+* Database System Environment 
+* Essential Features of a Database Management System (DBMS)
+* Some Well-Known Relational Database Management Systems (RDBMS)
+* Some Well-Known NoSQL Database Management Systems (NoSQL DBMS)
+* Setting up the development environment
+
+---
+
+### Module 2: Database Design & Entity–Relationship (ER) Model
+- Database development lifecycle
+- Business rules and requirements analysis
+- Conceptual data modeling
+- Entity–Relationship (ER) model
+- Entities, attributes, relationships, and constraints
+- Cardinality and participation constraints
+- Designing ER diagrams using Crow’s Foot notation
+- Hands-On Exercises
+
+---
+
+### Module 3: Relational Database Model
+- Fundamentals of the relational model
+- Table (Relation) Structure
+- Integrity constraints:
+  - Primary keys
+  - Foreign keys
+  - Unique and NOT NULL constraints
+- Best practices for primary key design
+- Indexes and their role in performance
+- System catalog and metadata
+- Hands-On Exercises
+
+---
+
+### Module 4: Fundamentals of Structured Query Language (SQL)
+- Introduction to SQL
+- SQL Data Definition Language (DDL)
+  - CREATE, ALTER, DROP
+- SQL Data Manipulation Language (DML)
+  - SELECT, INSERT, UPDATE, DELETE
+- Defining and enforcing constraints in SQL
+- Using a Programming Language to Interact With a Database
+- Hands-On Exercises
+---
+
+### Module 5: Intermediate SQL & Query Optimization
+- Aggregate functions and grouping
+- JOIN operations
+- Subqueries
+- Set operations
+- Views
+- Transactions and ACID properties
+- Indexing strategies and basic query optimization
+- Hands-On Exercises
+
+---
+
+### Module 6: SQL Programming & Database Security
+- Introduction to SQL Programming
+- Functions and Stored Procedures in PL/pgSQL
+- Control Structures in PL/pgSQL
+- Triggers
+- Database security fundamentals:
+  - Authentication and authorization
+  - Roles and privileges
+  - Data protection concepts
+- Hands-On Exercises
+
+---
+
+### Module 7: NoSQL Databases
+- Motivation for NoSQL databases
+- Comparison with Relational DB:
+- Main Types of NoSQL Databases
+- MongoDB NoSQL Database
+- Using a Programming Language to Interact With a Database
+- Hands-On Exercises
+
+
+---
+
+## Evaluation Method
 
 Students will be evaluated based on the following components:
 
-| **Component**                  | **Weight** |
-|--------------------------------|--------|
-| Midterm Exam |        |
-| Final Project & Oral Examination |        |
+| **Component**                   | **Weight** |
+|---------------------------------|------------|
+| Assignment 1 (Oral Examination) | TBA        |
+| Assignment 2 (Oral Examination) | TBA        |
+| Midterm Exam                    | TBA        |
+| Final Exam                      | TBA        |
 
-## Assignments and Exams Schedule
+---
 
-| **Assignment**   | **Exam Date**            | **Due Date**       |
-|-----------------|--------------------------|--------------------|
-| Midterm Exam for ISU(US)23| 12.03.2025 12:50–14:20pm | Week 8             |
-| Midterm Exam for ISU(US)22| 11.04.2025 10:30–12:20pm | Week 12            |
-| Final Project  | TBA                      | During Final Exams |
+## Exams Schedule
 
+| **Component**                   | **Date** |
+|---------------------------------|----------|
+| Assignment 1 Oral Examination   | Week X (starting Week X) |
+| Assignment 2 Oral Examination   | Week X (starting Week X) |
+| Midterm Exam                    | Z        |
+| Final Exam                      | Z        |
 
-### Course Policies
+---
+
+## Course Policies
 
 - **Attendance:** Regular attendance is **mandatory**. More than **three unexcused absences** may result in a **grade penalty**.
-- **Late Submissions & Defense:** Submission policies, penalties, and defense requirements will be **detailed in assignment documents**.
-- **Academic Integrity:** Any form of **plagiarism or cheating** will result in **disciplinary action** as per **university policy**.
-- **Communication:** All course-related communication will take place via the **university’s Learning Management System (LMS)** or the **instructor’s email** (`cceken@ku.edu.kz`). Students are expected to **check their university email regularly** for updates and announcements.
+- **Late Submissions & Defense:** Submission rules, penalties, and defense requirements will be **specified in assignment descriptions**.
+- **Academic Integrity:** Any form of **plagiarism or academic dishonesty** will result in **disciplinary action** according to **university policy**.
+- **Communication:** All official communication will occur via the **university Learning Management System (LMS)** or the instructor’s email (`cceken@ku.edu.kz`). Students are expected to check their university email regularly.
 
+---
 
-### Tools:
-    PostgreSQL, pgAdmin  (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) version 15.10 or any other version that installs without issues.
+## Tools
+- PostgreSQL, pgAdmin  (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) any version that can
+be installed without issues.
+- IntelliJ IDEA Ultimate — available free of charge for students  
+  https://www.jetbrains.com/idea/download
 
-### Resources
-    Main:
-        https://github.com/cllckn/database-management-systems
-    Textbooks & Online Resources:
-        Carlos Coronel, Steven Morris, and Peter Rob, Database Systems: Design, Implementation, and Management, Cengage Learning.
-        http://www.digitalinformationworld.com/2015/02/fascinating- social-networking-stats-2015.html
-        https://www.forbes.com/sites/bernardmarr/2018/05/21/how- much-data-do-we-create-every-day-the-mind-blowing-stats- everyone-should-read/#230ac18d60ba
-        Apache Spark Tutorial | Spark Tutorial for Beginners | Apache Spark Training | Edureka
-        https://www.youtube.com/watch?v=9mELEARcxJo
+---
+
+## Resources
+
+- **Main Repository:**  
+  https://github.com/cllckn/database-management-systems
+
+- **Textbooks & Online Resources:**
+  - Carlos Coronel, Steven Morris, and Peter Rob, *Database Systems: Design, Implementation, and Management*, Cengage Learning.
+
+---
+
+## Acknowledgement
+
+In preparing these course materials, the instructor **leveraged AI agents** as a support tool for drafting lecture notes, generating examples and figures, and organizing content.  
+All outputs were **reviewed, edited, and contextualized** prior to inclusion.
+
+Draw.io was used as support tool to design some of the diagrams.
