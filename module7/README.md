@@ -21,7 +21,7 @@
 
 ### Comparison with Relational DB:
 
-![](../resources/sql-vs-nosql.png)
+![](../resources/figures/sql-vs-nosql.png)
 
 
 
