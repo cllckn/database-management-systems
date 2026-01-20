@@ -185,5 +185,8 @@ A database system operates within an environment composed of several interrelate
 ## Setting up the development environment
 
 * Designing ER diagrams 
+  * draw.io
 * PostgreSQL development environment
+  * Refer to Module 4
 * MongoDB development environment 
+  * Refer to Module 7
