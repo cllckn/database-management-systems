@@ -1,5 +1,7 @@
 # Module 1: Database Management Systems (DBMS)
 
+---
+
 <!-- TOC -->
 * [Module 1: Database Management Systems (DBMS)](#module-1-database-management-systems-dbms)
   * [Introduction to Database Management Systems (DBMS)](#introduction-to-database-management-systems-dbms)
@@ -11,9 +13,13 @@
   * [Some Well-Known Relational Database Management Systems (RDBMS)](#some-well-known-relational-database-management-systems-rdbms)
   * [Some Well-Known NoSQL Database Management Systems (NoSQL DBMS)](#some-well-known-nosql-database-management-systems-nosql-dbms)
   * [Setting up the development environment](#setting-up-the-development-environment)
+    * [PostgreSQL (for relational DB Operations)](#postgresql-for-relational-db-operations)
+    * [Designing ER diagrams](#designing-er-diagrams-)
+    * [MongoDB (for NoSQL DB Operations)](#mongodb-for-nosql-db-operations)
+    * [IntelliJ IDEA  (https://www.jetbrains.com/idea/download) (for Java Development, Unit Tests, TDD, BDD)](#intellij-idea-httpswwwjetbrainscomideadownload-for-java-development-unit-tests-tdd-bdd)
 <!-- TOC -->
 
-
+---
 
 ## Introduction to Database Management Systems (DBMS)
 
@@ -182,6 +188,7 @@ A database system operates within an environment composed of several interrelate
 - **Amazon DynamoDB** – A fully managed key-value and document database service offered by AWS, known for automatic scaling and high availability.
 - **Firebase Realtime Database** – A cloud-hosted NoSQL database for real-time synchronization in mobile and web applications.
 
+---
 
 ## Setting up the development environment
 
