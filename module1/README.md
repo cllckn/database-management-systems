@@ -185,9 +185,71 @@ A database system operates within an environment composed of several interrelate
 
 ## Setting up the development environment
 
-* Designing ER diagrams 
-  * draw.io
-* PostgreSQL development environment
-  * Refer to Module 4
-* MongoDB development environment 
-  * Refer to Module 7
+To practice throughout this course, install/register/configure the following tools:
+
+---
+
+### PostgreSQL (for relational DB Operations)
+- PostgreSQL is an open-source and powerful relational database management system.
+- Complies with SQL standards and supports Linux, macOS, and Windows.
+- Download Link: [Download PostgreSQL](https://www.postgresql.org/download/) any version that can
+  be installed without issues.
+* For setting up the working environment, refer to Module 4.
+
+---
+
+### Designing ER diagrams 
+
+Draw.io (now also known as diagrams.net) is a free and web-based diagramming tool used to design Entity Relationship(ER)  
+models.
+
+---
+
+  
+### MongoDB (for NoSQL DB Operations)
+* For setting up the working environment, refer to Module 7.
+
+---
+
+### IntelliJ IDEA  (https://www.jetbrains.com/idea/download) (for Java Development, Unit Tests, TDD, BDD)
+- Popular IDE for Java based development.
+- For accessing a free IDE (Ultimate), you can visit (https://www.jetbrains.com/shop/eform/students)
+- Download Link: [IntelliJ](https://www.jetbrains.com/idea/download)
+
+- File -> New -> Project -> Java
+  - give a name, choose a location
+  - Build system: Maven
+  - JDK -> choose a proper JDK, download if not exist
+  - check "add sample code" option
+  - write the following code snippet
+
+~~~java
+/**
+ * Must be stored as HelloWorld.java
+ *
+ */
+public class HelloWorld {
+
+    public static void main(String[] s) {
+
+        System.out.println("Hello World");
+    }
+
+}
+~~~
+
+- Open a terminal
+- Compiling
+~~~console
+javac HelloWorld.java
+~~~
+
+- Running
+~~~console
+java HelloWorld.java
+~~~
+
+- Output
+~~~console
+Hello World
+~~~
