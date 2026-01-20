@@ -16,6 +16,11 @@
 
 ## Introduction to Database Management Systems (DBMS)
 
+* A **database** is a persistent and organized collection of related data designed for efficient storage, retrieval,
+  manipulation, management, and protection.
+* A **Database Management System (DBMS)** is specialized software that controls and manages databases and
+  provides interfaces for database clients to store, retrieve, and manipulate data efficiently.
+
 
 As applications grow in size and complexity, managing data directly through files and in-memory structures becomes 
 inefficient, error-prone, and difficult to scale. A Database Management System (DBMS) provides a systematic way to 
@@ -23,7 +28,6 @@ store, organize, retrieve, and protect large volumes of persistent data while en
 security, and concurrent access by multiple users and applications. By abstracting low-level storage details and 
 optimizing data access, a DBMS enables programs to focus on problem-solving logic rather than data handling, making 
 it an essential component of modern software systems.
-
 
 ![](../resources/figures/dbms-big-picture.png)
 
@@ -35,12 +39,6 @@ In summary:
 * Fast access is provided by RAM.
 * Persistent, structured, and shared data is managed by a DBMS, which ensures long-term retention.
 
-
-
-* A **database** is a persistent and organized collection of related data designed for efficient storage, retrieval, 
-manipulation, management, and protection.
-* A **Database Management System (DBMS)** is specialized software that controls and manages databases and 
-provides interfaces for database clients to store, retrieve, and manipulate data efficiently.
 
 ---
 
@@ -182,3 +180,10 @@ A database system operates within an environment composed of several interrelate
 - **Neo4j** – A graph database optimized for storing and querying highly connected data, widely used in social networks and recommendation engines.
 - **Amazon DynamoDB** – A fully managed key-value and document database service offered by AWS, known for automatic scaling and high availability.
 - **Firebase Realtime Database** – A cloud-hosted NoSQL database for real-time synchronization in mobile and web applications.
+
+
+## Setting up the development environment
+
+* Designing ER diagrams 
+* PostgreSQL development environment
+* MongoDB development environment 
