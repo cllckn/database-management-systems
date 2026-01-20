@@ -16,7 +16,7 @@
     * [PostgreSQL (for relational DB Operations)](#postgresql-for-relational-db-operations)
     * [Designing ER diagrams](#designing-er-diagrams-)
     * [MongoDB (for NoSQL DB Operations)](#mongodb-for-nosql-db-operations)
-    * [IntelliJ IDEA  (https://www.jetbrains.com/idea/download) (for Java Development, Unit Tests, TDD, BDD)](#intellij-idea-httpswwwjetbrainscomideadownload-for-java-development-unit-tests-tdd-bdd)
+    * [IntelliJ IDEA (for Java-Based Program Development)](#intellij-idea-for-java-based-program-development)
 <!-- TOC -->
 
 ---
