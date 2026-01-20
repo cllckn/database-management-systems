@@ -218,7 +218,7 @@ models.
 
 ---
 
-### IntelliJ IDEA  (https://www.jetbrains.com/idea/download) (for Java Development, Unit Tests, TDD, BDD)
+### IntelliJ IDEA (for Java-Based Program Development)
 - Popular IDE for Java based development.
 - For accessing a free IDE (Ultimate), you can visit (https://www.jetbrains.com/shop/eform/students)
 - Download Link: [IntelliJ](https://www.jetbrains.com/idea/download)
