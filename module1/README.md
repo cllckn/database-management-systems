@@ -10,6 +10,7 @@
   * [Essential Features of a Database Management System (DBMS)](#essential-features-of-a-database-management-system-dbms)
   * [Some Well-Known Relational Database Management Systems (RDBMS)](#some-well-known-relational-database-management-systems-rdbms)
   * [Some Well-Known NoSQL Database Management Systems (NoSQL DBMS)](#some-well-known-nosql-database-management-systems-nosql-dbms)
+  * [Setting up the development environment](#setting-up-the-development-environment)
 <!-- TOC -->
 
 
