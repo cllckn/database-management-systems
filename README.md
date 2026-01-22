@@ -42,11 +42,12 @@ By the end of this course, students will be able to:
 
 ### Module 2: Database Design & Entity–Relationship (ER) Model
 - Database development lifecycle
-- Business rules and requirements analysis
-- Conceptual data modeling
+- Business rules
+- Data model
 - Entity–Relationship (ER) model
-- Entities, attributes, relationships, and constraints
-- Cardinality and participation constraints
+  - Key Components of the ER Model
+  - ER Modeling Notations
+  - Transforming Business Rules into an ER Model
 - Designing ER diagrams using Crow’s Foot notation
 - Hands-On Exercises
 
@@ -68,18 +69,31 @@ By the end of this course, students will be able to:
 
 ### Module 4: Fundamentals of Structured Query Language (SQL)
 - Introduction to SQL
-- SQL Data Definition Language (DDL)
-  - CREATE, ALTER, DROP
 - SQL Data Manipulation Language (DML)
   - SELECT, INSERT, UPDATE, DELETE
-- Defining and enforcing constraints in SQL
+  - JOIN operations
+- SQL Data Definition Language (DDL)
+  - CREATE, ALTER, DROP
+  - Defining and enforcing constraints in SQL
 - Using a Programming Language to Interact With a Database
 - Hands-On Exercises
+
 ---
 
-### Module 5: Intermediate SQL & Query Optimization
+
+### Module 5: NoSQL Databases
+- Motivation for NoSQL databases
+- Comparison with Relational DB:
+- Main Types of NoSQL Databases
+- MongoDB NoSQL Database
+- Using a Programming Language to Interact With a Database
+- Hands-On Exercises
+
+
+---
+
+### Module 6: Intermediate SQL & Query Optimization
 - Aggregate functions and grouping
-- JOIN operations
 - Subqueries
 - Set operations
 - Views
@@ -89,7 +103,8 @@ By the end of this course, students will be able to:
 
 ---
 
-### Module 6: SQL Programming & Database Security
+### Module 7: SQL Programming & Database Security
+
 - Introduction to SQL Programming
 - Functions and Stored Procedures in PL/pgSQL
 - Control Structures in PL/pgSQL
@@ -102,16 +117,6 @@ By the end of this course, students will be able to:
 
 ---
 
-### Module 7: NoSQL Databases
-- Motivation for NoSQL databases
-- Comparison with Relational DB:
-- Main Types of NoSQL Databases
-- MongoDB NoSQL Database
-- Using a Programming Language to Interact With a Database
-- Hands-On Exercises
-
-
----
 
 ## Evaluation Method
 
@@ -149,7 +154,7 @@ Students will be evaluated based on the following components:
 ## Tools
 - PostgreSQL, pgAdmin  (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) any version that can
 be installed without issues.
-- IntelliJ IDEA Ultimate — available free of charge for students  
+- IntelliJ — available free of charge for students  
   https://www.jetbrains.com/idea/download
 
 ---
