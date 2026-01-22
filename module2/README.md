@@ -4,31 +4,26 @@
 * [Module 2: Database Design & Entity–Relationship (ER) Model](#module-2-database-design--entityrelationship-er-model)
   * [Database Development Lifecycle](#database-development-lifecycle)
   * [Business Rules](#business-rules)
-  * [Data Model: Entity–Relationship (ER) Model](#data-model-entityrelationship-er-model)
+  * [Data Model](#data-model)
     * [Evolution of Data Models](#evolution-of-data-models)
       * [Early Data Models (Historical)](#early-data-models-historical)
       * [Modern and Conceptual Data Models](#modern-and-conceptual-data-models)
       * [Emerging and Alternative Data Models](#emerging-and-alternative-data-models)
-    * [Benefits of Data Modeling](#benefits-of-data-modeling)
-    * [Data Modeling Process](#data-modeling-process)
-    * [Key Components of a Data Model](#key-components-of-a-data-model)
-    * [Why Data Modeling Matters for Different Database Systems](#why-data-modeling-matters-for-different-database-systems)
   * [Entity–Relationship (ER) Model](#entityrelationship-er-model)
-    * [Core Components of the ER Model](#core-components-of-the-er-model)
-    * [Benefits of the ER Model](#benefits-of-the-er-model)
+    * [Benefits of ER Modeling](#benefits-of-er-modeling)
+    * [Why Data Modeling Matters for Different Database Systems](#why-data-modeling-matters-for-different-database-systems)
+    * [Key Components of the ER Model](#key-components-of-the-er-model)
     * [ER Modeling Notations](#er-modeling-notations)
     * [Transforming Business Rules into an ER Model](#transforming-business-rules-into-an-er-model)
-    * [Examples: Business Rules to ER Model](#examples-business-rules-to-er-model)
-      * [1. Entities and Attributes](#1-entities-and-attributes)
-      * [2. Relationships](#2-relationships)
-      * [3. Relationship Types (Cardinalities)](#3-relationship-types-cardinalities)
-      * [4. Types of Attributes](#4-types-of-attributes)
+      * [Examples: Business Rules to ER Model](#examples-business-rules-to-er-model)
+      * [Relationship Types (Cardinalities)](#relationship-types-cardinalities)
+    * [Types of Attributes](#types-of-attributes)
   * [Designing ER Diagrams Using Crow’s Foot Notation](#designing-er-diagrams-using-crows-foot-notation)
     * [Crow’s Foot Symbols Explanation](#crows-foot-symbols-explanation)
-    * [Cardinality vs. Participation in ER Modeling](#cardinality-vs-participation-in-er-modeling)
-    * [One-to-Many (1:M) Relationship](#one-to-many-1m-relationship)
-    * [Many-to-Many (M:N) Relationship](#many-to-many-mn-relationship)
-    * [One-to-One (1:1) Relationship Example](#one-to-one-11-relationship-example)
+      * [Cardinality vs. Participation in ER Modeling](#cardinality-vs-participation-in-er-modeling)
+      * [One-to-Many (1:M) Relationship](#one-to-many-1m-relationship)
+      * [Many-to-Many (M:N) Relationship](#many-to-many-mn-relationship)
+      * [One-to-One (1:1) Relationship Example](#one-to-one-11-relationship-example)
 <!-- TOC -->
 
 ---
@@ -117,7 +112,7 @@ Once these rules are defined, the next step is to **model the database** to impl
 
 ---
 
-## Data Model: Entity–Relationship (ER) Model
+## Data Model
 
 A **data model** is a conceptual tool used to represent complex real-world data structures in a simplified and often **graphical** form.  
 In this course, data modeling serves as the **foundation for understanding both relational and NoSQL database systems**.
@@ -177,66 +172,27 @@ In the early days of database systems, several data models were introduced. Whil
     commonly used in **AI, machine learning, recommendation systems, and semantic search**.
   - Emphasize scalability, high availability, and flexible schemas over strict structure.
 
----
 
-### Benefits of Data Modeling
-1. **Improves Communication**
-  - Facilitates clear communication between database designers, developers, and end users.
-  - Ensures that all stakeholders share a common understanding of the data structure before implementation.
-
-2. **Guides Database Design Decisions**
-  - Helps determine whether a **relational** or **NoSQL** database is more suitable.
-  - Reduces design errors by identifying entities, relationships, and constraints early.
 
 ---
 
-### Data Modeling Process
-Data modeling is an **iterative** process:
-1. A **basic model** is designed first.
-2. **Details** are gradually added as requirements become clearer.
-3. The model evolves into a **conceptual blueprint** for database implementation.
 
-This blueprint may later be translated into:
-- **Normalized tables** in a relational database, or
-- **Documents, key-value structures, or graphs** in NoSQL systems.
+## Entity–Relationship (ER) Model
 
----
+The **Entity–Relationship (ER) Model** is a **conceptual representation of data** that describes the structure of a database using the following core components:
 
-### Key Components of a Data Model
 
 ![ER Model](../resources/figures/ecommerce-er-v3.png)
 
-- **Entities**  
-  Represent real-world objects about which data is stored  
-  (e.g., `Customer`, `Order`, `Student`, `Course`, `Employee`).
-
-- **Attributes**  
-  Describe the properties of entities  
-  (e.g., `name`, `productCode`, `unitPrice`).
-
-- **Relationships**  
-  Define how entities are associated:
-  - **One-to-Many (1:M)**
-  - **Many-to-Many (M:N)**
-  - **One-to-One (1:1)**
-
-  In relational databases, relationships are enforced using **foreign keys**.  
-  In NoSQL systems, relationships are often **embedded, referenced, or handled at the application level**.
-
-- **Constraints**  
-  Enforce business rules to preserve data accuracy and consistency, for example:
-  - An employee’s age must be between 18 and 65.
-  - A phone number must follow the format `(XXX) XXX-XXXX`.
-  - Each email address must be unique in the system.
-
-  Relational databases strictly enforce constraints,  
-  whereas NoSQL systems may relax constraints to improve **scalability and performance**.
-
 ---
 
-> **In summary:**  
-> Business rules form the foundation of the data model, and the ER model visualizes these rules to form the conceptual and logical structure of the database.
-> This model provides a strong foundation for **relational database design** and a valuable reference when working with **NoSQL systems**, even when schemas are flexible.
+### Benefits of ER Modeling
+1. **Improves Communication**
+- Facilitates clear communication between database designers, developers, and end users.
+- Ensures that all stakeholders share a common understanding of the data structure before implementation.
+
+2. **Guides Database Implementation**
+- Serves as a blueprint for designing relational or other database schemas.
 
 ---
 
@@ -245,25 +201,13 @@ This blueprint may later be translated into:
 Data modeling is essential regardless of the database technology used; however, **how strictly a model is enforced differs** between relational and NoSQL systems.
 
 - **Relational databases** rely on **well-defined schemas** derived directly from data models such as the ER model.
-- **NoSQL databases** often use **flexible or schema-less designs**, but still require a clear understanding of entities, relationships, and access patterns.
+- **NoSQL databases** often use **flexible or schema-less designs**, but still require a clear understanding of entities,
+  relationships, and access patterns.
 
-Thus, data modeling provides the **conceptual clarity** needed before choosing an appropriate database technology.
 
 ---
 
-
-
-
-
-
-
-## Entity–Relationship (ER) Model
-
-The **Entity–Relationship (ER) Model** is a **conceptual representation of data** that describes the structure of a database using the following core components:
-
----
-
-### Core Components of the ER Model
+### Key Components of the ER Model
 
 - **Entities**  
   Represent real-world objects about which data is collected and stored  
@@ -279,25 +223,23 @@ The **Entity–Relationship (ER) Model** is a **conceptual representation of dat
   - **Many-to-Many (M:N)**
   - **One-to-One (1:1)**
 
+
+>In relational databases, relationships are enforced using **foreign keys**.  
+>In NoSQL systems, relationships are often **embedded, referenced, or handled at the application level**.
+
 - **Constraints**  
-  Rules that maintain data accuracy and consistency, for example:
+  Enforce business rules to preserve data accuracy and consistency, for example:
   - An employee’s age must be between 18 and 65.
   - A phone number must follow the format `(XXX) XXX-XXXX`.
   - Each email address must be unique in the system.
 
----
+>Relational databases strictly enforce constraints, whereas NoSQL systems may relax constraints to improve 
+> **scalability and performance**.
 
-### Benefits of the ER Model
-
-Two main benefits of using an ER model are:
-
-- **Improved Communication**  
-  Provides a clear and shared understanding of data requirements among stakeholders.
-
-- **Facilitated Database Implementation**  
-  Serves as a blueprint for designing relational or other database schemas.
 
 ---
+
+
 
 ### ER Modeling Notations
 
@@ -329,13 +271,14 @@ General guidelines:
 
 - If **two entities appear in the same sentence**, there is usually a **relationship** between them.
 
-These guidelines provide a starting point; practical exercises help develop accuracy and confidence.
+This is a basic guideline, but through practical exercises, you can develop a deeper understanding and gain experience 
+in identifying entities, attributes, and relationships more effectively.
 
 ---
 
-### Examples: Business Rules to ER Model
+#### Examples: Business Rules to ER Model
 
-#### 1. Entities and Attributes
+**1. Entities and Attributes**
 
 - A **Customer** has a first name, last name, customer number, and address.
 - An **Invoice** has an invoice number, date, and total amount.
@@ -344,7 +287,7 @@ These guidelines provide a starting point; practical exercises help develop accu
 
 ---
 
-#### 2. Relationships
+**2. Relationships**
 
 - A **Customer** can generate many **Invoices**.
 
@@ -352,34 +295,59 @@ These guidelines provide a starting point; practical exercises help develop accu
 
 ---
 
-#### 3. Relationship Types (Cardinalities)
+#### Relationship Types (Cardinalities)
 
-Relationships are **bidirectional**, and cardinality is determined by asking:
+Relationships are **bidirectional**, and its type (cardinality) is determined by asking:
 > *How many instances of one entity can be associated with the other?*
 > or
 > *What is the maximum number of Entity1 per Entity2*
 
-Examples:
+**Examples:**
 
-- A **Doctor** can issue many **Prescriptions**.  
-  Each **Prescription** is issued by only one **Doctor**.  
+**One-to-Many (1:M) Relationship (Doctor – Prescription)**
+
+- A **Doctor** can issue `many` **Prescriptions**.  
+  Each **Prescription** is issued by only `one` **Doctor**.  
   → **1:M**
 
-- One **Instructor** can teach many **Courses**.  
-  Each **Course** is taught by only one **Instructor**.  
-  → **1:M**
-
-- One **Person** can manage one **Department**.  
-  Each **Department** has only one **Manager**.  
-  → **1:1**
-
-- One **Student** can enroll in many **Courses**.  
-  Each **Course** can have many **Students**.  
-  → **M:N**
+- *What is the maximum number of prescriptions per doctor?* → **many**  → **Cardinality**
+- *What is the maximum number of doctors per prescription?* → **one**  → **Cardinality**
 
 ---
 
-#### 4. Types of Attributes
+**One-to-Many (1:M) Relationship (Instructor – Course)**
+
+- One **Instructor** can teach **many Courses**.  
+  Each **Course** is taught by only **one Instructor**.  
+  → **1:M**
+
+- *What is the maximum number of courses per instructor?* → **many** → **Cardinality**
+- *What is the maximum number of instructors per course?* → **one** → **Cardinality**
+
+---
+
+**One-to-One (1:1) Relationship (Person – Department (Manager))**
+
+- One **Person** can manage **one Department**.  
+  Each **Department** has only **one Manager**.  
+  → **1:1**
+
+- *What is the maximum number of departments per person?* → **one** → **Cardinality**
+- *What is the maximum number of managers per department?* → **one** → **Cardinality**
+
+---
+
+**Many-to-Many (M:N) Relationship (Student – Course)**
+
+- One **Student** can enroll in **many Courses**.  
+  Each **Course** can have **many Students**.  
+  → **M:N**
+
+- *What is the maximum number of courses per student?* → **many** → **Cardinality**
+- *What is the maximum number of students per course?* → **many** → **Cardinality**
+
+
+### Types of Attributes
 
 - **Simple**  
   Single-valued attributes (e.g., `Name`).
@@ -403,9 +371,6 @@ Examples:
 > and constraints, forming a solid conceptual foundation for database design.
 
 
-
-
-
 ## Designing ER Diagrams Using Crow’s Foot Notation
 
 Crow’s Foot notation is commonly used to represent **relationships and cardinalities** between entities in ER diagrams. 
@@ -413,7 +378,7 @@ It visually expresses how many instances of one entity can be associated with an
 
 ### Crow’s Foot Symbols Explanation
 
-### Cardinality vs. Participation in ER Modeling
+#### Cardinality vs. Participation in ER Modeling
 
 In Entity–Relationship (ER) modeling, each side of a relationship is defined using two constraints:
 **maximum cardinality** and **minimum participation**.
@@ -452,7 +417,7 @@ associated with an instance in the related entity.
 
 ---
 
-### One-to-Many (1:M) Relationship
+#### One-to-Many (1:M) Relationship
 
 **Example: Doctor – Prescription (One-to-Many Relationship)**
 
@@ -482,7 +447,7 @@ This defines a **One-to-Many (1:M)** relationship.
 
 ---
 
-### Many-to-Many (M:N) Relationship
+#### Many-to-Many (M:N) Relationship
 
 **Example: Student – Course**
 
@@ -509,7 +474,7 @@ This defines a **Many-to-Many (M:N)** relationship.
 
 ---
 
-### One-to-One (1:1) Relationship Example
+#### One-to-One (1:1) Relationship Example
 
 **Example: Person – Passport**
 
