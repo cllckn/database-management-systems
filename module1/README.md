@@ -210,17 +210,19 @@ To practice throughout this course, install/register/configure the following too
 Draw.io (now also known as diagrams.net) is a free and web-based diagramming tool used to design Entity Relationship(ER)  
 models.
 
+* https://app.diagrams.net/
+
 ---
 
   
 ### MongoDB (for NoSQL DB Operations)
-* For setting up the working environment, refer to Module 7.
+
+* https://www.mongodb.com/products/platform/cloud
 
 ---
 
 ### IntelliJ IDEA (for Java-Based Program Development)
 - Popular IDE for Java based development.
-- For accessing a free IDE (Ultimate), you can visit (https://www.jetbrains.com/shop/eform/students)
 - Download Link: [IntelliJ](https://www.jetbrains.com/idea/download)
 
 - File -> New -> Project -> Java
