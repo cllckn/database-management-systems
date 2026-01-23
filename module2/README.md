@@ -516,10 +516,6 @@ Person || ----------- 0< Passport
 This represents a **one-to-one (1:1) relationship** where a person may or may not have a passport, but every passport
 must belong to exactly one person.
 
-**Implementation Rule:**
-- The **primary key (PK)** of the entity on the **one** side is added as a **foreign key (FK)** to the entity on the **many** side.
-
----
 
 **Implementation Rule:**
 
