@@ -22,7 +22,7 @@
       * [Cardinality vs. Participation in ER Modeling](#cardinality-vs-participation-in-er-modeling)
       * [One-to-Many (1:M) Relationship](#one-to-many-1m-relationship)
       * [Many-to-Many (M:N) Relationship](#many-to-many-mn-relationship)
-      * [One-to-One (1:1) Relationship Example](#one-to-one-11-relationship-example)
+      * [One-to-One (1:1) Relationship](#one-to-one-11-relationship-)
 <!-- TOC -->
 
 ---
@@ -398,7 +398,7 @@ associated with an instance in the related entity.
 
 ---
 
-**Optionality Symbols:**
+**Participation(Optionality) Symbols:**
 
 | Symbol | Meaning | Explanation |
 |--------|-------|-------------|
@@ -429,17 +429,17 @@ associated with an instance in the related entity.
 **Cardinality and Participation Interpretation:**
 
 - **Prescription side in the diagram**
-  - *What is the maximum number of prescriptions per doctor?* → **many**  → **Cardinality**
-  - *What is the minimum number of prescriptions per doctor?* → **zero**  → **Participation (optional)**
+  - *What is the maximum number of `Prescription` per `Doctor`?* → **many**  → **Cardinality**
+  - *What is the minimum number of `Prescription` per `Doctor`?* → **zero**  → **Participation (optional)**
 
 - **Doctor side in the diagram**
-  - *What is the maximum number of doctors per prescription?* → **one**  → **Cardinality**
-  - *What is the minimum number of doctors per prescription?* → **one**  → **Participation (optional)**
+  - *What is the maximum number of `Doctor` per `Prescription`?* → **one**  → **Cardinality**
+  - *What is the minimum number of `Doctor` per `Prescription`?* → **one**  → **Participation (mandatory)**
 
 Doctor || ----------- 0< Prescriptions
 
 
-This defines a **One-to-Many (1:M)** relationship.
+This represents a **One-to-Many (1:M)** relationship.
 
 **Implementation Rule:**
 - The **primary key (PK)** of the entity on the **one** side is added as a **foreign key (FK)** to the entity on the **many** side.
@@ -455,9 +455,24 @@ This defines a **One-to-Many (1:M)** relationship.
 
 ![](../resources/figures/er-many-to-many-example.png)
 
-This defines a **Many-to-Many (M:N)** relationship.
+
+**Cardinality and Participation Interpretation:**
+
+- **Course side in the diagram**
+  - *What is the maximum number of `Course` per `Student`?* → **many**  → **Cardinality**
+  - *What is the minimum number of `Course` per `Student`?* → **zero**  → **Participation (optional)**
+
+- **Student side in the diagram**
+  - *What is the maximum number of `Student` per `Course`?* → **many**  → **Cardinality**
+  - *What is the minimum number of `Student` per `Course`?* → **zero**  → **Participation (optional)**
+
+Student >0 ----------- 0< Course
+
+
+This represents a **Many-to-Many (M:N)** relationship.
 
 **Implementation Rule:**
+
 - A **junction (associative) table** is created to link the two entities.
 - The junction table includes:
   - The **primary keys of both entities** as foreign keys.
@@ -473,41 +488,41 @@ This defines a **Many-to-Many (M:N)** relationship.
 
 ---
 
-#### One-to-One (1:1) Relationship Example
+#### One-to-One (1:1) Relationship 
 
-**Example: Person – Passport**
+**Example: Person – Passport (One-to-One Relationship)**
 
-- A **Person** can have **at most one Passport**.  
-  *(Maximum number of passports per person → one)*  
-  *(Minimum number of passports per person → zero)*
+**Relationship Description:**
 
+- A **Person** can have **at most one Passport**.
 - Each **Passport** is issued to **exactly one Person**.  
-  *(Maximum number of persons per passport → one)*  
-  *(Minimum number of persons per passport → one)*
+  
 
 ![](../resources/figures/er-one-to-one-example.png)
 
+
 **Cardinality and Participation Interpretation:**
 
-**Person side**
-- **Cardinality**: one
-- **Participation**: optional (0)
+- **Passport side in the diagram**
+  - *What is the maximum number of `passports` per `person`?* → **one**  → **Cardinality**
+  - *What is the minimum number of `passports` per `person`?* → **zero**  → **Participation (optional)**
 
-**Passport side**
-- **Cardinality**: one
-- **Participation**: mandatory (1)
+- **Person side in the diagram**
+  - *What is the maximum number of `persons` per `passport`?* → **one**  → **Cardinality**
+  - *What is the minimum number of `persons` per `passport`?* → **one**  → **Participation (mandatory)**
 
-**Relationship Summary**
+Person || ----------- 0< Passport
 
-- **Person → Passport**: `0..1`
-- **Passport → Person**: `1..1`
-
-This represents a **one-to-one (1:1) relationship** where a person may or may not have a passport, but every passport 
+This represents a **one-to-one (1:1) relationship** where a person may or may not have a passport, but every passport
 must belong to exactly one person.
 
-This defines a **One-to-One (1:1)** relationship.
+**Implementation Rule:**
+- The **primary key (PK)** of the entity on the **one** side is added as a **foreign key (FK)** to the entity on the **many** side.
+
+---
 
 **Implementation Rule:**
+
 - The **primary key (PK)** of one entity is added as a **foreign key (FK)** to the other entity.
 - The choice of which side receives the foreign key depends on:
   - Optional participation
