@@ -13,7 +13,6 @@
     * [Benefits of ER Modeling](#benefits-of-er-modeling)
     * [Why Data Modeling Matters for Different Database Systems](#why-data-modeling-matters-for-different-database-systems)
     * [Key Components of the ER Model](#key-components-of-the-er-model)
-    * [ER Modeling Notations](#er-modeling-notations)
     * [Transforming Business Rules into an ER Model](#transforming-business-rules-into-an-er-model)
       * [Examples: Business Rules to ER Model](#examples-business-rules-to-er-model)
       * [Relationship Types (Cardinalities)](#relationship-types-cardinalities)
@@ -240,25 +239,6 @@ Data modeling is essential regardless of the database technology used; however, 
 ---
 
 
-
-### ER Modeling Notations
-
-Different notations can be used for conceptual data modeling:
-
-- **Chen Notation**
-  - Emphasizes conceptual clarity.
-  - Clearly represents entities, attributes, and relationships.
-
-- **Crow’s Foot Notation**
-  - More implementation-oriented.
-  - Widely used in relational database design.
-
-- **UML Notation**
-  - Can be used for both conceptual and implementation modeling.
-  - Common in object-oriented system design.
-
----
-
 ### Transforming Business Rules into an ER Model
 
 Business rules describe how an organization operates and are the **foundation of data modeling**.
@@ -375,6 +355,25 @@ Relationships are **bidirectional**, and its type (cardinality) is determined by
 
 Crow’s Foot notation is commonly used to represent **relationships and cardinalities** between entities in ER diagrams. 
 It visually expresses how many instances of one entity can be associated with another.
+
+
+Different notations can be used for ER modeling:
+
+- **Chen Notation**
+  - Emphasizes conceptual clarity.
+  - Clearly represents entities, attributes, and relationships.
+
+- **Crow’s Foot Notation**
+  - More implementation-oriented.
+  - Widely used in relational database design.
+
+- **UML Notation**
+  - Can be used for both conceptual and implementation modeling.
+  - Common in object-oriented system design.
+
+
+---
+
 
 ### Crow’s Foot Symbols Explanation
 
