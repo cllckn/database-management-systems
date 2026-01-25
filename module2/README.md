@@ -35,6 +35,8 @@ deliverables.
 
 The Database Development Lifecycle typically consists of four fundamental phases.
 
+![Database System](../resources/figures/db-development-lifecycle.png)
+
 ---
 
 **1. Requirement Analysis**
@@ -73,8 +75,6 @@ The Database Development Lifecycle typically consists of four fundamental phases
 **Roles Involved:** Database Administrators (DBAs), System Administrators  
 **Output:** Stable, Optimized, and Secure Database System
 
-
-![Database System](../resources/figures/db-development-lifecycle.png)
 
 ---
 
