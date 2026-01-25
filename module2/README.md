@@ -23,6 +23,11 @@
       * [One-to-Many (1:M) Relationship](#one-to-many-1m-relationship)
       * [Many-to-Many (M:N) Relationship](#many-to-many-mn-relationship)
       * [One-to-One (1:1) Relationship](#one-to-one-11-relationship-)
+    * [5.2. Relationship Strength in Database Modeling](#52-relationship-strength-in-database-modeling)
+      * [Strong (Identifying) Relationship](#strong-identifying-relationship)
+      * [Weak (Non-Identifying) Relationship](#weak-non-identifying-relationship)
+    * [5.3. Relationship Degree in Database Modeling](#53-relationship-degree-in-database-modeling)
+      * [Unary (Recursive) Relationships](#unary-recursive-relationships)
 <!-- TOC -->
 
 ---
@@ -424,7 +429,10 @@ associated with an instance in the related entity.
 - A **Doctor** can issue **many Prescriptions**.
 - Each **Prescription** is issued by **exactly one Doctor**.
 
-![](../resources/figures/er-one-to-many-example.png)
+
+<img src="../resources/figures/er-one-to-many-example.png" width="500">
+
+one-to-one-example
 
 **Cardinality and Participation Interpretation:**
 
@@ -498,7 +506,8 @@ This represents a **Many-to-Many (M:N)** relationship.
 - Each **Passport** is issued to **exactly one Person**.  
   
 
-![](../resources/figures/er-one-to-one-example.png)
+
+<img src="../resources/figures/er-one-to-one-example.png" width="500">
 
 
 **Cardinality and Participation Interpretation:**
@@ -531,3 +540,124 @@ must belong to exactly one person.
 > Crow’s Foot notation clearly expresses relationship cardinalities and participation.  
 > Understanding how these relationships map to **foreign keys and junction tables** is essential for translating 
 > ER diagrams into relational database schemas.
+
+
+
+
+
+
+### 5.2. Relationship Strength in Database Modeling
+
+Strong vs. Weak Relationships: The distinction is based on whether the **child entity can exist independently** of 
+the parent entity.
+
+---
+
+#### Strong (Identifying) Relationship
+
+A relationship is **strong** (identifying) when:
+
+- The **primary key of the child entity includes the primary key of the parent**
+- The child is **identity-dependent** on the parent
+- The parent’s identifier is part of the child’s identity
+
+***A **weak entity** is an entity that cannot be uniquely identified by its own attributes alone.***
+
+**Visual notation:** Solid line (Crow’s Foot)
+
+
+**Example: Order – OrderItem**
+
+- An **Order** exists independently
+- An **OrderItem** cannot exist without an Order (**weak entity**)
+
+**OrderItem Primary Key:** `(OrderID, LineNumber)`
+
+
+
+<img src="../resources/figures/er-strong-relationship.png" width="500">
+
+**Relationship Type:** One-to-Many (1:M)  
+**Relationship Nature:** Strong (Identifying)
+
+**Explanation:**  
+If an order is deleted, all its order items must also be deleted.
+
+---
+
+#### Weak (Non-Identifying) Relationship
+
+A relationship is **weak** (non-identifying) when:
+
+- The child has its **own independent primary key**
+- The parent’s key appears only as a **foreign key**
+- The child can exist independently of the parent
+
+**Visual notation:** Dashed line (Crow’s Foot)
+
+**Example: DEPARTMENT – EMPLOYEE**  
+An Employee has an independent EmployeeID.  
+If a Department is removed, the Employee still exists as an entity in the system.
+
+
+
+<img src="../resources/figures/er-weak-relationship.png" width="600">
+
+
+---
+
+>While theory defines a Strong Relationship as one where the child depends on the parent for its identity (use a 
+> **composite primary key**), modern best 
+> practice is to give every entity its own Surrogate Primary Key ((BIGINT, UUID)). This effectively makes most relationships Weak 
+> (Non-Identifying) in the physical implementation, which increases flexibility and performance.
+
+![](../resources/figures/er-strong-to-weak-relationship.png)
+
+Converts an **identifying (strong)** relationship into a **non-identifying (weak)** relationship at the physical level
+ 
+> By using Surrogate Keys, we gain flexibility, but we lose the 'Identity' link. Therefore, we must use ON DELETE 
+> CASCADE in our Foreign Key definitions to maintain the same data integrity we had in a Strong relationship.
+
+
+> This approach improves flexibility, performance, and maintainability—while integrity
+is preserved through foreign key constraints.
+
+
+
+
+
+### 5.3. Relationship Degree in Database Modeling
+
+#### Unary (Recursive) Relationships
+
+A **unary relationship** - also called **recursive relationship**- occurs when:
+
+- An entity is related to **itself**
+- The same entity plays **multiple roles** in the relationship
+
+**Common Unary Relationship Examples**
+
+- **Supervision (1:M)**
+
+An **Employee** may supervise another Employee. A supervisor is also an employee.
+
+
+One employee (Supervisor/Manager) can supervise many employees,  
+while each employee has at most one supervisor.
+
+<img src="../resources/figures/er-unary-relationship.png" width="300">
+
+
+
+- **Product Assembly (M:N)**  
+  A PART is composed of other PARTS.
+
+- **Marriage (1:1)**  
+  A PERSON is married to another PERSON in the same table.
+
+- **Friendship (M:N)**  
+  A PERSON can have many friends, and each friend is also a PERSON stored in the same table.
+
+  This is a **unary (recursive) many-to-many relationship**.  
+  It is typically implemented using an associative table (e.g., `PersonFriend`) that references
+  the `Person` entity twice, once for each role in the relationship.
