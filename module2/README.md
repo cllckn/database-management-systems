@@ -2,23 +2,23 @@
 
 <!-- TOC -->
 * [Module 2: Database Design & Entity–Relationship (ER) Model](#module-2-database-design--entityrelationship-er-model)
-  * [Database Development Lifecycle](#database-development-lifecycle)
-  * [Business Rules](#business-rules)
-  * [Data Model](#data-model)
-    * [Evolution of Data Models](#evolution-of-data-models)
+  * [1. Database Development Lifecycle](#1-database-development-lifecycle)
+  * [2. Business Rules](#2-business-rules)
+  * [3. Data Model](#3-data-model)
+    * [3.1. Evolution of Data Models](#31-evolution-of-data-models)
       * [Early Data Models (Historical)](#early-data-models-historical)
       * [Modern and Conceptual Data Models](#modern-and-conceptual-data-models)
       * [Emerging and Alternative Data Models](#emerging-and-alternative-data-models)
-  * [Entity–Relationship (ER) Model](#entityrelationship-er-model)
-    * [Benefits of ER Modeling](#benefits-of-er-modeling)
-    * [Why Data Modeling Matters for Different Database Systems](#why-data-modeling-matters-for-different-database-systems)
-    * [Key Components of the ER Model](#key-components-of-the-er-model)
-    * [Transforming Business Rules into an ER Model](#transforming-business-rules-into-an-er-model)
+  * [4. Entity–Relationship (ER) Model](#4-entityrelationship-er-model)
+    * [4.1. Benefits of ER Modeling](#41-benefits-of-er-modeling)
+    * [4.2. Why Data Modeling Matters for Different Database Systems](#42-why-data-modeling-matters-for-different-database-systems)
+    * [4.3. Key Components of the ER Model](#43-key-components-of-the-er-model)
+    * [4.4. Transforming Business Rules into an ER Model](#44-transforming-business-rules-into-an-er-model)
       * [Examples: Business Rules to ER Model](#examples-business-rules-to-er-model)
       * [Relationship Types (Cardinalities)](#relationship-types-cardinalities)
-    * [Types of Attributes](#types-of-attributes)
-  * [Designing ER Diagrams Using Crow’s Foot Notation](#designing-er-diagrams-using-crows-foot-notation)
-    * [Crow’s Foot Symbols Explanation](#crows-foot-symbols-explanation)
+    * [4.5. Types of Attributes](#45-types-of-attributes)
+  * [5. Designing ER Diagrams Using Crow’s Foot Notation](#5-designing-er-diagrams-using-crows-foot-notation)
+    * [5.1. Crow’s Foot Symbols Explanation](#51-crows-foot-symbols-explanation)
       * [Cardinality vs. Participation in ER Modeling](#cardinality-vs-participation-in-er-modeling)
       * [One-to-Many (1:M) Relationship](#one-to-many-1m-relationship)
       * [Many-to-Many (M:N) Relationship](#many-to-many-mn-relationship)
@@ -27,7 +27,7 @@
 
 ---
 
-## Database Development Lifecycle
+## 1. Database Development Lifecycle
 
 The **Database Development Lifecycle** is a structured process used to design and build high-quality databases in a 
 systematic and efficient way. It breaks database development into distinct phases, each with specific goals and 
@@ -78,7 +78,7 @@ The Database Development Lifecycle typically consists of four fundamental phases
 
 ---
 
-## Business Rules
+## 2. Business Rules
 
 Specific statements that define or constrain business data and operations. They often originate from 
 requirement list.
@@ -111,14 +111,14 @@ Once these rules are defined, the next step is to **model the database** to impl
 
 ---
 
-## Data Model
+## 3. Data Model
 
 A **data model** is a conceptual tool used to represent complex real-world data structures in a simplified and often **graphical** form.  
 In this course, data modeling serves as the **foundation for understanding both relational and NoSQL database systems**.
 
 ---
 
-### Evolution of Data Models
+### 3.1. Evolution of Data Models
 
 Over time, database systems have evolved to address increasing data complexity, scalability requirements, and application needs.
 
@@ -176,7 +176,7 @@ In the early days of database systems, several data models were introduced. Whil
 ---
 
 
-## Entity–Relationship (ER) Model
+## 4. Entity–Relationship (ER) Model
 
 The **Entity–Relationship (ER) Model** is a **conceptual representation of data** that describes the structure of a database using the following core components:
 
@@ -185,7 +185,7 @@ The **Entity–Relationship (ER) Model** is a **conceptual representation of dat
 
 ---
 
-### Benefits of ER Modeling
+### 4.1. Benefits of ER Modeling
 1. **Improves Communication**
 - Facilitates clear communication between database designers, developers, and end users.
 - Ensures that all stakeholders share a common understanding of the data structure before implementation.
@@ -195,7 +195,7 @@ The **Entity–Relationship (ER) Model** is a **conceptual representation of dat
 
 ---
 
-### Why Data Modeling Matters for Different Database Systems
+### 4.2. Why Data Modeling Matters for Different Database Systems
 
 Data modeling is essential regardless of the database technology used; however, **how strictly a model is enforced differs** between relational and NoSQL systems.
 
@@ -206,7 +206,7 @@ Data modeling is essential regardless of the database technology used; however, 
 
 ---
 
-### Key Components of the ER Model
+### 4.3. Key Components of the ER Model
 
 - **Entities**  
   Represent real-world objects about which data is collected and stored  
@@ -239,7 +239,7 @@ Data modeling is essential regardless of the database technology used; however, 
 ---
 
 
-### Transforming Business Rules into an ER Model
+### 4.4. Transforming Business Rules into an ER Model
 
 Business rules describe how an organization operates and are the **foundation of data modeling**.
 
@@ -327,7 +327,7 @@ Relationships are **bidirectional**, and its type (cardinality) is determined by
 - *What is the maximum number of students per course?* → **many** → **Cardinality**
 
 
-### Types of Attributes
+### 4.5. Types of Attributes
 
 - **Simple**  
   Single-valued attributes (e.g., `Name`).
@@ -351,7 +351,7 @@ Relationships are **bidirectional**, and its type (cardinality) is determined by
 > and constraints, forming a solid conceptual foundation for database design.
 
 
-## Designing ER Diagrams Using Crow’s Foot Notation
+## 5. Designing ER Diagrams Using Crow’s Foot Notation
 
 Crow’s Foot notation is commonly used to represent **relationships and cardinalities** between entities in ER diagrams. 
 It visually expresses how many instances of one entity can be associated with another.
@@ -375,7 +375,7 @@ Different notations can be used for ER modeling:
 ---
 
 
-### Crow’s Foot Symbols Explanation
+### 5.1. Crow’s Foot Symbols Explanation
 
 #### Cardinality vs. Participation in ER Modeling
 
