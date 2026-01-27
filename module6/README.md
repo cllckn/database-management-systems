@@ -1,468 +1,494 @@
-# Module 6: SQL Programming
+# **Module 6: Intermediate SQL & Query Optimization**
+
+***  
+
+---
 
 <!-- TOC -->
-* [Module 6: SQL Programming](#module-6-sql-programming)
-  * [Introduction to SQL Programming](#introduction-to-sql-programming-)
-  * [Functions and Stored Procedures in PL/pgSQL](#functions-and-stored-procedures-in-plpgsql)
-  * [Control Structures in PL/pgSQL](#control-structures-in-plpgsql)
-  * [Triggers](#triggers-)
+* [**Module 5: Intermediate SQL & Query Optimization**](#module-5-intermediate-sql--query-optimization)
+  * [**Aggregate Functions And Grouping**](#aggregate-functions-and-grouping)
+  * [Subqueries in SQL](#subqueries-in-sql)
+  * [Set Operations](#set-operations)
+  * [Views](#views)
+  * [Transactions](#transactions)
   * [Exercise1](#exercise1)
+  * [Performance Optimization and Indexing](#performance-optimization-and-indexing)
+    * [EXPLAIN ANALYZE - Analyzing Queries and Identifying Bottlenecks](#explain-analyze---analyzing-queries-and-identifying-bottlenecks)
+    * [Writing Efficient SQL Queries](#writing-efficient-sql-queries)
+    * [Database Design & Server Configuration](#database-design--server-configuration)
+    * [Indexing](#indexing-)
+  * [Exercise2](#exercise2)
 <!-- TOC -->
-
-## Introduction to SQL Programming 
-
-- **Standard SQL** is primarily a **declarative language** designed for constructing databases and for querying 
-and manipulating data.
-
-- It **does not include full programming constructs** such as control flow (`IF`, `LOOP`, `WHILE`) or procedural 
-logic required for complex business operations.
-
-- To overcome this limitation, **RDBMSs like PostgreSQL** provide extended SQL programming languages such as 
-**PL/pgSQL** that support:
-    - Variables and constants
-    - Conditional statements (`IF`, `CASE`)
-    - Looping constructs (`LOOP`, `WHILE`, `FOR`)
-    - Error handling
-    - Modular code through functions and procedures
-
-- These procedural extensions allow developers to **write SQL programs** directly in the database, enabling:
-    - Implementation of business logic
-    - Automation of workflows
-    - Improved performance through reduced network communication
-
-- Additionally, SQL programs in PostgreSQL are **stored as precompiled code**, which means:
-    - Parsing, analysis, and planning are done once at creation time
-    - Execution is faster during runtime, especially for repeated calls
-
-
-**Key Advantages of SQL Programming**
-
-* Code Reusability: PL/pgSQL code can be encapsulated into functions and stored procedures, making it reusable across 
-different applications.
-* Performance: Executing code within the database can be faster than sending multiple SQL statements from a client application, 
-as it reduces network traffic. SQL programs (functions, procedures, triggers) in PostgreSQL are stored precompiled, 
-meaning the database parses, analyzes, and plans the execution once, and stores the compiled version.
-This results in faster execution times for repeated calls, as the overhead of parsing and planning is avoided each time.
-
-## Functions and Stored Procedures in PL/pgSQL
-Both functions and stored procedures are named blocks of PL/pgSQL code that perform specific tasks.
-
-**Functions**
-
-Can be used in SQL expressions: Functions can be called within SELECT statements, WHERE clauses, and other parts of SQL queries.
-
-Must return a value (usually): A function is designed to take input parameters and return a result.
-
-**Stored Procedures**
-
-Called using the CALL statement: Stored procedures are invoked explicitly using the CALL statement.
-
-Can return multiple values (using OUT parameters) or no value: Procedures are more flexible in terms of what they return. 
-They can modify data, perform actions, and optionally return data.
-
-More focused on actions: Procedures are often used for data manipulation, transaction control, and complex operations.
-
-**Summary**
-- Use a **function** for a reusable operation that returns a result and can be embedded in SQL queries.
-- Use a **stored procedure**  to perform a sequence of actions, especially when including transaction control.
-
-
-
-* Defining and calling a function
-```sql
--- A function that adds two numbers and returns the result
-CREATE OR REPLACE FUNCTION add_numbers(a INTEGER, b INTEGER)
-RETURNS INTEGER AS $$
-BEGIN
-    RETURN a + b;
-END;
-$$ LANGUAGE plpgsql;
-
--- Call the function
-SELECT add_numbers(5, 3);  -- Output: 8
-```
-* Defining and calling a stored procedure
-
-```sql
--- A procedure that adds two numbers and stores the result in an OUT parameter
-CREATE OR REPLACE PROCEDURE add_numbers_proc(
-    IN a INTEGER,
-    IN b INTEGER,
-    OUT result INTEGER
-)
-AS $$
-BEGIN
-    result := a + b;
-END;
-$$ LANGUAGE plpgsql;
-
--- Call the function
-CALL add_numbers_proc(5, 3, result => NULL);  -- The result will be returned via the OUT parameter
-
-```
-
-## Control Structures in PL/pgSQL
-PL/pgSQL provides a variety of control structures to manage the flow of execution within your functions and procedures.
-
-```sql
--- Create or replace a function that demonstrates control structures
-CREATE OR REPLACE FUNCTION demo_control_structures(looplimit INT)
-    RETURNS VOID AS $$
-DECLARE
-    i INT;
-    number INT := 3;  -- Sample number for CASE WHEN
-BEGIN
-
-    -------------------------------------------------------------------
-    -- IF-ELSE Statements
-    -- The IF-ELSE statement allows you to execute different blocks
-    -- of code based on conditions.
-    -------------------------------------------------------------------
-    IF looplimit < 0 THEN
-        RAISE EXCEPTION 'limit value cannot be negative.';
-    ELSE
-        RAISE NOTICE 'Starting loops with limit %', looplimit;
-    END IF;
-
-    -------------------------------------------------------------------
-    -- CASE WHEN Statements:
-    -- Used for conditional branching with multiple possibilities.
-    -- Offers flexibility when handling different cases for a variable.
-    -------------------------------------------------------------------
-    RAISE NOTICE 'CASE WHEN example:';
-    CASE number
-      WHEN 1 THEN
-        RAISE NOTICE 'Number is 1';
-      WHEN 2 THEN
-        RAISE NOTICE 'Number is 2';
-      WHEN 3 THEN
-        RAISE NOTICE 'Number is 3';
-      ELSE
-        RAISE NOTICE 'Number is something else';
-      END CASE;
-
-    -------------------------------------------------------------------
-    -- Loop Statements
-    -- PL/pgSQL provides several loop structures for repetitive execution.
-    -------------------------------------------------------------------
-
-    -------------------------------------------------------------------
-    -- FOR Loop:
-    -- Iterates over a fixed range of values.
-    -- Useful when the number of iterations is known in advance.
-    -------------------------------------------------------------------
-    RAISE NOTICE 'FOR LOOP from 1 to limit';
-    FOR i IN 1..looplimit LOOP
-        RAISE NOTICE 'FOR LOOP value: %', i;
-    END LOOP;
-
-    -------------------------------------------------------------------
-    -- WHILE Loop:
-    -- Executes a block of code repeatedly as long as a condition is true.
-    -- Useful when the number of iterations is unknown and condition-based.
-    -------------------------------------------------------------------
-    i := 1;
-    RAISE NOTICE 'WHILE LOOP from 1 to limit';
-    WHILE i <= looplimit LOOP
-        RAISE NOTICE 'WHILE LOOP value: %', i;
-        i := i + 1;
-    END LOOP;
-
-    -------------------------------------------------------------------
-    -- LOOP...EXIT WHEN:
-    -- DO LOOP in PL/pgSQL runs indefinitely until explicitly exited.
-    -- EXIT WHEN is used to break out of the loop based on a condition.
-    -------------------------------------------------------------------
-    i := 1;
-    RAISE NOTICE 'LOOP with EXIT WHEN from 1 to limit';
-    LOOP
-        EXIT WHEN i > looplimit;
-        RAISE NOTICE 'LOOP EXIT WHEN value: %', i;
-        i := i + 1;
-    END LOOP;
-
-END;
-$$ LANGUAGE plpgsql;
-
-```
-
-```sql
--- Example 1: This will raise an exception due to negative input
-SELECT demo_control_structures(-1);
-
--- Example 2: This will execute all loops and case logic for limit = 5
-SELECT demo_control_structures(5);
-
-```
-
-**Examples**
-
-
----
-**The following queries are based on the Pagila sample database.**
-
----
-
-* Record Traversal in a SELECT Result Set 
-
-```sql
--- Define or replace a function that iterates over the result set of a SELECT query
-CREATE OR REPLACE FUNCTION iterate_records()
-RETURNS TEXT
-AS
-$$
-DECLARE
-    currentCustomer customer%ROWTYPE;  -- Declare a variable 'cust' with the same structure as a row in the 'customer' table
-    result TEXT;            -- Declare a variable to accumulate the final result as text
-BEGIN
-    result := '';           -- Initialize the result variable to an empty string
-
-    -- Loop through each row returned by the SELECT * FROM customer query
-    FOR currentCustomer IN SELECT * FROM customer LOOP
-        -- Concatenate the customer ID and first name with a tab and newline character to format the result
-        result := result || currentCustomer.customer_id || E'\t' || currentCustomer.first_name || E'\r\n';
-    END LOOP;
-
-    -- Return the final formatted string containing all customer IDs and first names
-    RETURN result;
-END;
-$$
-LANGUAGE 'plpgsql';
-
-```
-```sql
-SELECT iterate_records();
-
-```
-
-* Returning a Table
-
-```sql
--- Define or replace a function that returns a table
-CREATE OR REPLACE FUNCTION search_staff(staffid INT)
-RETURNS TABLE(id INT, firstname VARCHAR(40), lastname VARCHAR(40)) 
-AS 
-$$
-BEGIN
-    -- Return a query that selects columns from the staff table
-    RETURN QUERY 
-    SELECT staff_id, first_name, last_name
-    FROM staff
-    WHERE staff_id = staffid;
-END;
-$$
-LANGUAGE "plpgsql";
-
-```
-
-```sql
--- Call the function and display the returned table
-SELECT * FROM search_staff(1);
-
-```
-
-* Function Calling Another Function Example
-
-This example shows how to call another function from within a PL/pgSQL function. The outer function fetches staff 
-information and calculates the total payment amount for that staff member.
-
-```sql
--- Define or replace a function that returns a formatted string
--- showing staff ID, name, and their total payments
-CREATE OR REPLACE FUNCTION public.payment_summary(staffID INTEGER)
-RETURNS TEXT
-LANGUAGE "plpgsql"
-AS
-$$
-DECLARE
-    staff_record RECORD;     -- Will hold the row returned from the inner function
-    total_amount NUMERIC;    -- To store the total amount of payments
-BEGIN
-    -- Call another function (search_staff) and store the returned row into staff_record
-    staff_record := search_staff(staffID);
-
-    -- Calculate the total payment amount made by the staff member
-    total_amount := (
-        SELECT SUM(amount) 
-        FROM payment 
-        WHERE staff_id = staffID
-    );
-
-    -- Return a formatted string with staff ID, name, and total payment
-    RETURN staff_record.id || E'\t' || staff_record.firstname || E'\t' || total_amount;
-END
-$$;
-
-```
-
-```sql
--- Execute the function for staff ID 2
-SELECT payment_summary(2);
-
-```
-
-## Triggers 
-
-Triggers are used to automatically perform predefined tasks in response to specific events such as INSERT, UPDATE, or DELETE operations on a table. They help enforce rules, maintain audit trails, or perform automatic updates in a consistent and reliable manner.
-
-A trigger definition typically consists of two parts:
-
-* Trigger Function
-
-  This is a user-defined function that contains the logic to be executed automatically. It can include operations such as logging changes, validating data, or updating related tables.
-
-* Event Definition
-
-  This specifies the event that activates the trigger (e.g., AFTER INSERT, BEFORE UPDATE, or AFTER DELETE) and the table to which the trigger is attached. It also specifies whether the trigger fires for each row or once per statement.
-
-
-
-**Advantages of Using Triggers**
-* Maintaining Data Integrity:
-  * Triggers offer an alternative to enforce data consistency.
-  * Example: When a product is sold, reduce its stock count automatically.
-
-* Alternative to Scheduled Tasks:
-Some automated tasks that are usually scheduled (e.g., via CRON) can instead be done instantly using triggers.
-
-* Automatic Execution:
-  * Tasks are performed immediately, before or after data-modifying operations, without requiring explicit calls.
-  * Example: When a customer record is deleted, automatically move the data to an OldCustomers table.
-
-* Useful for Logging Activities:
-  * Triggers can be used to record changes in a separate log table for tracking purposes.
-  * Example: When a user changes their password, log the activity in an audit table.
-
 
 ---
 **The following queries are based on the Northwind sample database.**
 
 ---
 
-**Trigger Example: Monitoring Unit Price Changes of Products**
+## **Aggregate Functions And Grouping**
 
-This example demonstrates how to use a trigger in PostgreSQL to track changes in a product's unit price. When the 
-price of a product is updated, the trigger automatically inserts a record into a logging table.
+**Aggregate Functions**
 
-* Step 1: Add a new table for logging
+Aggregate functions perform calculations on a set of rows and return a single value, 
+such as COUNT(), MAX(), MIN(), SUM(), AND AVG().
+
 ```sql
-CREATE TABLE public.ProductPriceChangeLog (
-    log_id serial,                                -- Unique identifier for each change
-    product_id SMALLINT NOT NULL,                 -- ID of the product whose price changed
-    old_price REAL NOT NULL,                      -- The previous price
-    new_price REAL NOT NULL,                      -- The new price after the update
-    change_date TIMESTAMP NOT NULL,               -- Timestamp of when the change occurred
-    CONSTRAINT PK_ProductPriceChangeLog PRIMARY KEY (log_id)
+SELECT COUNT(*) FROM "customers";                         -- Counts all customer records (including NULL values)
+SELECT COUNT("Region") FROM "customers";                  -- Counts non-NULL values in the Region column only
+SELECT MAX("UnitPrice") FROM "products";                  -- Returns the highest product price in the table
+SELECT MIN("UnitPrice") FROM "products";                  -- Returns the lowest product price in the table
+SELECT SUM("UnitPrice") FROM "products";                  -- Calculates the sum of all product prices
+SELECT AVG("UnitPrice") FROM "products";                  -- Calculates the average price across all products
+
+```
+
+Key differences:
+
+* COUNT(*) counts all rows, while COUNT(column) counts non-NULL values in that column
+
+* MAX/MIN work with numeric, date, and string data types
+
+* SUM/AVG only work with numeric columns
+
+* All these aggregate functions ignore NULL values (except COUNT(*))
+
+**Grouping - `GROUP BY`**
+
+Grouping in SQL groups the query result based on one or more columns,
+typically using the `GROUP BY` clause.
+Aggregate functions are often used with `GROUP BY` to perform calculations on each group.
+
+In a grouping operation, the selected fields must either be the grouped field(s) or aggregate functions (such as COUNT, SUM, AVG, etc.).
+
+```sql
+
+-- Groups all rows in the products table by the CategoryID column and returns each unique CategoryID once.
+SELECT "CategoryID"
+FROM products
+GROUP BY "CategoryID"
+ORDER BY "CategoryID";
+
+-- Count products in each category
+SELECT "CategoryID", COUNT(*) AS ProductCount
+FROM products
+GROUP BY "CategoryID";
+-- This query groups the products by CategoryID and counts how many products are in each group.
+
+-- Average unit price per category
+SELECT "CategoryID", AVG("UnitPrice") AS AveragePrice
+FROM products
+GROUP BY "CategoryID";
+-- This calculates the average unit price for products in each category.
+
+-- Total price of products per category
+SELECT "CategoryID", SUM("UnitPrice") AS TotalPrice
+FROM products
+GROUP BY "CategoryID";
+-- This gives the total of all unit prices for each category.
+
+-- Minimum and maximum unit price in each category
+SELECT "CategoryID",
+       MIN("UnitPrice") AS MinPrice,
+       MAX("UnitPrice") AS MaxPrice
+FROM products
+GROUP BY "CategoryID";
+```
+
+**Filtering Groups - HAVING**
+
+The HAVING clause filters the results after grouping, while WHERE filters rows before grouping.
+
+```sql
+SELECT "CategoryID", COUNT(*) AS "ProductCount"
+FROM "products"
+GROUP BY "CategoryID"
+HAVING COUNT(*) > 10;  -- Only show categories with more than 10 products
+-- HAVING COUNT(*) > 5 AND AVG("UnitPrice") < 50;
+
+
+SELECT "CategoryID", COUNT(*) AS "ProductCount"
+FROM "products"
+GROUP BY "CategoryID"
+HAVING "CategoryID"=1;  -- Only show category 1
+  
+  
+--An alternative and better approach is filtering records before grouping, if possible.
+SELECT "CategoryID", COUNT(*) AS "ProductCount"
+FROM "products"
+WHERE "CategoryID"=1  -- Filters before grouping
+GROUP BY "CategoryID";
+```
+
+## Subqueries in SQL
+
+```sql
+-- 1. SINGLE-VALUE SUBQUERY (Scalar)
+    -- Returns a single value (a single column and row).
+    -- Can be used in WHERE, HAVING, or SELECT clauses.
+
+-- Find products with a unit price less than the average unit price.
+SELECT "ProductID", "UnitPrice" FROM "products"
+WHERE "UnitPrice" < (SELECT AVG("UnitPrice") FROM "products");
+
+-- List each product's unit price and its difference from the average price.
+SELECT
+    "ProductName",
+    "UnitPrice",
+    "UnitPrice" - (
+        SELECT AVG("UnitPrice")
+        FROM "products"
+    ) AS "PriceDiffFromAvg"
+FROM "products";
+
+-- 2. MULTI-VALUE SUBQUERY
+    -- Returns multiple values (one or more rows, but one column).
+    -- Commonly used with operators like IN, NOT IN, ALL, ANY, and EXISTS.
+
+-- Find products supplied by suppliers in London.
+SELECT "ProductName"
+FROM products
+WHERE "SupplierID" IN (
+    SELECT "SupplierID" FROM suppliers WHERE "City" = 'Tokyo'
 );
 
+-- 3. MULTI-COLUMN SUBQUERY
+-- Returns multiple values (one or more rows and multiple columns).
+-- Typically used with IN or EXISTS operators.
+
+-- Find orders placed by customers in 'Japan' and 'Argentina'.
+SELECT "OrderID", "CustomerID"
+FROM orders
+WHERE ("CustomerID") IN (
+    SELECT "CustomerID" FROM customers WHERE "Country" IN ('Japan', 'Argentina')
+);
+
+-- 4. CORRELATED SUBQUERY
+
+-- The outer query starts examining each row in the customers table
+-- For each customer, it executes the inner subquery
+-- The subquery checks if there's any order (SELECT *) where the order's CustomerID matches the current customer's CustomerID
+-- If the subquery returns any rows (EXISTS is true), the customer is included in results
+-- If no rows are returned (EXISTS is false), the customer is excluded
+-- This correlated subquery behaves exactly like a nested loop in programming
+-- The EXISTS version is often most efficient when you only need to check for existence of related records.
+
+SELECT "CustomerID", "CompanyName", "ContactName"
+FROM "customers"
+WHERE EXISTS
+          (SELECT * FROM "orders" WHERE "customers"."CustomerID" = "orders"."CustomerID");
+
+-- Alternative formulations
+
+SELECT DISTINCT c."CustomerID", c."CompanyName", c."ContactName"
+FROM "customers" c
+         JOIN "orders" o ON c."CustomerID" = o."CustomerID";
+
+SELECT "CustomerID", "CompanyName", "ContactName"
+FROM "customers"
+WHERE "CustomerID" IN (SELECT "CustomerID" FROM "orders");
+
 ```
 
-* Step 2: Define the Trigger Function
+## Set Operations
+
+These operators combine the results of two or more SELECT statements.
+
+**For set operations, the SELECT statements must have the same number of columns and 
+compatible data types in the corresponding columns.**
+
+* UNION: Returns all distinct rows from both queries.
+* UNION ALL: Returns all rows from both queries, including duplicates.
+* INTERSECT: Returns rows that are present in both queries.
+* EXCEPT (or MINUS in some other SQL dialects): Returns rows that are present in the first query but not in the second.
+
 ```sql
-CREATE OR REPLACE FUNCTION track_product_price_change()
-RETURNS TRIGGER 
-AS
-$$
-BEGIN
-    -- Check if the unit price is changed
-    IF NEW."UnitPrice" <> OLD."UnitPrice" THEN
-        -- Insert a new log entry into the tracking table
-        INSERT INTO public.ProductPriceChangeLog(product_id, old_price, new_price, change_date)
-        VALUES (OLD."ProductID", OLD."UnitPrice", NEW."UnitPrice", CURRENT_TIMESTAMP);
-    END IF;
+-- Combine two SELECT result sets and remove duplicates, then sort by the second column (Country).
+SELECT "CompanyName", "Country" FROM "customers"
+UNION
+SELECT "CompanyName", "Country" FROM "suppliers"
+ORDER BY 2;
 
-    RETURN NEW; -- Allow the update to proceed
-END;
-$$
-LANGUAGE plpgsql;
 
+-- Combine two SELECT result sets and include duplicates, then sort by the first column (CompanyName).
+SELECT "CompanyName", "Country" FROM "customers"
+UNION ALL
+SELECT "CompanyName", "Country" FROM "suppliers"
+ORDER BY 1;
+
+-- Combine two SELECT result sets and return only common rows, then sort by the second column (Country).
+-- INTERSECT returns only rows present in both result sets.
+SELECT "CompanyName", "Country" FROM "customers"
+INTERSECT
+SELECT "CompanyName", "Country" FROM "suppliers"
+ORDER BY 2;
+
+
+-- Combine two SELECT result sets and return rows from the first set that are not in the second set, then sort by the second column (Country).
+
+SELECT "CompanyName", "Country" FROM "customers"
+EXCEPT
+SELECT "CompanyName", "Country" FROM "suppliers"
+ORDER BY 2;
 ```
 
-* Step 3: Define the trigger
+## Views
+A view is a virtual table based on a SELECT query. They simplify complex queries and enhance reusability.
+
+Views are dynamic because they generate results on the fly by executing the underlying query each time 
+they are accessed, reflecting the most current data.
+
+
+**Benefits of using Views:**
+
+* Simplification: Hide complex joins and calculations, making queries easier to write and understand.
+* Code Reusability: Define a query once and reuse it multiple times.
+* Security: Restrict access to certain columns or rows without granting direct access to the base tables.
 
 ```sql
-CREATE TRIGGER on_unit_price_change
-BEFORE UPDATE ON products
-FOR EACH ROW
-EXECUTE FUNCTION track_product_price_change();
+-- To define or modify a view
+CREATE OR REPLACE VIEW "public"."OrderCustomerEmployee" AS
+SELECT "orders"."OrderID",
+  "orders"."OrderDate",
+  "customers"."CompanyName",
+  "customers"."ContactName",
+  "employees"."FirstName",
+  "employees"."LastName"
+FROM "orders"
+INNER JOIN "employees" ON "orders"."EmployeeID" = "employees"."EmployeeID"
+INNER JOIN "customers" ON "orders"."CustomerID" = "customers"."CustomerID";
 
+-- Querying Views - just like a table
+SELECT * FROM "OrderCustomerEmployee";
+
+-- To remove a view
+DROP VIEW "OrderCustomerEmployee";
 ```
 
-* Example Use Case:
-  * This update triggers the function because the price is being changed.
-  * A record is automatically inserted into ProductPriceChangeLog showing the change from the old price to 100.
+---
+
+## Transactions
+
+A transaction is a sequence of one or more SQL operations that are treated as a single logical unit of work. 
+
+Transactions ensure data integrity by adhering to the ACID properties:
+* Atomicity: All operations within a transaction either succeed completely (commit) or fail completely (rollback). There's no partial execution.
+* Consistency: A transaction brings the database from one valid state to another valid state. It preserves all defined rules and constraints.
+* Isolation: Concurrent transactions should not interfere with each other. The effects of one transaction should not be visible to others until it is committed.
+* Durability: Once a transaction is committed, its changes are permanent and will survive system failures.
+
 ```sql
+-- Start transaction
+BEGIN;
+
+-- 1. Add order
+INSERT INTO orders ("OrderID", "CustomerID", "EmployeeID", "OrderDate")
+VALUES (10247, 'ALFKI', 5, CURRENT_DATE);
+
+-- 2. Add order details
+INSERT INTO order_details ("OrderID", "ProductID", "UnitPrice", "Quantity", "Discount")
+VALUES (10247, 11, 14.00, 12, 0);
+
+-- 3. Update inventory
 UPDATE products
-SET "UnitPrice" = 100
-WHERE "ProductID" = 4;
-```
+SET "UnitsInStock" = "UnitsInStock" - 12
+WHERE "ProductID"  = 11;
 
-**Before Clause**
-```sql
--- Trigger Function: Pre-insert or pre-update validation and formatting
-CREATE OR REPLACE FUNCTION customer_before_insert_or_update()
-RETURNS TRIGGER 
-AS
-$$
-BEGIN
-    -- Convert the company name to uppercase
-    NEW."CompanyName" := UPPER(NEW."CompanyName");
-
-    -- Remove leading and trailing spaces from contact name
-    NEW."ContactName" := TRIM(NEW."ContactName");
-
-    -- Raise an error if city is NULL
-    IF NEW."City" IS NULL THEN
-        RAISE EXCEPTION 'City field cannot be null.';
-    END IF;
-
-    -- Allow the insert or update to proceed with the modified data
-    RETURN NEW;
-END;
-$$
-LANGUAGE plpgsql;
-```
-```sql
--- Define Trigger: Runs before insert or update on "customers"
-CREATE TRIGGER customer_data_validation
-BEFORE INSERT OR UPDATE ON "customers"
-FOR EACH ROW
-EXECUTE FUNCTION customer_before_insert_or_update();
-```
-```sql
--- Example: Insert without city (will raise exception)
-INSERT INTO "customers" ("CustomerID", "CompanyName", "ContactName") 
-VALUES ('45', 'XY Ltd.', '    Jane Roe     ');
-
--- Example: Insert with all required fields
-INSERT INTO "customers" ("CustomerID", "CompanyName", "ContactName", "City") 
-VALUES ('45', 'XY Ltd.', '    Jane Roe     ', 'Petropavlovsk');
-```
-```sql
--- Disable a specific trigger on the products table
-ALTER TABLE "products"
-DISABLE TRIGGER on_unit_price_change;
-
--- Re-enable the specific trigger
-ALTER TABLE "products"
-ENABLE TRIGGER on_unit_price_change;
-
--- Disable all triggers on the products table
-ALTER TABLE "products"
-DISABLE TRIGGER ALL;
-
--- Re-enable all triggers on the products table
-ALTER TABLE "products"
-ENABLE TRIGGER ALL;
-
--- Drop a specific trigger
-DROP TRIGGER IF EXISTS on_unit_price_change ON "products";
-
+-- End of transaction. Make changes permanent.
+COMMIT;
 ```
 
 
 ---
+[Exercise1](./exercises)
+---
 
-## [Exercise1](./exercises)
 
+
+## Performance Optimization and Indexing
+
+Performance Optimization: Ensuring that your SQL queries execute efficiently and return results quickly is crucial for 
+application responsiveness and scalability. Performance optimization in DBMS involves a range of techniques, 
+from writing efficient SQL queries to leveraging database features such as indexing, appropriate normalization, 
+and fine-tuning server configuration.
+
+
+### EXPLAIN ANALYZE - Analyzing Queries and Identifying Bottlenecks
+
+**EXPLAIN:** Shows the estimated execution plan that PostgreSQL will use for your query. Analyze the plan to see which 
+indexes are being used, the order of operations (e.g., joins, scans), and the estimated costs. Look for full table 
+scans on large tables when you expect an index to be used.
+
+**EXPLAIN ANALYZE:** Actually executes the query and provides detailed statistics about the execution, 
+including the actual time taken for each step, the number of rows processed, and buffer usage. This is crucial for 
+identifying real performance bottlenecks.
+
+```sql
+EXPLAIN
+SELECT * FROM "customer";
+
+EXPLAIN ANALYSE
+SELECT * FROM "customer";
+```
+**Query optimization is the process where PostgreSQL chooses the most efficient 
+execution plan for a SQL statement based on cost estimates.**
+
+Analyze the query plan:
+* Seq Scan (slow full-table scan) → Needs an index.
+* Index Scan (fast indexed lookup).
+* Nested Loop vs Hash Join vs Merge Join (join strategies).
+
+
+### Writing Efficient SQL Queries
+
+* Select Only Necessary Columns
+  * Avoid `SELECT *` and fetch only required columns
+  * `SELECT *` statement results in higher I/O, memory, CPU, and energy usage, and can significantly 
+  increase query execution time.
+  
+* Filter Data Early with WHERE Clauses
+  * Apply filters as early as possible 
+  * This reduces the number of rows the database needs to process in subsequent operations like joins and aggregations.
+
+* Optimize JOIN Conditions
+  * Ensure join columns are indexed: Joins are often performance-critical. Having indexes on the columns used in ON clauses 
+  can dramatically speed up the matching process. 
+  * Use the appropriate JOIN type: Understand the differences between INNER JOIN, LEFT JOIN, RIGHT JOIN, and 
+  FULL OUTER JOIN and use the one that accurately reflects your data retrieval needs. Unnecessary outer joins can 
+  lead to performance overhead.
+  
+* Use LIMIT and pagination to Restrict Results. Reduces the result set for large queries
+  ```sql
+  select * from orders
+  order by "OrderID" DESC
+  limit 10; -- list the last 10 orders
+  
+  select * from orders
+  order by "OrderID" DESC
+  limit 10 offset 0; -- list the 10 orders of first page
+  ```
+* Avoid Operations Inside WHERE Clauses on Indexed Columns
+  ```sql
+  -- Inefficient (functions can prevent index usage):
+  SELECT * FROM orders WHERE DATE_PART('year', "OrderDate") = 2024;
+  
+  -- Efficient
+  SELECT * FROM orders WHERE "OrderDate" >= '2024-01-01' AND "OrderDate" < '2025-01-01';
+  ```
+* Use joins instead of subqueries (if better).	Joins are often faster and more readable.
+  * Using a correlated subquery with EXISTS can lead to better performance and faster execution, particularly 
+  when checking for the existence of related data.
+
+* Use LIKE Patterns Carefully
+  * Leading wildcards (%value) are expensive - cannot efficiently use standard B-tree indexes. The database has to scan the entire column.
+  * Trailing wildcards (value%) are generally more efficient
+  * Consider Full-Text Search
+    * For complex text searching requirements involving leading wildcards or more sophisticated pattern matching, 
+    explore PostgreSQL's full-text search capabilities (using tsvector and tsquery with GIN or GiST indexes).
+
+* Use indexes on columns that are frequently used in filtering (WHERE), joining (JOIN ON), sorting (ORDER BY), and grouping (GROUP BY) operations.
+
+* Regularly run VACUUM to free up storage and ANALYZE to update statistics that help the query planner choose efficient execution plans.
+  * Use VACUUM ANALYZE after bulk inserts, updates, or deletes to keep the database performance optimal.
+  
+### Database Design & Server Configuration
+* A well-normalized database schema can significantly improve query performance. It reduces data redundancy and 
+improves data integrity, which can lead to more efficient queries.
+
+* Clearly defined relationships between tables (using primary and foreign keys) allow the database to efficiently perform joins.
+
+* Choosing the correct data types for your columns optimizes storage and can improve query performance.
+
+* Server settings (e.g., shared_buffers, work_mem) can impact performance.
+
+
+### Indexing 
+
+An index is a data structure that improves the speed of data retrieval operations on a database table. 
+
+
+**Types of Indexes (Common in PostgreSQL)**
+
+* B-tree Indexes (Default): Suitable for equality and range comparisons (=, >, <, >=, <=, BETWEEN, LIKE with no leading wildcard).
+* Hash Indexes: Useful for equality comparisons (=).
+* GIN Indexes (Generalized Inverted Index): Effective for full-text search, array searches, and indexing composite types.
+* GiST Indexes (Generalized Search Tree): Suitable for geometric and spatial data, as well as other complex data types.
+
+**Defining Index**
+```sql
+-- Construct a basic index on a single column. The default type is B-tree
+CREATE INDEX idx_customers_country ON customers("Country");
+
+-- Construct a hash index on ProductName column of products table.
+CREATE INDEX idx_product_name_hash
+  ON products USING HASH ("ProductName");
+```
+
+**Example**
+
+```sql
+-- Define a new table called person
+CREATE TABLE person (
+    person_id SERIAL,
+    first_name VARCHAR(40) NOT NULL,
+    last_name VARCHAR(40) NOT NULL,
+    registration_date TIMESTAMP DEFAULT '2019-01-01 01:00:00',
+    CONSTRAINT person_pk PRIMARY KEY(person_id)
+);
+
+-- Function to insert random data into the person table
+CREATE OR REPLACE FUNCTION insert_data(record_count INTEGER)
+RETURNS VOID
+AS  
+$$
+BEGIN   
+    IF record_count > 0 THEN
+        FOR i IN 1 .. record_count LOOP
+            INSERT INTO person (first_name, last_name, registration_date) 
+            VALUES (
+                substring('ABCÇDEFGĞHIiJKLMNOÖPRSŞTUÜVYZ' FROM ceil(random()*10)::smallint FOR ceil(random()*20)::smallint), 
+                substring('ABCÇDEFGĞHIiJKLMNOÖPRSŞTUÜVYZ' FROM ceil(random()*10)::smallint FOR ceil(random()*20)::smallint),
+                NOW() + (random() * (NOW() + INTERVAL '365 days' - NOW()))
+            );
+        END LOOP;
+    END IF; 
+END;
+$$
+LANGUAGE 'plpgsql' SECURITY DEFINER;
+
+-- Insert 100,000 random rows
+SELECT insert_data(100000);
+
+-- Query without index: Sequential scan
+EXPLAIN ANALYZE
+SELECT * FROM person
+WHERE first_name = 'EXAMPLE';  -- One of the rows should have first_name set to 'EXAMPLE'
+
+-- Output (without index):
+-- Seq Scan on person  (cost=0.00..2107.00 rows=496 width=38) (actual time=20.214..20.215 rows=1 loops=1)
+--   Filter: (first_name = 'EXAMPLE')
+--   Rows Removed by Filter: 99999
+-- Planning Time: 0.085 ms
+-- Execution Time: 20.237 ms
+
+-- Define index on first_name column
+CREATE INDEX first_name_idx ON public.person USING btree(first_name ASC NULLS LAST);
+
+-- Query with index: Bitmap Index Scan
+EXPLAIN ANALYZE
+SELECT * FROM person
+WHERE first_name = 'Jane';  -- One of the rows should have first_name set to 'EXAMPLE'
+
+-- Output (with index):
+-- Bitmap Heap Scan on person  (cost=12.26..784.32 rows=496 width=38) (actual time=0.052..0.053 rows=1 loops=1)
+--   Recheck Cond: (first_name = 'EXAMPLE')
+--   Heap Blocks: exact=1
+--   -> Bitmap Index Scan on first_name_idx  (cost=0.00..12.14 rows=496 width=0) (actual time=0.045..0.046 rows=1 loops=1)
+--        Index Cond: (first_name = 'EXAMPLE')
+-- Planning Time: 0.123 ms
+-- Execution Time: 0.083 ms
+
+```
+
+---
+[Exercise2](./exercises)
 ---
