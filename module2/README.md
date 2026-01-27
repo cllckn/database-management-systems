@@ -11,8 +11,8 @@
       * [Emerging and Alternative Data Models](#emerging-and-alternative-data-models)
   * [4. Entity–Relationship (ER) Model](#4-entityrelationship-er-model)
     * [4.1. Benefits of ER Modeling](#41-benefits-of-er-modeling)
-    * [4.2. Why Data Modeling Matters for Different Database Systems](#42-why-data-modeling-matters-for-different-database-systems)
-    * [4.3. Key Components of the ER Model](#43-key-components-of-the-er-model)
+    * [4.2. Key Components of the ER Model](#42-key-components-of-the-er-model)
+    * [4.3. Why Data Modeling Matters for Different Database Systems](#43-why-data-modeling-matters-for-different-database-systems)
     * [4.4. Transforming Business Rules into an ER Model](#44-transforming-business-rules-into-an-er-model)
       * [Examples: Business Rules to ER Model](#examples-business-rules-to-er-model)
       * [Relationship Types (Cardinalities)](#relationship-types-cardinalities)
@@ -80,7 +80,6 @@ The Database Development Lifecycle typically consists of four fundamental phases
 **Roles Involved:** Database Administrators (DBAs), System Administrators  
 **Output:** Stable, Optimized, and Secure Database System
 
-
 ---
 
 ## 2. Business Rules
@@ -105,7 +104,7 @@ Direct interaction with **end users** ensures a clearer understanding of actual 
 
 - An employee can belong to only one department.
 - A customer must provide a valid email.
-- A student can enroll in many courses, and a course can have many students.
+- A student can enroll in many classes, and a class can have many students.
 - An order must include at least one product.
 - A customer can place multiple orders, but each order is placed by only one customer.
 
@@ -180,8 +179,8 @@ In the early days of database systems, several data models were introduced. Whil
 
 ## 4. Entity–Relationship (ER) Model
 
-The **Entity–Relationship (ER) Model** is a **conceptual representation of data** that describes the structure of a database using the following core components:
-
+The **Entity–Relationship (ER) Model** is a conceptual data model used to represent the structure of a database 
+in terms of entities, relationships, and attributes.
 
 ![ER Model](../resources/figures/ecommerce-er-v3.png)
 
@@ -197,18 +196,7 @@ The **Entity–Relationship (ER) Model** is a **conceptual representation of dat
 
 ---
 
-### 4.2. Why Data Modeling Matters for Different Database Systems
-
-Data modeling is essential regardless of the database technology used; however, **how strictly a model is enforced differs** between relational and NoSQL systems.
-
-- **Relational databases** rely on **well-defined schemas** derived directly from data models such as the ER model.
-- **NoSQL databases** often use **flexible or schema-less designs**, but still require a clear understanding of entities,
-  relationships, and access patterns.
-
-
----
-
-### 4.3. Key Components of the ER Model
+### 4.2. Key Components of the ER Model
 
 - **Entities**  
   Represent real-world objects about which data is collected and stored  
@@ -236,6 +224,17 @@ Data modeling is essential regardless of the database technology used; however, 
 
 >Relational databases strictly enforce constraints, whereas NoSQL systems may relax constraints to improve 
 > **scalability and performance**.
+
+
+---
+
+### 4.3. Why Data Modeling Matters for Different Database Systems
+
+Data modeling is essential regardless of the database technology used; however, **how strictly a model is enforced differs** between relational and NoSQL systems.
+
+- **Relational databases** rely on **well-defined schemas** derived directly from data models such as the ER model.
+- **NoSQL databases** often use **flexible or schema-less designs**, but still require a clear understanding of entities,
+  relationships, and access patterns.
 
 
 ---
@@ -297,14 +296,14 @@ Relationships are **bidirectional**, and its type (cardinality) is determined by
 
 ---
 
-**One-to-Many (1:M) Relationship (Instructor – Course)**
+**One-to-Many (1:M) Relationship (Instructor – Class)**
 
-- One **Instructor** can teach **many Courses**.  
-  Each **Course** is taught by only **one Instructor**.  
+- One **Instructor** can teach **many Classes**.  
+  Each **Class** is taught by only **one Instructor**.  
   → **1:M**
 
-- *What is the maximum number of courses per instructor?* → **many** → **Cardinality**
-- *What is the maximum number of instructors per course?* → **one** → **Cardinality**
+- *What is the maximum number of classes per instructor?* → **many** → **Cardinality**
+- *What is the maximum number of instructors per class?* → **one** → **Cardinality**
 
 ---
 
@@ -319,14 +318,14 @@ Relationships are **bidirectional**, and its type (cardinality) is determined by
 
 ---
 
-**Many-to-Many (M:N) Relationship (Student – Course)**
+**Many-to-Many (M:N) Relationship (Student – Class)**
 
-- One **Student** can enroll in **many Courses**.  
-  Each **Course** can have **many Students**.  
+- One **Student** can enroll in **many Classes**.  
+  Each **Class** can have **many Students**.  
   → **M:N**
 
-- *What is the maximum number of courses per student?* → **many** → **Cardinality**
-- *What is the maximum number of students per course?* → **many** → **Cardinality**
+- *What is the maximum number of classes per student?* → **many** → **Cardinality**
+- *What is the maximum number of students per class?* → **many** → **Cardinality**
 
 
 ### 4.5. Types of Attributes
@@ -453,25 +452,25 @@ This represents a **One-to-Many (1:M)** relationship.
 
 #### Many-to-Many (M:N) Relationship
 
-**Example: Student – Course**
+**Example: Student – Class**
 
-- A **Student** can enroll in **many Courses**.
-- A **Course** can have **many Students**.
+- A **Student** can enroll in **many Classes**.
+- A **Class** can have **many Students**.
 
 ![](../resources/figures/er-many-to-many-example.png)
 
 
 **Cardinality and Participation Interpretation:**
 
-- **Course side in the diagram**
-  - *What is the maximum number of `Course` per `Student`?* → **many**  → **Cardinality**
-  - *What is the minimum number of `Course` per `Student`?* → **zero**  → **Participation (optional)**
+- **Class side in the diagram**
+  - *What is the maximum number of `Class` per `Student`?* → **many**  → **Cardinality**
+  - *What is the minimum number of `Class` per `Student`?* → **zero**  → **Participation (optional)**
 
 - **Student side in the diagram**
-  - *What is the maximum number of `Student` per `Course`?* → **many**  → **Cardinality**
-  - *What is the minimum number of `Student` per `Course`?* → **zero**  → **Participation (optional)**
+  - *What is the maximum number of `Student` per `Class`?* → **many**  → **Cardinality**
+  - *What is the minimum number of `Student` per `Class`?* → **zero**  → **Participation (optional)**
 
-Student >0 ----------- 0< Course
+Student >0 ----------- 0< Class
 
 
 This represents a **Many-to-Many (M:N)** relationship.
