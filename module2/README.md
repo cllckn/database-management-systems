@@ -174,9 +174,6 @@ In the early days of database systems, several data models were introduced. Whil
   - Emphasize **scalability**, **high availability**, and **flexible schemas** over rigid structure.
   - **Vector databases** are optimized for storing and searching high-dimensional vector embeddings,
     commonly used in **AI, machine learning, recommendation systems, and semantic search**.
-  - Emphasize scalability, high availability, and flexible schemas over strict structure.
-
-
 
 ---
 
@@ -192,11 +189,11 @@ The **Entity–Relationship (ER) Model** is a **conceptual representation of dat
 
 ### 4.1. Benefits of ER Modeling
 1. **Improves Communication**
-- Facilitates clear communication between database designers, developers, and end users.
-- Ensures that all stakeholders share a common understanding of the data structure before implementation.
-
+   - Facilitates clear communication between database designers, developers, and end users.
+   - Ensures that all stakeholders share a common understanding of the data structure before implementation.
+   
 2. **Guides Database Implementation**
-- Serves as a blueprint for designing relational or other database schemas.
+   - Serves as a blueprint for designing relational or other database schemas.
 
 ---
 
