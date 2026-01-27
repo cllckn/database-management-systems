@@ -310,7 +310,7 @@ Relationships are **bidirectional**, and its type (cardinality) is determined by
 **One-to-One (1:1) Relationship (Person – Department (Manager))**
 
 - One **Person** can manage **one Department**.  
-  Each **Department** has only **one Manager**.  
+  Each **Department** has only **one Person (Manager)**.  
   → **1:1**
 
 - *What is the maximum number of departments per person?* → **one** → **Cardinality**
@@ -394,7 +394,7 @@ associated with an instance in the related entity.
 
 | Symbol            | Meaning | Explanation |
 |-------------------|-------|-------------|
-| I                 | One | Exactly one instance |
+| `I`               | One | Exactly one instance |
 | `<` (crow’s foot) | Many | Zero or more / many instances |
 
 ---
@@ -404,7 +404,7 @@ associated with an instance in the related entity.
 | Symbol | Meaning | Explanation |
 |--------|-------|-------------|
 | `O`    | Optional | Participation is not required (zero allowed) |
-| I      | Mandatory | Participation is required (at least one) |
+| `I`      | Mandatory | Participation is required (at least one) |
 
 
 **To determine the cardinality and participation:**
@@ -565,13 +565,13 @@ A relationship is **strong** (identifying) when:
 **Example: Order – OrderItem**
 
 - An **Order** exists independently
-- An **OrderItem** cannot exist without an Order (**weak entity**)
+- An **OrderItem**(**weak entity**) cannot exist without an Order 
 
 **OrderItem Primary Key:** `(OrderID, LineNumber)`
 
 
 
-<img src="../resources/figures/er-strong-relationship.png" width="500">
+<img src="../resources/figures/er-strong-relationship.png" width="900">
 
 **Relationship Type:** One-to-Many (1:M)  
 **Relationship Nature:** Strong (Identifying)
@@ -597,7 +597,7 @@ If a Department is removed, the Employee still exists as an entity in the system
 
 
 
-<img src="../resources/figures/er-weak-relationship.png" width="600">
+<img src="../resources/figures/er-weak-relationship.png" width="900">
 
 
 ---
