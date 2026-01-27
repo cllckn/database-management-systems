@@ -2,236 +2,607 @@
 
 <!-- TOC -->
 * [Module 3: Relational Database Model](#module-3-relational-database-model)
-  * [Relational Databases and Basic SQL](#relational-databases-and-basic-sql)
-    * [**Setting Up the Working Environment for RDBMS**](#setting-up-the-working-environment-for-rdbms)
-      * [**Installing PostgreSQL**](#installing-postgresql)
-      * [**Installing pgAdmin**](#installing-pgadmin)
-      * [**Importing and Exporting Sample Databases**](#importing-and-exporting-sample-databases)
-    * [Basic SQL](#basic-sql)
-      * [CREATE DATABASE](#create-database)
-      * [CREATE TABLE](#create-table)
-      * [SELECT](#select)
-      * [INSERT INTO](#insert-into)
-      * [**UPDATE**](#update)
-      * [**DELETE**](#delete)
-  * [Using a Programming Language to Interact With a Database](#using-a-programming-language-to-interact-with-a-database)
-    * [Database Drivers – Core Functions](#database-drivers--core-functions)
-    * [Database Operations with Java and PostgreSQL](#database-operations-with-java-and-postgresql)
-      * [Example Workflow (Conceptual)](#example-workflow-conceptual)
+  * [1. Fundamentals of the Relational Model](#1-fundamentals-of-the-relational-model)
+    * [Core Terminology](#core-terminology)
+    * [Why Relational Model?](#why-relational-model)
+  * [2. Table (Relation) Structure](#2-table-relation-structure)
+    * [Components of a Table](#components-of-a-table)
+  * [3. Integrity Rules (Constraints)](#3-integrity-rules-constraints)
+    * [Primary Key (PK)](#primary-key-pk)
+    * [Foreign Key (FK)](#foreign-key-fk)
+    * [Unique Constraint](#unique-constraint)
+    * [Not Null Constraint](#not-null-constraint)
+    * [Referential Integrity and Foreign Keys](#referential-integrity-and-foreign-keys)
+    * [Best Practices for Primary Keys](#best-practices-for-primary-keys)
+  * [4. Indexes and Their Role in Database Performance](#4-indexes-and-their-role-in-database-performance)
+    * [Index Scan vs. Sequential Scan](#index-scan-vs-sequential-scan)
+    * [Types of Indexes](#types-of-indexes)
+      * [1. Primary Index](#1-primary-index)
+      * [2. Unique Index](#2-unique-index)
+      * [3. Secondary Index (Non-Unique Index)](#3-secondary-index-non-unique-index)
+      * [4. Full-Text Index](#4-full-text-index)
+    * [Best Practices for Indexes](#best-practices-for-indexes)
+  * [5. System Catalog and Metadata](#5-system-catalog-and-metadata)
+    * [System Catalog](#system-catalog)
+    * [Key Characteristics](#key-characteristics)
+  * [Exercise1: E-Commerce System Design](#exercise1-e-commerce-system-design)
+  * [Extension to Exercise 1: Tracking Individual Product Items](#extension-to-exercise-1-tracking-individual-product-items-)
+    * [Background and Motivation](#background-and-motivation)
+    * [Why Product-Level Tracking Is Not Enough](#why-product-level-tracking-is-not-enough)
+    * [An Incorrect Design Approach (What Not to Do)](#an-incorrect-design-approach-what-not-to-do)
+    * [Normalization as the Solution](#normalization-as-the-solution)
+    * [Refined Entity Definitions](#refined-entity-definitions)
+      * [ProductInventory](#productinventory)
+      * [OrderItem](#orderitem)
+    * [Association Between OrderItem and ProductInventory](#association-between-orderitem-and-productinventory)
+      * [Cardinality Summary](#cardinality-summary)
+    * [Normalization Perspective](#normalization-perspective)
+    * [Conceptual Summary](#conceptual-summary)
 <!-- TOC -->
-## Relational Databases and Basic SQL
 
-- **Relational Databases** organize data into **tables**, where:
-    - Rows represent **records (tuples)**.
-    - Columns represent **attributes**.
-- Relationships are established using:
-    - **Primary Keys** → uniquely identify records.
-    - **Foreign Keys** → define relationships between tables.
-- **SQL (Structured Query Language)** is the standard language used to define, query, and manipulate relational data.
+![Database System](../resources/figures/db-development-lifecycle.png)
 
-> In later modules, these concepts will be contrasted with **NoSQL databases**, which use alternative data models and query mechanisms to address scalability, performance, and flexibility requirements.
-
-
-
-### **Setting Up the Working Environment for RDBMS**
-
-To work with SQL databases efficiently, a proper working environment is required.
-
-#### **Installing PostgreSQL**
-PostgreSQL is an open-source and powerful relational database management system.
-- **Download Link**: [Download PostgreSQL](https://www.postgresql.org/download)
-- Supports Windows, macOS, and Linux.
-- Complies with SQL standards and offers extensive plugin support.
-
-#### **Installing pgAdmin**
-pgAdmin is the most commonly used graphical management tool for PostgreSQL.
-- It is distributed along with PostgreSQL.
-- Provides a user-friendly interface for managing databases, executing queries, and visualizing schemas.
-
-#### **Importing and Exporting Sample Databases**
-
-* **Northwind Sample Database**
-    - A well-known example database that represents the data structure of a trading company.
-    - Can be imported using **pgAdmin**.
-    - [Download](../resources/dbs/northwind.backup)
-
-
-### Basic SQL
-
-
-| Command             | Description                             |
-|---------------------|-----------------------------------------|
-| **CREATE DATABASE** | Constructs a new database.              |
-| **CREATE TABLE**    | Defines a new table.                    |
-| **SELECT**          | Retrieves data from one or more tables. |
-| **INSERT**          | Adds new data into a table.             |
-| **UPDATE**          | Modifies existing records in a table.   |
-| **DELETE**          | Removes specific records from a table.  |
-
-
-#### CREATE DATABASE
-
-Constructs a new database.
-
-```sql
-CREATE DATABASE ecommercedb
-```
-
-#### CREATE TABLE
-
-Defines a new table.
-
-```sql
-CREATE TABLE products (  
-    id SERIAL,
-    code CHAR(6) NOT NULL,
-    name VARCHAR(40) NOT NULL,
-    date DATE DEFAULT '2019-01-01',
-    price MONEY,
-    quantity SMALLINT DEFAULT 0,
-    CONSTRAINT "productsPK" PRIMARY KEY(id),
-    CONSTRAINT "productsUnique" UNIQUE(code),
-    CONSTRAINT "productsCheck" CHECK(quantity >= 0)
-);
-
-```
-
----
-**The following queries are based on the Northwind sample database.**
 
 ---
 
+## 1. Fundamentals of the Relational Model
 
-#### SELECT
+The **relational model** organizes data into **tables (relations)** consisting of **rows (tuples)** and **columns (attributes)**.  
+It is based on solid mathematical foundations (set theory and predicate logic) and is the most widely used data model in database systems.
 
-Retrieves data from one or more tables.
+### Core Terminology
 
-```sql
-SELECT * FROM "customers" WHERE "Country"='Spain' OR "Country"='Türkiye'
-ORDER BY "CustomerID";
+- **Relation**:  
+  A table composed of rows and columns.
+
+- **Tuple**:  
+  A single row in a table representing one record.
+
+- **Attribute**:  
+  A column in a table representing a specific data field.
+
+- **Domain**:  
+  The set of valid values that an attribute can take (e.g., integers, dates, predefined ranges).
+
+- **Relational Schema**:  
+  A formal description of a table’s structure, including:
+    - Attribute names
+    - Data types
+    - Primary Key (PK)
+    - Foreign Keys (FK)
+
+  **Example: Product Table Relational Schema**
+
+    **Product**
+
+    - `ProductID` : `INT`, **PRIMARY KEY**  
+    Unique identifier for each product.
+    - `ProductName` : `VARCHAR(255)`, **NOT NULL**  
+      Name of the product.
+    - `Price` : `DECIMAL(10,2)`, **NOT NULL**  
+      Cost of the product.
+    - `StockQuantity` : `INT`, **NOT NULL**  
+      Number of units available in stock.
+
+  **Textual Notation for Relational Schema**
+    
+  Product(
+    ProductID int PK,
+    ProductName String,
+    Price double,
+    StockQuantity int,
+    CategoryID int FK → Category(CategoryID)
+    )
+
+
+### Why Relational Model?
+
+- Simple and intuitive table-based structure
+- Strong support for **data integrity** and **consistency**
+- Reduced data redundancy through normalization
+- Powerful and standardized querying using **SQL**
+
+---
+
+## 2. Table (Relation) Structure
+
+A table is the fundamental storage structure in a relational database.
+
+### Components of a Table
+
+- **Table Name**  
+  A unique identifier for the table.
+
+- **Columns (Attributes)**  
+  Define the data fields (e.g., `StudentID`, `Name`, `Age`).
+
+- **Rows (Tuples)**  
+  Represent individual records.
+
+**Example: Product Table**
+
+
+- `ProductID` (**Primary Key**): Unique identifier for each product
+- `ProductName`: Name of the product
+- `Price`: Cost of the product
+- `StockQuantity`: Quantity available in stock
+
+![](../resources/figures/product-table.png)
+
+---
+
+## 3. Integrity Rules (Constraints)
+
+**Integrity constraints** ensure data accuracy and consistency within a database.
+
+### Primary Key (PK)
+
+- Uniquely identifies each row in a table
+- Cannot contain `NULL` values
+- Must be unique
+- Examples:
+  - `ProductID` in the **Product** table
+  - `StudentID` in the **Students** table
+
+### Foreign Key (FK)
+
+- Establishes a relationship between two tables
+- Enforces **referential integrity**
+- Ensures that referenced data exists
+
+### Unique Constraint
+
+- Ensures all values in a column are unique
+- Example: `Email` or `Username` in a **Users** table
+
+### Not Null Constraint
+
+- Ensures that a column cannot have `NULL` values
+- Example: `Name`, `CourseCode` in a **Course** table
+
+---
+
+### Referential Integrity and Foreign Keys
+
+**Referential integrity** ensures that relationships between tables remain consistent.
+
+![](../resources/figures/referential-integrity-product-category.png)
+
+
+- `CategoryID` in the **Products** table is a **Foreign Key** referencing  
+  `CategoryID` in the **Category** table.
+
+This means:
+- Every value in `Products.CategoryID` must exist in `Category.CategoryID`
+- The foreign key value may be `NULL` (if allowed)
+
+**Example Instance**
+- Product: *SSD 512GB*
+- `CategoryID = 1` → corresponds to *Storage Devices* in the **Category** table
+
+**What Happens Without Referential Integrity?**
+
+1. **Inserting Invalid Data**
+  - Attempting to insert a product with `CategoryID = 5` fails if no such category exists.
+
+2. **Deleting Referenced Data**
+  - Deleting the *Storage Devices* category is prevented if products still reference it.
+
+>**Best Practice**
+>
+>Always define **foreign keys** to:
+>- Prevent orphaned records
+>- Maintain consistency
+>- Improve data reliability
+
+---
+
+### Best Practices for Primary Keys
+
+- Keep primary keys **compact and simple** to improve performance (searching, constraint enforcement) 
+  Prefer integer-based keys.
+
+  *Example:*  
+  Use `ProductID = 1` instead of `ProductCode = 'SSD512GB'`.
+
+- Avoid using meaningful or descriptive data (e.g., names) as primary keys.
+- Ensure primary keys are **immutable** (do not change over time).
+- Avoid sensitive business data (e.g., SSN) to protect privacy.
+- Prefer **surrogate keys** (auto-incremented integers) over **natural keys**
+  (e.g., SSN, StudentNumber).
+
+---
+
+## 4. Indexes and Their Role in Database Performance
+
+An **index** is a specialized **data structure** that improves the speed of **search (lookup) operations** on a database table.  
+Its primary purpose is to allow the DBMS to locate rows efficiently **without scanning the entire table**.
+
+![](../resources/figures/index-table.png)
+
+
+**Key Characteristics**
+
+- Primarily improves **search and lookup operations**
+- Directly enhances the performance of `SELECT` queries, especially queries involving:
+  - `WHERE` clauses (filtering)
+  - `JOIN` operations (matching rows across tables)
+  - `ORDER BY` clauses (sorting)
+  - `GROUP BY` operations (grouping)
+- Improves the performance of **constraint enforcement**:
+  - **Primary Key (PK)** constraints
+  - **Unique** constraints
+  - **Foreign Key (FK)** checks
+- Indirectly affects `UPDATE` and `DELETE` operations because:
+  - The target rows must first be **located (searched)** before modification or removal
+- Introduces overhead for `INSERT`, `UPDATE`, and `DELETE` operations because:
+  - Indexes must be updated whenever indexed data changes
+
+
+Although indexes are commonly associated with `SELECT` statements, they play a broader role:
+
+- **Constraint validation**
+  - PK and UNIQUE indexes allow fast duplicate checks
+  - FK indexes speed up referential integrity checks
+- **JOIN efficiency**
+  - Indexed join columns reduce the cost of matching rows
+- **Sorting and grouping**
+  - Index order can be reused for `ORDER BY` and `GROUP BY`
+- **DML operations**
+  - `UPDATE` and `DELETE` require locating rows first
+  - Indexes reduce the cost of finding those rows
+
+---
+
+### Index Scan vs. Sequential Scan
+
+- **Index Scan**  
+  The DBMS uses an index to directly locate matching rows, avoiding a full table scan.
+
+- **Sequential Scan (Full Table Scan)**  
+  The DBMS scans every row in the table to find matching data.
+
+---
+
+### Types of Indexes
+
+#### 1. Primary Index
+- Automatically created for the Primary Key
+- Ensures uniqueness and non-null values
+- Example: `ProductID` in the **Products** table
+
+#### 2. Unique Index
+- Ensures all indexed values are unique
+- Allows one `NULL` value (DBMS-dependent)
+- Example: `Email` in a **Users** table
+
+#### 3. Secondary Index (Non-Unique Index)
+- Created on non-primary key columns
+- Allows duplicate values
+- Example: Index on `ProductName` to speed up searches
+
+#### 4. Full-Text Index
+- Specialized index for efficient text searching
+- Supported by systems such as PostgreSQL and MySQL
+- Use Case: Keyword search in blog posts or articles
+
+---
+
+### Best Practices for Indexes
+
+- Define indexes **only on columns that are frequently searched, joined, or constrained**.
+- Index **Primary Keys** and **Foreign Keys** by default.
+- Avoid excessive indexing—too many indexes:
+  - Increase storage usage
+  - Slow down write operations
+- Index columns with **high selectivity** (many distinct values).
+- Avoid indexing columns that:
+  - Change very frequently
+  - Have very few distinct values (e.g., boolean flags)
+- Regularly analyze query performance and adjust indexes accordingly.
+
+---
+
+## 5. System Catalog and Metadata
+
+### System Catalog
+
+The **system catalog** is a collection of internal tables that store **metadata** (data about data).
+
+It contains information about:
+- Tables and columns
+- Data types and domains
+- Primary and foreign keys
+- Indexes
+- Constraints
+- Users and privileges
+
+### Key Characteristics
+
+- Managed automatically by the DBMS
+- Essential for query optimization and integrity enforcement
+- Users typically have **read-only access**, depending on privileges
+
+
+---
+
+## Exercise1: E-Commerce System Design
+
+**From Business Rules to ER Model and Relational Model**
+
+---
+
+**Objective**
+
+In this exercise, **database modeling is demonstrated** by converting **business rules** into an **Entity–Relationship (ER) model** using **Crow’s Foot notation**, followed by preparation for constructing a **relational model**.
+
+---
+
+**Task 1: Analysis of Business Rules**
+
+Below are the business rules describing the structure and constraints of an **e-commerce database**. These rules are **analyzed** to identify the required **entities**, **attributes**, and **relationships**.
+
+---
+
+**Business Rules**
+
+1. A **Customer** is allowed to place **many Orders**, while each **Order** is placed by **exactly one Customer**.
+
+2. Each **Customer** is identified by a **unique Customer ID** and is associated with a **Name**, **Email**, **Phone Number**, and **Shipping Address**.
+
+3. Each **Order** is identified by a **unique Order ID** and includes an **Order Date**, **Total Amount**, and **Status**  
+   (e.g., pending, shipped, delivered).
+
+4. An **Order** may contain **multiple Products**, and a **Product** may appear in **multiple Orders**.  
+   The **quantity of each product within an order** is recorded.
+
+5. Each **Product** is identified by a **unique Product ID** and includes a **Name**, **Description**, **Price**, and **Stock Quantity**.
+
+6. A **Product** is associated with **one or more Categories**, and each **Category** may contain **multiple Products**.
+
+7. **Payments** made by customers are tracked.  
+   Each **Payment** is associated with **one Order**, and each **Order** is associated with **only one Payment**.
+
+8. Each **Payment** is identified by a **unique Payment ID** and includes a **Payment Date**, **Amount Paid**, and **Payment Method**  
+   (e.g., credit card, PayPal).
+
+9. An **Order** may be associated with **one or more Shipments**, while each **Shipment** is associated with **exactly one Order**.
+
+10. **Reviews** may be submitted by **Customers** for **Products**.  
+    Each **Review** is associated with **one Customer** and **one Product**.
+
+11. Each **Review** is identified by a **unique Review ID** and includes a **Rating** (1 to 5), **Review Text**, and **Review Date**.
+
+---
+
+**Task 2: Conversion of Business Rules into an ER Model**
+
+Using **Crow’s Foot notation**, an **ER model** is constructed to represent the above business rules.
+
+The ER model includes:
+
+- **Entities** and their **attributes**
+- **Relationships** between entities
+- **Relationship types (cardinalities)**:
+  - One-to-One (1:1)
+  - One-to-Many (1:M)
+  - Many-to-Many (M:N)
+
+---
+
+**Modeling Notes (Guidance)**
+
+- **Associative entities** are used to resolve **many-to-many relationships** when additional attributes are required  
+  (e.g., Order–Product with Quantity).
+- **Mandatory and optional participation** is explicitly indicated where applicable.
+- **Primary keys** and **foreign keys** are implied by the stated business rules.
+- The resulting ER diagram is designed to support direct transformation into a **relational schema**.
+
+
+
+
+
+
+
+## Extension to Exercise 1: Tracking Individual Product Items 
+
+### Background and Motivation
+
+In the initial design of **Exercise 1**, a **Product** was modeled at the **type level**.  
+That is, a product represented a general item (e.g., *Laptop*, *SSD*) without distinguishing
+between individual physical units.
+
+To represent **which products appear in an order** and **the quantity ordered**, a junction
+table such as **OrderItem** is required. This table captures order-specific details:
+
+- Order reference
+- Product reference
+- Quantity ordered
+- PriceAtSale
+- DiscountAtSale
+
+While this is sufficient for many scenarios, it is **not adequate** for systems where
+**individual product units** must be tracked.
+
+---
+
+### Why Product-Level Tracking Is Not Enough
+
+In realistic business scenarios—such as licensed software, electronic devices, subscriptions,
+serialized goods, or warranty-based products—it is necessary to track **individual product units**
+assigned to customers.
+
+In real-world systems:
+
+- Products exist as **individual physical units**
+- Each unit may have a **unique identifier** (e.g., serial number, barcode)
+- Customers receive a **specific unit**, not just a product type
+
+---
+
+### An Incorrect Design Approach (What Not to Do)
+
+One might attempt to store inventory-level details directly in the Product table:
+
+```text
+ProductID | Name    | UnitPrice | SerialNumber | CustomerID
+-----------------------------------------------------------
+1         | SSD     | 1000      | SR001        | 1
+1         | SSD     | 1000      | SR002        | 4
+2         | Laptop  | 4000      | SR009        | 2
+2         | Laptop  | 4000      | SR010        | NULL
 ```
 
 
-**INNER JOIN**
-Returns only the records that have matching values in both tables.
-- Only products with a valid `CategoryID` in the **Categories** table are included.
-- Any product with a `NULL` `CategoryID` is excluded.
+Attempting to store inventory-level details directly in the **Product** table introduces
+**repeating groups** and mixes product, inventory, and customer assignment data in a single structure.
 
-```sql
-SELECT "ProductID", "ProductName", "CategoryName"
-FROM "products"
-INNER JOIN "categories" ON "products"."CategoryID" = "categories"."CategoryID";
+This design leads to:
+
+- **Data redundancy**, where product information is repeated
+- **Insert anomalies**, where inventory cannot exist independently
+- **Update anomalies**, where changes must be applied in multiple places
+- **Delete anomalies**, where removing data may cause unintended loss of information
+
+These issues compromise **data integrity** and waste storage space.
+
+---
+
+### Normalization as the Solution
+
+To eliminate redundancy and anomalies, the repeating structure is **decomposed** into
+separate, well-defined entities:
+
+- **Product** – stores product type information
+- **OrderItem** – represents products included in an order
+- **ProductInventory** – represents individual physical product units
+
+This restructuring is part of the **normalization process**.
+
+---
+
+### Refined Entity Definitions
+
+#### ProductInventory
+
+A **ProductInventory** record represents a **single physical unit** of a product.
+
+Each ProductInventory item:
+- Belongs to **one Product**
+- Has a **unique identifier** (e.g., InventoryID or SerialNumber)
+- May or may not be sold or assigned
+
+```text
+ProductInventory
+
+InventoryID | ProductID | SerialNumber | Status
+-----------------------------------------------
+101         | 1         | SR001        | Available
+102         | 1         | SR002        | Sold
+201         | 2         | SR009        | Sold
+202         | 2         | SR010        | Available
+
+```
+Product
+
+| ProductID | Name             | UnitPrice |
+|----------:|------------------|----------:|
+| 1         | SSD 512GB        | 1000      |
+| 2         | Laptop Pro 15    | 4000      |
+| 3         | Wireless Mouse   | 150       |
+
+
+---
+
+#### OrderItem
+
+An **OrderItem** represents a product included in a specific order.
+
+Each OrderItem:
+- Belongs to **one Order**
+- Refers to **one Product**
+- Stores sale-specific details (e.g., quantity, price at sale, discount)
+
+```text
+
+OrderItem
+
+OrderItemID | OrderID | ProductID | Quantity | PriceAtSale
+-----------------------------------------------------------
+1           | 5001    | 1         | 2        | 950
+2           | 5001    | 2         | 1        | 3800
+
 ```
 
-#### INSERT INTO
+This entity resolves the **many-to-many** relationship between **Order** and **Product**.
 
-Add new records to a table.
-- **Data integrity constraints** are enforced during the insertion process.
-- It is possible to insert values into only specific columns.
-- Columns that are not explicitly assigned a value will be set to **NULL** (empty).
+---
 
-```sql
-INSERT INTO "customers" 
-("CustomerID", "CompanyName", "ContactName", "Address", "City", "Country") 
-VALUES ('X1', 'ABC', 'Jane', 'Address1', 'Astana', 'Kazakhstan');
-```
+### Association Between OrderItem and ProductInventory
+
+To track **which exact inventory units are sold**, an association is established between
+**OrderItem** and **ProductInventory**.
+
+The **OrderItem** entity acts as the correct **semantic bridge** between sales and inventory.
 
 
-#### **UPDATE**
+- An **OrderItem** may be associated with **one or more ProductInventory items**
+- A **ProductInventory** item may be associated with **at most one OrderItem**
+- Unsold inventory items remain unassociated
 
-The **UPDATE** statement is used to modify existing records in a table.
-- **Data integrity constraints** are enforced during the update process.
-- The `WHERE` clause is used to specify which records should be updated.
-- If the `WHERE` clause is **not** included, **all rows** in the table are updated.
+#### Cardinality Summary
 
+- **OrderItem → ProductInventory**
+  - Minimum: one (for fulfilled orders)
+  - Maximum: many
 
-```sql
-UPDATE "customers"
-SET "ContactName" = 'Jane Lee',
-    "City" = 'Astana'
-WHERE "CustomerID" = '1';
+- **ProductInventory → OrderItem**
+  - Minimum: zero
+  - Maximum: one
 
-```
+ProductInventory
 
-#### **DELETE**
+| InventoryID | ProductID (FK) | OrderItemID (FK) | SerialNumber | Status     |
+|------------:|----------------|------------------|--------------|------------|
+| 101         | 1              | NULL             | SSD-SR-001   | Available  |
+| 102         | 1              | 5001             | SSD-SR-002   | Sold       |
+| 201         | 2              | 5002             | LAP-SR-009   | Sold       |
+| 202         | 2              | NULL             | LAP-SR-010   | Available  |
+| 301         | 3              | NULL             | MOU-SR-050   | Available  |
 
-The **DELETE** statement is used to remove one or more records from a table.
-- **Data integrity constraints** are enforced during the deletion process.
-- The `WHERE` clause specifies which records should be deleted.
-- If the `WHERE` clause is **not** included, **all records** in the table are deleted.
+**Explanation**
+- Each row represents **one physical product unit**
+- `ProductID` links the unit to its product type
+- `OrderItemID` links the unit to the order line it fulfills
+- `NULL` indicates inventory items not yet sold
+- `Status` reflects the current lifecycle state of the item
 
-
-```sql
-DELETE FROM "customers"
-WHERE "CustomerID" = '1';
-```
-
-
-
-## Using a Programming Language to Interact With a Database
-
-Modern applications often need to store, retrieve, and manipulate data dynamically.
-To perform these database operations from within an application, database drivers are essential.
-These drivers act as a bridge between the programming language and the database management system (DBMS).
-
-### Database Drivers – Core Functions
-Database drivers typically provide the following core capabilities:
-- **Establishing a connection** to the database.
-- **Executing queries** (e.g., `SELECT`, `INSERT`, `UPDATE`, `DELETE`).
-- **Retrieving results** and processing query outputs.
-- **Managing transactions** to ensure data consistency.
-- **Closing the connection** after operations are completed.
+---
 
 
-### Database Operations with Java and PostgreSQL
-
-Java applications can seamlessly interact with PostgreSQL databases using **JDBC** (Java Database Connectivity).  
-JDBC is a **standard API** that defines a set of interfaces and classes for connecting to relational databases,
-sending SQL statements, and processing results.
-
-It provides:
-- **Connection management**
-- **Statement execution**
-- **Result retrieval**
-- **Error handling and transaction control**
-
-The **PostgreSQL JDBC driver** implements this API and allows Java programs to work directly with PostgreSQL databases.
-
-You can download the PostgreSQL JDBC driver from:  
-[https://jdbc.postgresql.org/download/](https://jdbc.postgresql.org/download/)
 
 
-#### Example Workflow (Conceptual)
-1. **Load the driver**(library or JAR file) in the project environment so that the Java application can
-   communicate with the database.
-2. **Establish a connection** to the PostgreSQL database using a connection string (URL(socket address), username, and password).
-3. **Define and execute SQL statements**.
-4. **Process the results** returned by the query.
-5. **Close** the statement and connection to free resources.
 
 
-***The Repository Pattern abstracts the logic of data access and storage from the business logic of an application.
-It provides a clean separation between the domain layer and the data access layer.
-Repositories act as mediators between the business logic and the data source (e.g., database, API, or file).
-This abstraction improves maintainability, testability, and supports dependency inversion.***
+### Normalization Perspective
 
+This extension supports **Third Normal Form (3NF)** by:
 
-**Code Example**
+- Eliminating repeating groups
+- Preserving historical accuracy (e.g., price at time of sale)
+- Maintaining a clear separation of concerns
 
-```sql
-CREATE DATABASE ecommercedb;
-```
+---
 
-```sql
-CREATE TABLE products (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    price DOUBLE PRECISION CHECK (price >= 0)
-);
-```
+### Conceptual Summary
 
+With this extension, the data model can accurately answer:
 
-![DB Class Diagram](../resources/db-class-diagram.png)
+- Which **exact product units** were sold?
+- Which inventory items are **still available**?
+- Which inventory units fulfilled **which order items**?
 
->[ProductRepositoryMain.java](./repository/ProductRepositoryMain.java) | [IProductRepository.java](./repository/IProductRepository.java) | [ClientService.java](./repository/ClientService.java) | [Product.java](./repository/Product.java) | [ProductPostgresqlImplementation.java](./repository/ProductPostgresqlImplementation.java) | [ProductMongodbImplementation.java](./repository/ProductMongodbImplementation.java)
+By introducing **OrderItem** and **ProductInventory**, the model becomes suitable for
+real-world inventory and sales tracking while remaining consistent with the original
+design of Exercise 1.
 
