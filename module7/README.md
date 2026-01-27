@@ -1,387 +1,468 @@
-# Module 7: NoSQL Databases
----
+# Module 7: SQL Programming
+
 <!-- TOC -->
-  * [# Module 7: NoSQL Databases](#-module-7-nosql-databases)
-  * [NoSQL Databases](#nosql-databases)
-    * [Comparison with Relational DB:](#comparison-with-relational-db)
-    * [Main Types of NoSQL Databases](#main-types-of-nosql-databases)
-    * [MongoDB NoSQL Database](#mongodb-nosql-database)
-  * [Using a Programming Language to Interact With a Database](#using-a-programming-language-to-interact-with-a-database)
-    * [Database Drivers – Core Functions](#database-drivers--core-functions)
-    * [Database Operations with Java and MongoDB](#database-operations-with-java-and-mongodb)
-      * [Example Workflow (Conceptual)](#example-workflow-conceptual)
-  * [Hands-on Exercise](#hands-on-exercise)
+* [Module 7: SQL Programming](#module-7-sql-programming)
+  * [Introduction to SQL Programming](#introduction-to-sql-programming-)
+  * [Functions and Stored Procedures in PL/pgSQL](#functions-and-stored-procedures-in-plpgsql)
+  * [Control Structures in PL/pgSQL](#control-structures-in-plpgsql)
+  * [Triggers](#triggers-)
+  * [Exercise1](#exercise1)
 <!-- TOC -->
 
+## Introduction to SQL Programming 
+
+- **Standard SQL** is primarily a **declarative language** designed for constructing databases and for querying 
+and manipulating data.
+
+- It **does not include full programming constructs** such as control flow (`IF`, `LOOP`, `WHILE`) or procedural 
+logic required for complex business operations.
+
+- To overcome this limitation, **RDBMSs like PostgreSQL** provide extended SQL programming languages such as 
+**PL/pgSQL** that support:
+    - Variables and constants
+    - Conditional statements (`IF`, `CASE`)
+    - Looping constructs (`LOOP`, `WHILE`, `FOR`)
+    - Error handling
+    - Modular code through functions and procedures
+
+- These procedural extensions allow developers to **write SQL programs** directly in the database, enabling:
+    - Implementation of business logic
+    - Automation of workflows
+    - Improved performance through reduced network communication
+
+- Additionally, SQL programs in PostgreSQL are **stored as precompiled code**, which means:
+    - Parsing, analysis, and planning are done once at creation time
+    - Execution is faster during runtime, especially for repeated calls
+
+
+**Key Advantages of SQL Programming**
+
+* Code Reusability: PL/pgSQL code can be encapsulated into functions and stored procedures, making it reusable across 
+different applications.
+* Performance: Executing code within the database can be faster than sending multiple SQL statements from a client application, 
+as it reduces network traffic. SQL programs (functions, procedures, triggers) in PostgreSQL are stored precompiled, 
+meaning the database parses, analyzes, and plans the execution once, and stores the compiled version.
+This results in faster execution times for repeated calls, as the overhead of parsing and planning is avoided each time.
+
+## Functions and Stored Procedures in PL/pgSQL
+Both functions and stored procedures are named blocks of PL/pgSQL code that perform specific tasks.
+
+**Functions**
+
+Can be used in SQL expressions: Functions can be called within SELECT statements, WHERE clauses, and other parts of SQL queries.
+
+Must return a value (usually): A function is designed to take input parameters and return a result.
+
+**Stored Procedures**
+
+Called using the CALL statement: Stored procedures are invoked explicitly using the CALL statement.
+
+Can return multiple values (using OUT parameters) or no value: Procedures are more flexible in terms of what they return. 
+They can modify data, perform actions, and optionally return data.
+
+More focused on actions: Procedures are often used for data manipulation, transaction control, and complex operations.
+
+**Summary**
+- Use a **function** for a reusable operation that returns a result and can be embedded in SQL queries.
+- Use a **stored procedure**  to perform a sequence of actions, especially when including transaction control.
+
+
+
+* Defining and calling a function
+```sql
+-- A function that adds two numbers and returns the result
+CREATE OR REPLACE FUNCTION add_numbers(a INTEGER, b INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN a + b;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Call the function
+SELECT add_numbers(5, 3);  -- Output: 8
+```
+* Defining and calling a stored procedure
+
+```sql
+-- A procedure that adds two numbers and stores the result in an OUT parameter
+CREATE OR REPLACE PROCEDURE add_numbers_proc(
+    IN a INTEGER,
+    IN b INTEGER,
+    OUT result INTEGER
+)
+AS $$
+BEGIN
+    result := a + b;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Call the function
+CALL add_numbers_proc(5, 3, result => NULL);  -- The result will be returned via the OUT parameter
+
+```
+
+## Control Structures in PL/pgSQL
+PL/pgSQL provides a variety of control structures to manage the flow of execution within your functions and procedures.
+
+```sql
+-- Create or replace a function that demonstrates control structures
+CREATE OR REPLACE FUNCTION demo_control_structures(looplimit INT)
+    RETURNS VOID AS $$
+DECLARE
+    i INT;
+    number INT := 3;  -- Sample number for CASE WHEN
+BEGIN
+
+    -------------------------------------------------------------------
+    -- IF-ELSE Statements
+    -- The IF-ELSE statement allows you to execute different blocks
+    -- of code based on conditions.
+    -------------------------------------------------------------------
+    IF looplimit < 0 THEN
+        RAISE EXCEPTION 'limit value cannot be negative.';
+    ELSE
+        RAISE NOTICE 'Starting loops with limit %', looplimit;
+    END IF;
+
+    -------------------------------------------------------------------
+    -- CASE WHEN Statements:
+    -- Used for conditional branching with multiple possibilities.
+    -- Offers flexibility when handling different cases for a variable.
+    -------------------------------------------------------------------
+    RAISE NOTICE 'CASE WHEN example:';
+    CASE number
+      WHEN 1 THEN
+        RAISE NOTICE 'Number is 1';
+      WHEN 2 THEN
+        RAISE NOTICE 'Number is 2';
+      WHEN 3 THEN
+        RAISE NOTICE 'Number is 3';
+      ELSE
+        RAISE NOTICE 'Number is something else';
+      END CASE;
+
+    -------------------------------------------------------------------
+    -- Loop Statements
+    -- PL/pgSQL provides several loop structures for repetitive execution.
+    -------------------------------------------------------------------
+
+    -------------------------------------------------------------------
+    -- FOR Loop:
+    -- Iterates over a fixed range of values.
+    -- Useful when the number of iterations is known in advance.
+    -------------------------------------------------------------------
+    RAISE NOTICE 'FOR LOOP from 1 to limit';
+    FOR i IN 1..looplimit LOOP
+        RAISE NOTICE 'FOR LOOP value: %', i;
+    END LOOP;
+
+    -------------------------------------------------------------------
+    -- WHILE Loop:
+    -- Executes a block of code repeatedly as long as a condition is true.
+    -- Useful when the number of iterations is unknown and condition-based.
+    -------------------------------------------------------------------
+    i := 1;
+    RAISE NOTICE 'WHILE LOOP from 1 to limit';
+    WHILE i <= looplimit LOOP
+        RAISE NOTICE 'WHILE LOOP value: %', i;
+        i := i + 1;
+    END LOOP;
+
+    -------------------------------------------------------------------
+    -- LOOP...EXIT WHEN:
+    -- DO LOOP in PL/pgSQL runs indefinitely until explicitly exited.
+    -- EXIT WHEN is used to break out of the loop based on a condition.
+    -------------------------------------------------------------------
+    i := 1;
+    RAISE NOTICE 'LOOP with EXIT WHEN from 1 to limit';
+    LOOP
+        EXIT WHEN i > looplimit;
+        RAISE NOTICE 'LOOP EXIT WHEN value: %', i;
+        i := i + 1;
+    END LOOP;
+
+END;
+$$ LANGUAGE plpgsql;
+
+```
+
+```sql
+-- Example 1: This will raise an exception due to negative input
+SELECT demo_control_structures(-1);
+
+-- Example 2: This will execute all loops and case logic for limit = 5
+SELECT demo_control_structures(5);
+
+```
+
+**Examples**
+
+
+---
+**The following queries are based on the Pagila sample database.**
+
 ---
 
-## NoSQL Databases
-- **NoSQL** (AKA Not Only SQL) databases are  designed for scalability, flexibility, and high-performance.
-- They are capable of handling large-scale, unstructured, semi-structured, and rapidly changing data.
+* Record Traversal in a SELECT Result Set 
 
-### Comparison with Relational DB:
+```sql
+-- Define or replace a function that iterates over the result set of a SELECT query
+CREATE OR REPLACE FUNCTION iterate_records()
+RETURNS TEXT
+AS
+$$
+DECLARE
+    currentCustomer customer%ROWTYPE;  -- Declare a variable 'cust' with the same structure as a row in the 'customer' table
+    result TEXT;            -- Declare a variable to accumulate the final result as text
+BEGIN
+    result := '';           -- Initialize the result variable to an empty string
 
-![](../resources/figures/sql-vs-nosql.png)
+    -- Loop through each row returned by the SELECT * FROM customer query
+    FOR currentCustomer IN SELECT * FROM customer LOOP
+        -- Concatenate the customer ID and first name with a tab and newline character to format the result
+        result := result || currentCustomer.customer_id || E'\t' || currentCustomer.first_name || E'\r\n';
+    END LOOP;
 
+    -- Return the final formatted string containing all customer IDs and first names
+    RETURN result;
+END;
+$$
+LANGUAGE 'plpgsql';
 
-
-### Main Types of NoSQL Databases
-
-1. **Document-Oriented Databases**
-- Store data as documents (usually in JSON or BSON format).
-- Each document can have a flexible structure.
-- **Examples:** MongoDB, CouchDB, Firebase Firestore
-- **Sample:**
-  ```json
-  {
-    "id": 101,
-    "name": "Jane Lee",
-    "email": "jl@email.com",
-    "orders": [
-      { "orderId": 1, "total": 250 },
-      { "orderId": 2, "total": 180 }
-    ]
-  }
-  ```
-- **Used in:**
-    - Content management systems (CMS)
-    - E-commerce product catalogs
-    - Mobile and web apps with dynamic data structures
-
-2. **Key–Value Stores**
-- Store data as key–value pairs (like a dictionary or map).
-- Very fast for lookups and caching.
-- **Examples:** Redis, Amazon DynamoDB, Riak
-- **Sample:**
-  ```
-  "user:101" -> { "name": "Alice", "balance": 300 }
-  "user:102" -> { "name": "Bob", "balance": 450 }
-  ```
-- **Used in:**
-    - Caching user sessions
-    - Real-time analytics and leaderboards
-    - High-speed transaction systems
-
-3. **Column-Family Stores**
-- Organize data into columns and column families instead of rows.
-- Designed for high performance and scalability across distributed systems.
-- **Examples:** Apache Cassandra, HBase, ScyllaDB
-    - **Sample:**
-      ```
-      UserProfiles (Column Family)
-      └── Row Key: user_101
-          ├── name: "Jane"
-          ├── email: "jane@email.com"
-          └── country: "Kazakhstan"
-    
-      └── Row Key: user_102
-          ├── name: "Jack"
-          └── email: "jck@email.com"
-
-      Customer (Column Family)
-      └── Row Key: user_101
-          ├── name: Alice
-          ├── email: alice@email.com
-          └── orders: [1, 2, 3]
-      ```
-- **Used in:**
-    - Time-series data storage
-    - IoT and sensor data collection
-    - Large-scale analytics applications
-
-4. **Graph Databases**
-- Represent data as nodes (entities) and edges (relationships).
-- Ideal for analyzing complex, interconnected data.
-- **Examples:** Neo4j, Amazon Neptune, ArangoDB
-- **Sample (relationships):**
-  ```
-  (Alice) -[:FRIEND]-> (Bob)
-  (Alice) -[:PURCHASED]-> (Product_A)
-  (Bob) -[:PURCHASED]-> (Product_B)
-  ```
-- **Used in:**
-    - Social networking platforms
-    - Recommendation engines
-    - Fraud detection and knowledge graphs
-
-
-### MongoDB NoSQL Database
-
-MongoDB is a popular NoSQL database that stores data in a flexible, document-oriented format instead of the traditional
-table-and-row structure used by relational databases. Data is organized into collections, and each collection contains
-documents represented in BSON (Binary JSON). Because documents can have varying structures, MongoDB is schema-less,
-allowing applications to evolve without modifying fixed table definitions.
-
-One of MongoDB’s key strengths is its ability to handle large volumes of unstructured or semi-structured data while
-maintaining high performance. It offers rich querying capabilities, indexing, and aggregation tools similar to SQL
-features but designed for flexible document data. MongoDB also provides automatic generation of a unique _id field
-for each document, acting like a primary key.
-
-MongoDB is designed for scalability and reliability. It supports replication for high availability and sharding for
-horizontal scaling across multiple servers, making it suitable for modern distributed systems. Thanks to its
-flexibility, scalability, and ease of use, MongoDB is widely used in web applications, real-time analytics, IoT
-systems, and any environment where data structure can change over time.
-
-In MongoDB, a cluster refers to a group of interconnected servers (nodes) that work together as a single unified
-database system, providing scalability, redundancy, and high availability.
-
-1) A replica set (cluster) provides high availability by copying the same data across multiple servers. In a replica set, read
-   performance can also be improved by directing read operations to the nearest replica node.
-```text
-               +----------------------+
-               |     Client App       |
-               +-----------+----------+
-                           |
-                           v
-                 +--------------------+
-                 |     PRIMARY        |
-                 |  (Read & Write)    |
-                 +----+-----------+---+
-                      |           |
-        --------------+           +--------------
-        |                                      |
-        v                                      v
-+--------------------+               +--------------------+
-|   SECONDARY 1      |               |   SECONDARY 2      |
-|  (Read / Failover) |               |  (Read / Failover) |
-+--------------------+               +--------------------+
-
-SECONDARIES replicate data **from the PRIMARY**
-If PRIMARY fails → one SECONDARY becomes PRIMARY
 ```
-
-2) Sharding (with sharding cluster) splits big data across multiple servers (shards). The mongos router directs client
-   requests to the correct shard.
-
-```text
-
-                               Config Servers
-                              ┌──────┬──────┬──────┐
-                              │  C1  │  C2  │  C3  │
-                              └──────┴──────┴──────┘
-                                    ↑
-                              ┌─────────────┐
-        Clients → → → → → → → │   MONGOS    │ ← Query Router
-                              └─────────────┘
-                                    ↓
-        ┌─────────────┬────────────────┬───────────────┬
-        │             │                │               │
-┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-│   SHARD A   │ │   SHARD B   │ │   SHARD C   │ │   SHARD D   │
-│  (Replica   │ │  (Replica   │ │  (Replica   │ │  (Replica   │
-│    Set)     │ │    Set)     │ │    Set)     │ │    Set)     │
-│ ┌─────────┐ │ │ ┌─────────┐ │ │ ┌─────────┐ │ │ ┌─────────┐ │
-│ │ Primary │ │ │ │ Primary │ │ │ │ Primary │ │ │ │ Primary │ │
-│ ├─────────┤ │ │ ├─────────┤ │ │ ├─────────┤ │ │ ├─────────┤ │
-│ │Secondary│ │ │ │Secondary│ │ │ │Secondary│ │ │ │Secondary│ │
-│ ├─────────┤ │ │ ├─────────┤ │ │ ├─────────┤ │ │ ├─────────┤ │
-│ │Secondary│ │ │ │Secondary│ │ │ │Secondary│ │ │ │Secondary│ │
-│ └─────────┘ │ │ └─────────┘ │ │ └─────────┘ │ │ └─────────┘ │
-└─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
+```sql
+SELECT iterate_records();
 
 ```
 
+* Returning a Table
 
-**Example**
-
-Assume that we have the following docs in table view.
-
-```text
-
-+-----------------------------------------------------------+
-|                        PRODUCTS                           |
-+----+----------------------+---------+----------------------+
-| ID |        name          | price   |      category        |
-+----+----------------------+---------+----------------------+
-|  1 | Laptop               | 1500.00 | Electronics          |
-|  2 | Smartphone           | 999.99  | Electronics          |
-|  3 | Headphones           | 199.99  | Electronics          |
-|  4 | Monitor              | 300.00  | Electronics          |
-|  5 | Keyboard             | 49.99   | Accessories          |
-|  6 | Mouse                | 29.99   | Accessories          |
-|  7 | Backpack             | 75.00   | Travel               |
-|  8 | Water Bottle         | 20.00   | Lifestyle            |
-|  9 | Camera               | 650.00  | Electronics          |
-| 10 | Tripod               | 120.00  | Accessories          |
-+-----------------------------------------------------------+
-```
-
-In replication, all nodes have EXACT same documents.
-```text
-                   REPLICA SET
-         (High Availability, NOT data distribution)
-
-            +-----------------------+
-            |       PRIMARY         |
-            +-----------------------+
-            | Docs 1 to 10 (ALL)    |
-            +-----------------------+
-
-           /                         \
-          /                           \
-         v                             v
-
-+-----------------------+   +-----------------------+
-|     SECONDARY 1       |   |     SECONDARY 2       |
-+-----------------------+   +-----------------------+
-| Docs 1 to 10 (ALL)    |   | Docs 1 to 10 (ALL)    |
-+-----------------------+   +-----------------------+
-
-**Replica Set Rule:** Every node stores **all documents**.
+```sql
+-- Define or replace a function that returns a table
+CREATE OR REPLACE FUNCTION search_staff(staffid INT)
+RETURNS TABLE(id INT, firstname VARCHAR(40), lastname VARCHAR(40)) 
+AS 
+$$
+BEGIN
+    -- Return a query that selects columns from the staff table
+    RETURN QUERY 
+    SELECT staff_id, first_name, last_name
+    FROM staff
+    WHERE staff_id = staffid;
+END;
+$$
+LANGUAGE "plpgsql";
 
 ```
-In sharding, the data is partitioned and distributed across multiple shards, so each shard stores only a portion of the
-overall dataset, not the full copy.
-Each shard is itself normally a Replica Set, so each shard’s data is also replicated internally.
 
-```text
-            SHARDED CLUSTER (Data Partitioning)
+```sql
+-- Call the function and display the returned table
+SELECT * FROM search_staff(1);
 
-                      +------------+
-                      |  mongos    |
-                      |  router    |
-                      +------------+
-                       /          \
-                      /            \
-                     v              v
+```
 
-           +--------------------+      +--------------------+
-           |      SHARD 1       |      |      SHARD 2       |
-           | (IDs 1–5 only)     |      | (IDs 6–10 only)    |
-           +---------+----------+      +----------+---------+
-                     |                            |
-                     v                            v
+* Function Calling Another Function Example
 
-+-----------------------------------------------------+
-|                 SHARD 1 DATA (Replica Set)          |
-+----+----------------------+---------+----------------+
-| ID | name                 | price   | category       |
-+----+----------------------+---------+----------------+
-|  1 | Laptop               | 1500.00 | Electronics    |
-|  2 | Smartphone           | 999.99  | Electronics    |
-|  3 | Headphones           | 199.99  | Electronics    |
-|  4 | Monitor              | 300.00  | Electronics    |
-|  5 | Keyboard             | 49.99   | Accessories    |
-+-----------------------------------------------------+
+This example shows how to call another function from within a PL/pgSQL function. The outer function fetches staff 
+information and calculates the total payment amount for that staff member.
 
-+-----------------------------------------------------+
-|                 SHARD 2 DATA (Replica Set)          |
-+----+----------------------+---------+----------------+
-| ID | name                 | price   | category       |
-+----+----------------------+---------+----------------+
-|  6 | Mouse                | 29.99   | Accessories    |
-|  7 | Backpack             | 75.00   | Travel         |
-|  8 | Water Bottle         | 20.00   | Lifestyle      |
-|  9 | Camera               | 650.00  | Electronics    |
-| 10 | Tripod               | 120.00  | Accessories    |
-+-----------------------------------------------------+
+```sql
+-- Define or replace a function that returns a formatted string
+-- showing staff ID, name, and their total payments
+CREATE OR REPLACE FUNCTION public.payment_summary(staffID INTEGER)
+RETURNS TEXT
+LANGUAGE "plpgsql"
+AS
+$$
+DECLARE
+    staff_record RECORD;     -- Will hold the row returned from the inner function
+    total_amount NUMERIC;    -- To store the total amount of payments
+BEGIN
+    -- Call another function (search_staff) and store the returned row into staff_record
+    staff_record := search_staff(staffID);
 
-Assume sharding by ID range:
-Shard 1 → IDs 1–5
-Shard 2 → IDs 6–10
+    -- Calculate the total payment amount made by the staff member
+    total_amount := (
+        SELECT SUM(amount) 
+        FROM payment 
+        WHERE staff_id = staffID
+    );
+
+    -- Return a formatted string with staff ID, name, and total payment
+    RETURN staff_record.id || E'\t' || staff_record.firstname || E'\t' || total_amount;
+END
+$$;
+
+```
+
+```sql
+-- Execute the function for staff ID 2
+SELECT payment_summary(2);
+
+```
+
+## Triggers 
+
+Triggers are used to automatically perform predefined tasks in response to specific events such as INSERT, UPDATE, or DELETE operations on a table. They help enforce rules, maintain audit trails, or perform automatic updates in a consistent and reliable manner.
+
+A trigger definition typically consists of two parts:
+
+* Trigger Function
+
+  This is a user-defined function that contains the logic to be executed automatically. It can include operations such as logging changes, validating data, or updating related tables.
+
+* Event Definition
+
+  This specifies the event that activates the trigger (e.g., AFTER INSERT, BEFORE UPDATE, or AFTER DELETE) and the table to which the trigger is attached. It also specifies whether the trigger fires for each row or once per statement.
+
+
+
+**Advantages of Using Triggers**
+* Maintaining Data Integrity:
+  * Triggers offer an alternative to enforce data consistency.
+  * Example: When a product is sold, reduce its stock count automatically.
+
+* Alternative to Scheduled Tasks:
+Some automated tasks that are usually scheduled (e.g., via CRON) can instead be done instantly using triggers.
+
+* Automatic Execution:
+  * Tasks are performed immediately, before or after data-modifying operations, without requiring explicit calls.
+  * Example: When a customer record is deleted, automatically move the data to an OldCustomers table.
+
+* Useful for Logging Activities:
+  * Triggers can be used to record changes in a separate log table for tracking purposes.
+  * Example: When a user changes their password, log the activity in an audit table.
+
+
+---
+**The following queries are based on the Northwind sample database.**
+
+---
+
+**Trigger Example: Monitoring Unit Price Changes of Products**
+
+This example demonstrates how to use a trigger in PostgreSQL to track changes in a product's unit price. When the 
+price of a product is updated, the trigger automatically inserts a record into a logging table.
+
+* Step 1: Add a new table for logging
+```sql
+CREATE TABLE public.ProductPriceChangeLog (
+    log_id serial,                                -- Unique identifier for each change
+    product_id SMALLINT NOT NULL,                 -- ID of the product whose price changed
+    old_price REAL NOT NULL,                      -- The previous price
+    new_price REAL NOT NULL,                      -- The new price after the update
+    change_date TIMESTAMP NOT NULL,               -- Timestamp of when the change occurred
+    CONSTRAINT PK_ProductPriceChangeLog PRIMARY KEY (log_id)
+);
+
+```
+
+* Step 2: Define the Trigger Function
+```sql
+CREATE OR REPLACE FUNCTION track_product_price_change()
+RETURNS TRIGGER 
+AS
+$$
+BEGIN
+    -- Check if the unit price is changed
+    IF NEW."UnitPrice" <> OLD."UnitPrice" THEN
+        -- Insert a new log entry into the tracking table
+        INSERT INTO public.ProductPriceChangeLog(product_id, old_price, new_price, change_date)
+        VALUES (OLD."ProductID", OLD."UnitPrice", NEW."UnitPrice", CURRENT_TIMESTAMP);
+    END IF;
+
+    RETURN NEW; -- Allow the update to proceed
+END;
+$$
+LANGUAGE plpgsql;
+
+```
+
+* Step 3: Define the trigger
+
+```sql
+CREATE TRIGGER on_unit_price_change
+BEFORE UPDATE ON products
+FOR EACH ROW
+EXECUTE FUNCTION track_product_price_change();
+
+```
+
+* Example Use Case:
+  * This update triggers the function because the price is being changed.
+  * A record is automatically inserted into ProductPriceChangeLog showing the change from the old price to 100.
+```sql
+UPDATE products
+SET "UnitPrice" = 100
+WHERE "ProductID" = 4;
+```
+
+**Before Clause**
+```sql
+-- Trigger Function: Pre-insert or pre-update validation and formatting
+CREATE OR REPLACE FUNCTION customer_before_insert_or_update()
+RETURNS TRIGGER 
+AS
+$$
+BEGIN
+    -- Convert the company name to uppercase
+    NEW."CompanyName" := UPPER(NEW."CompanyName");
+
+    -- Remove leading and trailing spaces from contact name
+    NEW."ContactName" := TRIM(NEW."ContactName");
+
+    -- Raise an error if city is NULL
+    IF NEW."City" IS NULL THEN
+        RAISE EXCEPTION 'City field cannot be null.';
+    END IF;
+
+    -- Allow the insert or update to proceed with the modified data
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+```
+```sql
+-- Define Trigger: Runs before insert or update on "customers"
+CREATE TRIGGER customer_data_validation
+BEFORE INSERT OR UPDATE ON "customers"
+FOR EACH ROW
+EXECUTE FUNCTION customer_before_insert_or_update();
+```
+```sql
+-- Example: Insert without city (will raise exception)
+INSERT INTO "customers" ("CustomerID", "CompanyName", "ContactName") 
+VALUES ('45', 'XY Ltd.', '    Jane Roe     ');
+
+-- Example: Insert with all required fields
+INSERT INTO "customers" ("CustomerID", "CompanyName", "ContactName", "City") 
+VALUES ('45', 'XY Ltd.', '    Jane Roe     ', 'Petropavlovsk');
+```
+```sql
+-- Disable a specific trigger on the products table
+ALTER TABLE "products"
+DISABLE TRIGGER on_unit_price_change;
+
+-- Re-enable the specific trigger
+ALTER TABLE "products"
+ENABLE TRIGGER on_unit_price_change;
+
+-- Disable all triggers on the products table
+ALTER TABLE "products"
+DISABLE TRIGGER ALL;
+
+-- Re-enable all triggers on the products table
+ALTER TABLE "products"
+ENABLE TRIGGER ALL;
+
+-- Drop a specific trigger
+DROP TRIGGER IF EXISTS on_unit_price_change ON "products";
+
 ```
 
 
+---
 
+## [Exercise1](./exercises)
 
-## Using a Programming Language to Interact With a Database
-
-Modern applications often need to store, retrieve, and manipulate data dynamically.
-To perform these database operations from within an application, database drivers are essential.
-These drivers act as a bridge between the programming language and the database management system (DBMS).
-
-### Database Drivers – Core Functions
-Database drivers typically provide the following core capabilities:
-- **Establishing a connection** to the database.
-- **Executing queries** (e.g., `SELECT`, `INSERT`, `UPDATE`, `DELETE`).
-- **Retrieving results** and processing query outputs.
-- **Managing transactions** to ensure data consistency.
-- **Closing the connection** after operations are completed.
-
-
-
-### Database Operations with Java and MongoDB
-
-You can use MongoDB Cloud (https://account.mongodb.com/account/login
-) without installation, or install MongoDB on your computer from the following
-link: https://www.mongodb.com/try/download/community
-
-#### Example Workflow (Conceptual)
-1. **Load the driver** using maven package manager.
-
-`pom.xml`
-```xml
-
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>cc.ku</groupId>
-    <artifactId>java-projects</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <dependencies>
-        <!-- postgresql -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.8</version>
-        </dependency>
-        <!-- mongodb -->
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-bom</artifactId>
-            <version>5.6.0</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-sync</artifactId>
-            <version>5.6.0</version>
-        </dependency>
-      
-    </dependencies>
-</project>
-
-
-```
-2. **Establish a connection** to the MongoDB database using
-   a connection string (URL(socket address), username, and password).
-3. **Perform db operations**.
-4. **Process the results** returned by the query.
-5. **Close** the connection.
-
-
-
-**Code Example**
-
-* Define `ecommercedb.products` collection.
-
-![DB Class Diagram](../resources/db-class-diagram.png)
-
->[ProductRepositoryMain.java](./repository/ProductRepositoryMain.java) | [IProductRepository.java](./repository/IProductRepository.java) | [ClientService.java](./repository/ClientService.java) | [Product.java](./repository/Product.java) | [ProductPostgresqlImplementation.java](./repository/ProductPostgresqlImplementation.java) | [ProductMongodbImplementation.java](./repository/ProductMongodbImplementation.java)
-
-
-
-***
-## Hands-on Exercise
-
-1. Define the `ecommercedb` database and `products` table in `PostgreSQL`, using the SQL statements provided above the
-   Class Diagram.
-2. Define `ecommercedb.products` collection in `MongoDB`.
-3. Initialize a new project with Maven support.
-4. Include the necessary database drivers for PostgreSQL and MongoDB operations.
-5. Define a package named `cc.ku.ict.module5.exercises.exercise1`.
-6. Run the program given above that performs operations on the  PostgreSQL database (Check the db connection parameters).
-7. Discuss how you can also add MariaDB support to the application without modifying the algorithm in the `ClientService`.
-8. Define `findByName(String name)` and `findByPrice(double price)` methods in the product repository and modify
-   the `ClientService` accordingly to test these methods.
-
+---
