@@ -386,8 +386,14 @@ In Entity–Relationship (ER) modeling, each side of a relationship is defined u
 **Cardinality** describes the maximum number of times an instance in one entity can be associated with instances in the 
 related entity.
 
+**Cardinality** specifies the maximum number of related entity instances.
+
+
+
 **Participation** (also called Optionality) describes the minimum number of times an instance in one entity must be 
 associated with an instance in the related entity.
+
+**Participation** specifies the minimum number of related entity instances.
 
 
 **Cardinality Symbols**
