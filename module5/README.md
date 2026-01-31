@@ -1,7 +1,8 @@
 # Module 5: NoSQL Databases
----
+
+
 <!-- TOC -->
-  * [# Module 5: NoSQL Databases](#-module-5-nosql-databases)
+* [Module 5: NoSQL Databases](#module-5-nosql-databases)
   * [NoSQL Databases](#nosql-databases)
     * [Comparison with Relational DB:](#comparison-with-relational-db)
     * [Main Types of NoSQL Databases](#main-types-of-nosql-databases)
@@ -13,7 +14,7 @@
   * [Hands-on Exercise](#hands-on-exercise)
 <!-- TOC -->
 
----
+
 
 ## NoSQL Databases
 - **NoSQL** (AKA Not Only SQL) databases are  designed for scalability, flexibility, and high-performance.
@@ -377,14 +378,10 @@ link: https://www.mongodb.com/try/download/community
 ***
 ## Hands-on Exercise
 
-1. Define the `ecommercedb` database and `products` table in `PostgreSQL`, using the SQL statements provided above the
-   Class Diagram.
-2. Define `ecommercedb.products` collection in `MongoDB`.
-3. Initialize a new project with Maven support.
-4. Include the necessary database drivers for PostgreSQL and MongoDB operations.
-5. Define a package named `cc.ku.ict.module5.exercises.exercise1`.
-6. Run the program given above that performs operations on the  PostgreSQL database (Check the db connection parameters).
-7. Discuss how you can also add MariaDB support to the application without modifying the algorithm in the `ClientService`.
-8. Define `findByName(String name)` and `findByPrice(double price)` methods in the product repository and modify
-   the `ClientService` accordingly to test these methods.
+1. Define `ecommercedb.products` collection in `MongoDB`.
+2. Initialize a new project with Maven support.
+3. Include the necessary database drivers for MongoDB operations.
+4. Define a package named `cc.ku.ict.module5.exercises.exercise1`.
+5. Run the program given above that performs operations on the  MongoDB database (Check the db connection parameters).
+7. Define `findByName(String name)` and `findByPrice(double price)` methods.
 
