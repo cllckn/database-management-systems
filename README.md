@@ -1,6 +1,6 @@
 # Database Management Systems
 
----
+
 
 This course provides a **hands-on introduction to database management systems**, covering foundational 
 concepts, data modeling, query languages, and practical implementation. Students will study both **relational and NoSQL 
@@ -8,7 +8,7 @@ database paradigms**, learning when and how each approach is applied in modern s
 practical exercises, students will design schemas, write queries, manipulate data, and work with multiple database 
 technologies while following best practices in security, performance, and data management.
 
----
+
 
 ## Course Objectives
 
@@ -21,11 +21,11 @@ By the end of this course, students will be able to:
 - Select appropriate database technologies based on application requirements.
 - Implement basic security and access control techniques.
 
----
+
 
 ## Course Content
 
----
+
 
 ### Module 1: Introduction to Database Systems
 * Introduction to Database Management Systems (DBMS)
@@ -129,7 +129,7 @@ Students will be evaluated based on the following components:
 | Midterm Exam                    | TBA        |
 | Final Exam                      | TBA        |
 
----
+
 
 ## Exams Schedule
 
@@ -140,7 +140,7 @@ Students will be evaluated based on the following components:
 | Midterm Exam                    | Z        |
 | Final Exam                      | Z        |
 
----
+
 
 ## Course Policies
 
@@ -149,7 +149,7 @@ Students will be evaluated based on the following components:
 - **Academic Integrity:** Any form of **plagiarism or academic dishonesty** will result in **disciplinary action** according to **university policy**.
 - **Communication:** All official communication will occur via the **university Learning Management System (LMS)** or the instructor’s email (`cceken@ku.edu.kz`). Students are expected to check their university email regularly.
 
----
+
 
 ## Tools
 - PostgreSQL, pgAdmin  (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) any version that can
@@ -157,7 +157,7 @@ be installed without issues.
 - IntelliJ — available free of charge for students  
   https://www.jetbrains.com/idea/download
 
----
+
 
 ## Resources
 
@@ -167,7 +167,7 @@ be installed without issues.
 - **Textbooks & Online Resources:**
   - Carlos Coronel, Steven Morris, and Peter Rob, *Database Systems: Design, Implementation, and Management*, Cengage Learning.
 
----
+
 
 ## Acknowledgement
 
