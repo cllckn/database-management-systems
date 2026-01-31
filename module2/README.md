@@ -639,17 +639,21 @@ A **unary relationship** - also called **recursive relationship**- occurs when:
 - An entity is related to **itself**
 - The same entity plays **multiple roles** in the relationship
 
+An entity is related to itself in a **unary (recursive) relationship**.
+
+In such relationships, the same entity plays **multiple roles**.
+
+
+
 **Common Unary Relationship Examples**
 
 - **Supervision (1:M)**
 
-An **Employee** may supervise another Employee. A supervisor is also an employee.
+One **Employee** (Supervisor/Manager role) can supervise or manage **many Employees**,  
+while each **Employee** has **at most one Supervisor**.
 
 
-One employee (Supervisor/Manager) can supervise many employees,  
-while each employee has at most one supervisor.
-
-<img src="../resources/figures/er-unary-relationship.png" width="300">
+<img src="../resources/figures/er-unary-relationship.png" width="900">
 
 
 
