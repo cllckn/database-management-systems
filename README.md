@@ -46,7 +46,6 @@ By the end of this course, students will be able to:
 - Data model
 - Entity–Relationship (ER) model
   - Key Components of the ER Model
-  - ER Modeling Notations
   - Transforming Business Rules into an ER Model
 - Designing ER diagrams using Crow’s Foot notation
 - Hands-On Exercises
@@ -56,26 +55,27 @@ By the end of this course, students will be able to:
 ### Module 3: Relational Database Model
 - Fundamentals of the relational model
 - Table (Relation) Structure
-- Integrity constraints:
+- Integrity Rules (Constraints)
   - Primary keys
   - Foreign keys
   - Unique and NOT NULL constraints
-- Best practices for primary key design
-- Indexes and their role in performance
+  - Referential integrity and foreign keys
+  - Best practices for primary keys
 - System catalog and metadata
 - Hands-On Exercises
 
 ---
 
 ### Module 4: Fundamentals of Structured Query Language (SQL)
-- Introduction to SQL
-- SQL Data Manipulation Language (DML)
+- Introduction to Structured Query Language (SQL)
+  - Setting up the working environment
+- Basic SQL DML Statements
   - SELECT, INSERT, UPDATE, DELETE
   - JOIN operations
-- SQL Data Definition Language (DDL)
-  - CREATE, ALTER, DROP
-  - Defining and enforcing constraints in SQL
 - Using a Programming Language to Interact With a Database
+- Basic SQL Data Definition Language (DDL) Statements
+  - CREATE, ALTER, DROP
+  - Defining constraints in SQL
 - Hands-On Exercises
 
 ---
@@ -97,8 +97,8 @@ By the end of this course, students will be able to:
 - Subqueries
 - Set operations
 - Views
-- Transactions and ACID properties
-- Indexing strategies and basic query optimization
+- Indexing and basic query optimization
+- Transactions
 - Hands-On Exercises
 
 ---
