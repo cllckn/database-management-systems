@@ -256,9 +256,13 @@ General guidelines:
 This is a basic guideline, but through practical exercises, you can develop a deeper understanding and gain experience 
 in identifying entities, attributes, and relationships more effectively.
 
+<img src="../resources/figures/analysing-business-rules.png" width="500">
+
+
 ---
 
 #### Examples: Business Rules to ER Model
+
 
 **1. Entities and Attributes**
 
