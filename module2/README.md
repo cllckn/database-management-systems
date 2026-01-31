@@ -28,6 +28,7 @@
       * [Weak (Non-Identifying) Relationship](#weak-non-identifying-relationship)
     * [5.3. Relationship Degree in Database Modeling](#53-relationship-degree-in-database-modeling)
       * [Unary (Recursive) Relationships](#unary-recursive-relationships)
+  * [Hands-on Exercise 1](#hands-on-exercise-1)
 <!-- TOC -->
 
 ---
@@ -669,3 +670,9 @@ while each **Employee** has **at most one Supervisor**.
   This is a **unary (recursive) many-to-many relationship**.  
   It is typically implemented using an associative table (e.g., `PersonFriend`) that references
   the `Person` entity twice, once for each role in the relationship.
+
+
+
+---
+[Hands-on Exercise 1](./exercises)
+---
