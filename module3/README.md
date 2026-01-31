@@ -14,30 +14,12 @@
     * [Not Null Constraint](#not-null-constraint)
     * [Referential Integrity and Foreign Keys](#referential-integrity-and-foreign-keys)
     * [Best Practices for Primary Keys](#best-practices-for-primary-keys)
-  * [4. Indexes and Their Role in Database Performance](#4-indexes-and-their-role-in-database-performance)
-    * [Index Scan vs. Sequential Scan](#index-scan-vs-sequential-scan)
-    * [Types of Indexes](#types-of-indexes)
-      * [1. Primary Index](#1-primary-index)
-      * [2. Unique Index](#2-unique-index)
-      * [3. Secondary Index (Non-Unique Index)](#3-secondary-index-non-unique-index)
-      * [4. Full-Text Index](#4-full-text-index)
-    * [Best Practices for Indexes](#best-practices-for-indexes)
-  * [5. System Catalog and Metadata](#5-system-catalog-and-metadata)
+  * [4. System Catalog and Metadata](#4-system-catalog-and-metadata)
     * [System Catalog](#system-catalog)
     * [Key Characteristics](#key-characteristics)
   * [Exercise1: E-Commerce System Design](#exercise1-e-commerce-system-design)
   * [Extension to Exercise 1: Tracking Individual Product Items](#extension-to-exercise-1-tracking-individual-product-items-)
-    * [Background and Motivation](#background-and-motivation)
-    * [Why Product-Level Tracking Is Not Enough](#why-product-level-tracking-is-not-enough)
-    * [An Incorrect Design Approach (What Not to Do)](#an-incorrect-design-approach-what-not-to-do)
-    * [Normalization as the Solution](#normalization-as-the-solution)
     * [Refined Entity Definitions](#refined-entity-definitions)
-      * [ProductInventory](#productinventory)
-      * [OrderItem](#orderitem)
-    * [Association Between OrderItem and ProductInventory](#association-between-orderitem-and-productinventory)
-      * [Cardinality Summary](#cardinality-summary)
-    * [Normalization Perspective](#normalization-perspective)
-    * [Conceptual Summary](#conceptual-summary)
 <!-- TOC -->
 
 ![Database System](../resources/figures/db-development-lifecycle.png)
@@ -213,97 +195,8 @@ This means:
 
 ---
 
-## 4. Indexes and Their Role in Database Performance
 
-An **index** is a specialized **data structure** that improves the speed of **search (lookup) operations** on a database table.  
-Its primary purpose is to allow the DBMS to locate rows efficiently **without scanning the entire table**.
-
-![](../resources/figures/index-table.png)
-
-
-**Key Characteristics**
-
-- Primarily improves **search and lookup operations**
-- Directly enhances the performance of `SELECT` queries, especially queries involving:
-  - `WHERE` clauses (filtering)
-  - `JOIN` operations (matching rows across tables)
-  - `ORDER BY` clauses (sorting)
-  - `GROUP BY` operations (grouping)
-- Improves the performance of **constraint enforcement**:
-  - **Primary Key (PK)** constraints
-  - **Unique** constraints
-  - **Foreign Key (FK)** checks
-- Indirectly affects `UPDATE` and `DELETE` operations because:
-  - The target rows must first be **located (searched)** before modification or removal
-- Introduces overhead for `INSERT`, `UPDATE`, and `DELETE` operations because:
-  - Indexes must be updated whenever indexed data changes
-
-
-Although indexes are commonly associated with `SELECT` statements, they play a broader role:
-
-- **Constraint validation**
-  - PK and UNIQUE indexes allow fast duplicate checks
-  - FK indexes speed up referential integrity checks
-- **JOIN efficiency**
-  - Indexed join columns reduce the cost of matching rows
-- **Sorting and grouping**
-  - Index order can be reused for `ORDER BY` and `GROUP BY`
-- **DML operations**
-  - `UPDATE` and `DELETE` require locating rows first
-  - Indexes reduce the cost of finding those rows
-
----
-
-### Index Scan vs. Sequential Scan
-
-- **Index Scan**  
-  The DBMS uses an index to directly locate matching rows, avoiding a full table scan.
-
-- **Sequential Scan (Full Table Scan)**  
-  The DBMS scans every row in the table to find matching data.
-
----
-
-### Types of Indexes
-
-#### 1. Primary Index
-- Automatically created for the Primary Key
-- Ensures uniqueness and non-null values
-- Example: `ProductID` in the **Products** table
-
-#### 2. Unique Index
-- Ensures all indexed values are unique
-- Allows one `NULL` value (DBMS-dependent)
-- Example: `Email` in a **Users** table
-
-#### 3. Secondary Index (Non-Unique Index)
-- Created on non-primary key columns
-- Allows duplicate values
-- Example: Index on `ProductName` to speed up searches
-
-#### 4. Full-Text Index
-- Specialized index for efficient text searching
-- Supported by systems such as PostgreSQL and MySQL
-- Use Case: Keyword search in blog posts or articles
-
----
-
-### Best Practices for Indexes
-
-- Define indexes **only on columns that are frequently searched, joined, or constrained**.
-- Index **Primary Keys** and **Foreign Keys** by default.
-- Avoid excessive indexing—too many indexes:
-  - Increase storage usage
-  - Slow down write operations
-- Index columns with **high selectivity** (many distinct values).
-- Avoid indexing columns that:
-  - Change very frequently
-  - Have very few distinct values (e.g., boolean flags)
-- Regularly analyze query performance and adjust indexes accordingly.
-
----
-
-## 5. System Catalog and Metadata
+## 4. System Catalog and Metadata
 
 ### System Catalog
 
@@ -401,12 +294,8 @@ The ER model includes:
 
 
 
-
-
-
 ## Extension to Exercise 1: Tracking Individual Product Items 
 
-### Background and Motivation
 
 In the initial design of **Exercise 1**, a **Product** was modeled at the **type level**.  
 That is, a product represented a general item (e.g., *Laptop*, *SSD*) without distinguishing
@@ -426,7 +315,7 @@ While this is sufficient for many scenarios, it is **not adequate** for systems 
 
 ---
 
-### Why Product-Level Tracking Is Not Enough
+**Why Product-Level Tracking Is Not Enough**
 
 In realistic business scenarios—such as licensed software, electronic devices, subscriptions,
 serialized goods, or warranty-based products—it is necessary to track **individual product units**
@@ -440,18 +329,18 @@ In real-world systems:
 
 ---
 
-### An Incorrect Design Approach (What Not to Do)
+**An Incorrect Design Approach (What Not to Do)**
 
 One might attempt to store inventory-level details directly in the Product table:
 
-```text
-ProductID | Name    | UnitPrice | SerialNumber | CustomerID
------------------------------------------------------------
-1         | SSD     | 1000      | SR001        | 1
-1         | SSD     | 1000      | SR002        | 4
-2         | Laptop  | 4000      | SR009        | 2
-2         | Laptop  | 4000      | SR010        | NULL
-```
+**Product**
+
+| ProductID | Name   | UnitPrice | SerialNumber | CustomerID |
+|----------:|--------|----------:|--------------|-----------:|
+| 1         | SSD    | 1000      | SR001        | 1          |
+| 1         | SSD    | 1000      | SR002        | 4          |
+| 2         | Laptop | 4000      | SR009        | 2          |
+| 2         | Laptop | 4000      | SR010        | NULL       |
 
 
 Attempting to store inventory-level details directly in the **Product** table introduces
@@ -468,7 +357,7 @@ These issues compromise **data integrity** and waste storage space.
 
 ---
 
-### Normalization as the Solution
+**Normalization as the Solution**
 
 To eliminate redundancy and anomalies, the repeating structure is **decomposed** into
 separate, well-defined entities:
@@ -483,7 +372,7 @@ This restructuring is part of the **normalization process**.
 
 ### Refined Entity Definitions
 
-#### ProductInventory
+**ProductInventory**
 
 A **ProductInventory** record represents a **single physical unit** of a product.
 
@@ -492,18 +381,17 @@ Each ProductInventory item:
 - Has a **unique identifier** (e.g., InventoryID or SerialNumber)
 - May or may not be sold or assigned
 
-```text
-ProductInventory
+**ProductInventory**
 
-InventoryID | ProductID | SerialNumber | Status
------------------------------------------------
-101         | 1         | SR001        | Available
-102         | 1         | SR002        | Sold
-201         | 2         | SR009        | Sold
-202         | 2         | SR010        | Available
+| InventoryID | ProductID | SerialNumber | Status     |
+|------------:|----------:|--------------|------------|
+| 101         | 1         | SR001        | Available  |
+| 102         | 1         | SR002        | Sold       |
+| 201         | 2         | SR009        | Sold       |
+| 202         | 2         | SR010        | Available  |
 
-```
-Product
+
+**Product**
 
 | ProductID | Name             | UnitPrice |
 |----------:|------------------|----------:|
@@ -514,7 +402,7 @@ Product
 
 ---
 
-#### OrderItem
+**OrderItem**
 
 An **OrderItem** represents a product included in a specific order.
 
@@ -523,22 +411,20 @@ Each OrderItem:
 - Refers to **one Product**
 - Stores sale-specific details (e.g., quantity, price at sale, discount)
 
-```text
 
-OrderItem
+**OrderItem**
 
-OrderItemID | OrderID | ProductID | Quantity | PriceAtSale
------------------------------------------------------------
-1           | 5001    | 1         | 2        | 950
-2           | 5001    | 2         | 1        | 3800
+| OrderItemID | OrderID | ProductID | Quantity | PriceAtSale |
+|------------:|--------:|----------:|---------:|------------:|
+| 1           | 5001    | 1         | 2        | 950         |
+| 2           | 5001    | 2         | 1        | 3800        |
 
-```
 
 This entity resolves the **many-to-many** relationship between **Order** and **Product**.
 
 ---
 
-### Association Between OrderItem and ProductInventory
+**Association Between OrderItem and ProductInventory**
 
 To track **which exact inventory units are sold**, an association is established between
 **OrderItem** and **ProductInventory**.
@@ -550,7 +436,7 @@ The **OrderItem** entity acts as the correct **semantic bridge** between sales a
 - A **ProductInventory** item may be associated with **at most one OrderItem**
 - Unsold inventory items remain unassociated
 
-#### Cardinality Summary
+**Cardinality Summary**
 
 - **OrderItem → ProductInventory**
   - Minimum: one (for fulfilled orders)
@@ -560,7 +446,7 @@ The **OrderItem** entity acts as the correct **semantic bridge** between sales a
   - Minimum: zero
   - Maximum: one
 
-ProductInventory
+**ProductInventory**
 
 | InventoryID | ProductID (FK) | OrderItemID (FK) | SerialNumber | Status     |
 |------------:|----------------|------------------|--------------|------------|
@@ -578,31 +464,3 @@ ProductInventory
 - `Status` reflects the current lifecycle state of the item
 
 ---
-
-
-
-
-
-
-### Normalization Perspective
-
-This extension supports **Third Normal Form (3NF)** by:
-
-- Eliminating repeating groups
-- Preserving historical accuracy (e.g., price at time of sale)
-- Maintaining a clear separation of concerns
-
----
-
-### Conceptual Summary
-
-With this extension, the data model can accurately answer:
-
-- Which **exact product units** were sold?
-- Which inventory items are **still available**?
-- Which inventory units fulfilled **which order items**?
-
-By introducing **OrderItem** and **ProductInventory**, the model becomes suitable for
-real-world inventory and sales tracking while remaining consistent with the original
-design of Exercise 1.
-
