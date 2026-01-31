@@ -1,20 +1,12 @@
 # **Module 4: Fundamentals of Structured Query Language (SQL)**
 
-***  
-
----
 
 <!-- TOC -->
 * [**Module 4: Fundamentals of Structured Query Language (SQL)**](#module-4-fundamentals-of-structured-query-language-sql)
-* [**Introduction to Structured Query Language (SQL)**](#introduction-to-structured-query-language-sql)
+  * [1. Introduction to Structured Query Language (SQL)](#1-introduction-to-structured-query-language-sql)
     * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
-      * [**Installing PostgreSQL**](#installing-postgresql)
-      * [**Installing pgAdmin**](#installing-pgadmin)
-      * [**Importing and Exporting Sample Databases**](#importing-and-exporting-sample-databases)
-  * [**SQL Functions and Categories**](#sql-functions-and-categories)
-    * [**1. Data Definition Language (DDL)** – Structural Commands](#1-data-definition-language-ddl--structural-commands)
-    * [**2. Data Manipulation Language (DML)** – Data Processing Commands](#2-data-manipulation-language-dml--data-processing-commands)
-  * [**Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)**](#basic-sql-dml-statements-select-insert-update-delete)
+    * [SQL Functions and Categories](#sql-functions-and-categories)
+  * [2. Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)](#2-basic-sql-dml-statements-select-insert-update-delete)
     * [**SELECT**](#select)
     * [**WHERE**](#where)
     * [**DISTINCT**](#distinct)
@@ -35,11 +27,11 @@
     * [**INSERT INTO ... SELECT**](#insert-into--select)
     * [**UPDATE**](#update)
     * [**DELETE**](#delete)
-  * [Using a Programming Language to Interact With a Database](#using-a-programming-language-to-interact-with-a-database)
+  * [3. Using a Programming Language to Interact With a Database](#3-using-a-programming-language-to-interact-with-a-database)
     * [Database Drivers – Core Functions](#database-drivers--core-functions)
     * [Database Operations with Java and PostgreSQL](#database-operations-with-java-and-postgresql)
       * [Example Workflow (Conceptual)](#example-workflow-conceptual)
-  * [**Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)**](#basic-sql-data-definition-language-ddl-statements-create-alter-drop)
+  * [4. Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)](#4-basic-sql-data-definition-language-ddl-statements-create-alter-drop)
     * [CREATE](#create)
       * [CREATE DATABASE](#create-database)
       * [CREATE SCHEMA](#create-schema)
@@ -60,7 +52,8 @@
   * [Hands-on Exercise 3](#hands-on-exercise-3)
 <!-- TOC -->
 
-# **Introduction to Structured Query Language (SQL)**
+
+## 1. Introduction to Structured Query Language (SQL)
 
 SQL is the standard language for managing and querying relational databases.
 
@@ -75,19 +68,19 @@ SQL is used to interact with relational database management systems (RDBMS).
 
 To work with SQL databases efficiently, a proper working environment is required.
 
-#### **Installing PostgreSQL**
+**Installing PostgreSQL**
 PostgreSQL is an open-source and powerful relational database management system.
 - **Download Link**: [Download PostgreSQL](https://www.postgresql.org/download)
 - Supports Windows, macOS, and Linux.
 - Complies with SQL standards and offers extensive plugin support.
 
-#### **Installing pgAdmin**
+**Installing pgAdmin**
 pgAdmin is the most commonly used graphical management tool for PostgreSQL.
 - It is distributed along with PostgreSQL.
 - Provides a user-friendly interface for managing databases, executing queries, and visualizing schemas.
 
 
-#### **Importing and Exporting Sample Databases**
+**Importing and Exporting Sample Databases**
 
 * **Northwind Sample Database**
   - A well-known example database that simulates a trading company's operations.
@@ -101,21 +94,22 @@ pgAdmin is the most commonly used graphical management tool for PostgreSQL.
   - [Download](../resources/dbs/pagila.backup)
 
 
+---
 
-## **SQL Functions and Categories**
+### SQL Functions and Categories
 
 SQL functions can be divided into two main categories:
 
-### **1. Data Definition Language (DDL)** – Structural Commands
+**1. Data Definition Language (DDL)** – Structural Commands
 DDL includes commands that define and modify database structures:
 - Defining, altering, and deleting database objects such as **database, table, view, function, etc.**.
 
-### **2. Data Manipulation Language (DML)** – Data Processing Commands
+**2. Data Manipulation Language (DML)** – Data Processing Commands
 DML includes commands that manipulate data within tables:
 - Inserting, deleting, updating, and retrieving(querying) **data**.
 
 
-## **Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)**
+## 2. Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)
 
 | Command  | Description |
 |----------|------------|
@@ -307,6 +301,8 @@ WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 --Concatenates ShipPostalCode and ShipAddress, separating them with a comma, and assigns the alias "Shipping Address".
 --Filters orders where the OrderDate is between July 4, 1996, and July 9, 1996.
 ```
+
+---
 
 ### **SQL JOIN Operations**
 
@@ -552,6 +548,7 @@ Copies the `CompanyName` and `ContactName` columns from the `customers` table in
 SELECT "CompanyName", "ContactName" INTO "Backup" FROM "customers";
 ```
 
+---
 
 ### **INSERT**
 
@@ -593,6 +590,8 @@ INSERT INTO "Backup" SELECT "CompanyName", "ContactName" FROM "customers";
 
 ```
 
+---
+
 ### **UPDATE**
 
 The **UPDATE** statement is used to modify existing records in a table.
@@ -609,6 +608,7 @@ SET "ContactName" = 'Jane Lee',
 WHERE "CustomerID" = '1';
 
 ```
+---
 
 ### **DELETE**
 
@@ -639,7 +639,7 @@ This query removes all records from the customers table without deleting the tab
 
 
 
-## Using a Programming Language to Interact With a Database
+## 3. Using a Programming Language to Interact With a Database
 
 Modern applications often need to store, retrieve, and manipulate data dynamically.
 To perform these database operations from within an application, database drivers are essential.
@@ -793,7 +793,7 @@ public class DatabaseOperationsWithJava {
 
 ---
 
-## **Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)**
+## 4. Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
 
 Used to define, modify, and remove database objects such as databases, tables, views, etc.
 
