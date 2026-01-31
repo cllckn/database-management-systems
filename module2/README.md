@@ -291,6 +291,8 @@ Relationships are **bidirectional**, and its type (cardinality) is determined by
   Each **Prescription** is issued by only `one` **Doctor**.  
   → **1:M**
 
+<img src="../resources/figures/instance-diagram-one-to-many.png" width="500">
+
 - *What is the maximum number of prescriptions per doctor?* → **many**  → **Cardinality**
 - *What is the maximum number of doctors per prescription?* → **one**  → **Cardinality**
 
@@ -483,13 +485,13 @@ This represents a **Many-to-Many (M:N)** relationship.
 
 **Implementation Rule:**
 
-- A **junction (associative) table** is created to link the two entities.
-- The junction table includes:
+- A **junction (associative) entity** is added to link the two entities.
+- The junction entity includes:
   - The **primary keys of both entities** as foreign keys.
   - Any additional attributes related to the relationship  
     (e.g., enrollment date, grade, attendance status).
 
-**Primary Key Design in a Junction Table:**
+**Primary Key Design in a Junction Entity:**
 - Option 1: Use a **composite primary key** consisting of both foreign keys.
 - Option 2: Use a **surrogate primary key** (e.g., an auto-incremented ID), while keeping both foreign keys.
 
