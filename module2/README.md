@@ -256,30 +256,9 @@ General guidelines:
 This is a basic guideline, but through practical exercises, you can develop a deeper understanding and gain experience 
 in identifying entities, attributes, and relationships more effectively.
 
-<img src="../resources/figures/analysing-business-rules.png" width="500">
+<img src="../resources/figures/analysing-business-rules.png" width="600">
 
 
----
-
-#### Examples: Business Rules to ER Model
-
-
-**1. Entities and Attributes**
-
-- A **Customer** has a first name, last name, customer number, and address.
-- An **Invoice** has an invoice number, date, and total amount.
-
-→ `Customer` and `Invoice` are entities; listed properties are attributes.
-
----
-
-**2. Relationships**
-
-- A **Customer** can generate many **Invoices**.
-
-→ **One-to-Many (1:M)** relationship.
-
----
 
 #### Relationship Types (Cardinalities)
 
@@ -288,52 +267,13 @@ Relationships are **bidirectional**, and its type (cardinality) is determined by
 > or
 > *What is the maximum number of Entity1 per Entity2*
 
-**Examples:**
+There are three types of relationships:
 
-**One-to-Many (1:M) Relationship (Doctor – Prescription)**
+* **One-to-Many (1:M)**
+* **Many-to-Many (M:N)**
+* **One-to-One (1:1)**
 
-- A **Doctor** can issue `many` **Prescriptions**.  
-  Each **Prescription** is issued by only `one` **Doctor**.  
-  → **1:M**
-
-<img src="../resources/figures/instance-diagram-one-to-many.png" width="500">
-
-- *What is the maximum number of prescriptions per doctor?* → **many**  → **Cardinality**
-- *What is the maximum number of doctors per prescription?* → **one**  → **Cardinality**
-
----
-
-**One-to-Many (1:M) Relationship (Instructor – Class)**
-
-- One **Instructor** can teach **many Classes**.  
-  Each **Class** is taught by only **one Instructor**.  
-  → **1:M**
-
-- *What is the maximum number of classes per instructor?* → **many** → **Cardinality**
-- *What is the maximum number of instructors per class?* → **one** → **Cardinality**
-
----
-
-**One-to-One (1:1) Relationship (Person – Department (Manager))**
-
-- One **Person** can manage **one Department**.  
-  Each **Department** has only **one Person (Manager)**.  
-  → **1:1**
-
-- *What is the maximum number of departments per person?* → **one** → **Cardinality**
-- *What is the maximum number of managers per department?* → **one** → **Cardinality**
-
----
-
-**Many-to-Many (M:N) Relationship (Student – Class)**
-
-- One **Student** can enroll in **many Classes**.  
-  Each **Class** can have **many Students**.  
-  → **M:N**
-
-- *What is the maximum number of classes per student?* → **many** → **Cardinality**
-- *What is the maximum number of students per class?* → **many** → **Cardinality**
-
+Details can be found [here](./README.md#51-crows-foot-symbols-explanation).
 
 ### 4.5. Types of Attributes
 
@@ -385,20 +325,12 @@ Different notations can be used for ER modeling:
 
 ### 5.1. Crow’s Foot Symbols Explanation
 
-#### Cardinality vs. Participation in ER Modeling
+#### Cardinality & Participation in ER Modeling
 
 In Entity–Relationship (ER) modeling, each side of a relationship is defined using two constraints:
 **maximum cardinality** and **minimum participation**.
 
-**Cardinality** describes the maximum number of times an instance in one entity can be associated with instances in the 
-related entity.
-
 **Cardinality** specifies the maximum number of related entity instances.
-
-
-
-**Participation** (also called Optionality) describes the minimum number of times an instance in one entity must be 
-associated with an instance in the related entity.
 
 **Participation** specifies the minimum number of related entity instances.
 
@@ -439,9 +371,8 @@ associated with an instance in the related entity.
 - Each **Prescription** is issued by **exactly one Doctor**.
 
 
-<img src="../resources/figures/er-one-to-many-example.png" width="500">
+<img src="../resources/figures/er-one-to-many-with-instance.png" width="800">
 
-one-to-one-example
 
 **Cardinality and Participation Interpretation:**
 
