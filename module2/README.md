@@ -14,12 +14,11 @@
     * [4.2. Key Components of the ER Model](#42-key-components-of-the-er-model)
     * [4.3. Why Data Modeling Matters for Different Database Systems](#43-why-data-modeling-matters-for-different-database-systems)
     * [4.4. Transforming Business Rules into an ER Model](#44-transforming-business-rules-into-an-er-model)
-      * [Examples: Business Rules to ER Model](#examples-business-rules-to-er-model)
       * [Relationship Types (Cardinalities)](#relationship-types-cardinalities)
     * [4.5. Types of Attributes](#45-types-of-attributes)
   * [5. Designing ER Diagrams Using Crow’s Foot Notation](#5-designing-er-diagrams-using-crows-foot-notation)
     * [5.1. Crow’s Foot Symbols Explanation](#51-crows-foot-symbols-explanation)
-      * [Cardinality vs. Participation in ER Modeling](#cardinality-vs-participation-in-er-modeling)
+      * [Cardinality & Participation in ER Modeling](#cardinality--participation-in-er-modeling)
       * [One-to-Many (1:M) Relationship](#one-to-many-1m-relationship)
       * [Many-to-Many (M:N) Relationship](#many-to-many-mn-relationship)
       * [One-to-One (1:1) Relationship](#one-to-one-11-relationship-)
@@ -371,7 +370,7 @@ In Entity–Relationship (ER) modeling, each side of a relationship is defined u
 - Each **Prescription** is issued by **exactly one Doctor**.
 
 
-<img src="../resources/figures/er-one-to-many-with-instance.png" width="800">
+<img src="../resources/figures/er-one-to-many-with-instance.png" width="1000">
 
 
 **Cardinality and Participation Interpretation:**
