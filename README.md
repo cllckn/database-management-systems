@@ -171,7 +171,8 @@ be installed without issues.
 
 ## Acknowledgement
 
-In preparing these course materials, the instructor **leveraged AI agents** as a support tool for drafting lecture notes, generating examples and figures, and organizing content.  
-All outputs were **reviewed, edited, and contextualized** prior to inclusion.
+In preparing these course materials, the instructor used AI-based tools as support for drafting lecture notes, generating examples and figures, and organizing content.
 
-Draw.io was used as support tool to design some of the diagrams.
+All AI-generated outputs were reviewed, edited, and contextualized by the instructor prior to inclusion.
+
+Draw.io was used as a support tool to design some of the diagrams.
