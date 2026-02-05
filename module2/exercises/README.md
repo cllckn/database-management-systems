@@ -103,22 +103,22 @@ Your task is to analyze these rules and prepare them for ER modeling.
 
 ### Business Rules
 
-A Contact has a unique Contact ID, First Name, Last Name, Status (Active, Inactive, Archived) and Notes.
-Each Phone Number has a unique Phone Number ID, the Phone Number Value, and a Phone Type (e.g., Mobile, Home, Work).
-A Contact can have multiple Phone Numbers, and each Phone Number belongs to one Contact.
-Each Email Address has a unique Email ID and an Email Address Value.
-A Contact may have multiple Email Addresses, and each Email Address belongs to one Contact.
-Each Group has a unique Group ID and a Group Name.
-A Contact can belong to multiple Groups (e.g., Family, Friends, Work), and each Group can include multiple Contacts.
-The system records Call Logs for contacts.
-Each Call Log has a unique Call Log ID, Call Date, Call Time, Call Duration, and Call Type (Incoming, Outgoing, Missed).
-Each Call Log is associated with one Contact and one Phone Number.
-A Contact may have zero or more Call Logs. A Call Log cannot exist without a Contact.
-A Contact may be marked as a Favorite.
-Each Address has a unique Address ID, Street, City, State, and Postal Code.
-The system stores Address Information for contacts.
-A Contact can have at most one Address, and each Address belongs to one Contact.
-
+* A Contact has a unique Contact ID, First Name, Last Name, Status (Active, Inactive, Archived) and Notes.
+* Each Phone Number has a unique Phone Number ID, the Phone Number Value, and a Phone Type (e.g., Mobile, Home, Work).
+* A Contact can have multiple Phone Numbers, and each Phone Number belongs to one Contact.
+* Each Email Address has a unique Email ID and an Email Address Value.
+* A Contact may have multiple Email Addresses, and each Email Address belongs to one Contact.
+* Each Group has a unique Group ID and a Group Name.
+* A Contact can belong to multiple Groups (e.g., Family, Friends, Work), and each Group can include multiple Contacts.
+* The system records Call Logs for contacts.
+* Each Call Log has a unique Call Log ID, Call Date, Call Time, Call Duration, and Call Type (Incoming, Outgoing, Missed).
+* Each Call Log is associated with one Contact and one Phone Number.
+* A Contact may have zero or more Call Logs. A Call Log cannot exist without a Contact.
+* A Contact may be marked as a Favorite.
+* Each Address has a unique Address ID, Street, City, State, and Postal Code.
+* The system stores Address Information for contacts.
+* A Contact can have at most one Address, and each Address belongs to one Contact.
+  
 ---
 
 ## Task 2: Construct the ER Model
