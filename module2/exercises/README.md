@@ -82,7 +82,7 @@ By completing this exercise, you should be able to:
 
 
 
-## Hands-on Exercise 2: Telephone Contact Records System
+# Hands-on Exercise 2: Telephone Contact Records System
 ### Business Rules to ER Model with Crow’s Foot Notation
 
 ---
