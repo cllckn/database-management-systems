@@ -356,11 +356,19 @@ The ER model includes:
 - **Primary keys** and **foreign keys** are implied by the stated business rules.
 - The resulting ER diagram is designed to support direct transformation into a **relational schema**.
 
+---
 
 <img src="../resources/figures/ecommerce-er-v1.png">
----
+
+***
+
 <img src="../resources/figures/ecommerce-er-v3.png">
----
+
+***
+
+<img src="../resources/figures/ecommerce-er-v3.png">
+
+***
 
 **Task 3: Conversion of ER Model into an Relational (Logical) Model**
 
