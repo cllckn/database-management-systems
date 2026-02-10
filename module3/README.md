@@ -114,6 +114,7 @@ A table is the fundamental storage structure in a relational database.
 - `Price`: Cost of the product
 - `StockQuantity`: Quantity available in stock
 
+**Product**
 ![](../resources/figures/product-table.png)
 
 ---
