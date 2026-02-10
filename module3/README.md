@@ -22,6 +22,7 @@
   * [Exercise1: E-Commerce System Design](#exercise1-e-commerce-system-design)
   * [Extension to Exercise 1: Tracking Individual Product Items](#extension-to-exercise-1-tracking-individual-product-items-)
     * [Refined Entity Definitions](#refined-entity-definitions)
+    * [Define Relational Schemas](#define-relational-schemas)
 <!-- TOC -->
 
 ![Database System](../resources/figures/db-development-lifecycle.png)
@@ -341,7 +342,7 @@ The ER model includes:
   - One-to-Many (1:M)
   - Many-to-Many (M:N)
 
----
+
 
 **Modeling Notes (Guidance)**
 
@@ -350,6 +351,14 @@ The ER model includes:
 - **Mandatory and optional participation** is explicitly indicated where applicable.
 - **Primary keys** and **foreign keys** are implied by the stated business rules.
 - The resulting ER diagram is designed to support direct transformation into a **relational schema**.
+
+---
+
+**Task 3: Conversion of ER Model into an Relational (Logical) Model**
+
+* Define relational schemas
+
+
 
 
 
@@ -520,6 +529,8 @@ The **OrderItem** entity acts as the correct **semantic bridge** between sales a
 - `Status` reflects the current lifecycle state of the item
 
 ---
+
+### Define Relational Schemas
 
 
 
