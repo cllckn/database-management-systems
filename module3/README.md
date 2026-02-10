@@ -20,7 +20,6 @@
     * [System Catalog](#system-catalog)
     * [Key Characteristics](#key-characteristics)
   * [Exercise1: E-Commerce System Design](#exercise1-e-commerce-system-design)
-  * [<img src="../resources/figures/ecommerce-er-v3.png">](#img-srcresourcesfiguresecommerce-er-v3png)
     * [Relational Schema for E-Commerce System](#relational-schema-for-e-commerce-system)
   * [Practical Relational Schema (Best Practice Alternative)](#practical-relational-schema-best-practice-alternative)
   * [Extension to Exercise 1: Tracking Individual Product Items](#extension-to-exercise-1-tracking-individual-product-items-)
@@ -366,9 +365,6 @@ The ER model includes:
 
 ***
 
-<img src="../resources/figures/ecommerce-er-v3.png">
-
-***
 
 **Task 3: Conversion of ER Model into an Relational (Logical) Model**
 
@@ -739,6 +735,13 @@ The **OrderItem** entity acts as the correct **semantic bridge** between sales a
 | 201         | 2              | 5002             | LAP-SR-009   | Sold       |
 | 202         | 2              | NULL             | LAP-SR-010   | Available  |
 | 301         | 3              | NULL             | MOU-SR-050   | Available  |
+
+
+***
+
+<img src="../resources/figures/ecommerce-er-v3.png">
+
+***
 
 **Explanation**
 - Each row represents **one physical product unit**
