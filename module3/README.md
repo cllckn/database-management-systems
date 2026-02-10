@@ -3,7 +3,7 @@
 <!-- TOC -->
 * [Module 3: Relational Database Model](#module-3-relational-database-model)
   * [1. Fundamentals of the Relational Model](#1-fundamentals-of-the-relational-model)
-    * [Core Terminology](#core-terminology)
+    * [Terminology](#terminology)
     * [Why Relational Model?](#why-relational-model)
   * [2. Table (Relation) Structure](#2-table-relation-structure)
     * [Components of a Table](#components-of-a-table)
@@ -12,6 +12,8 @@
     * [Foreign Key (FK)](#foreign-key-fk)
     * [Unique Constraint](#unique-constraint)
     * [Not Null Constraint](#not-null-constraint)
+    * [Check Constraint](#check-constraint)
+    * [Validity Constraint](#validity-constraint)
     * [Referential Integrity and Foreign Keys](#referential-integrity-and-foreign-keys)
     * [Best Practices for Primary Keys](#best-practices-for-primary-keys)
   * [4. System Catalog and Metadata](#4-system-catalog-and-metadata)
@@ -32,7 +34,9 @@
 The **relational model** organizes data into **tables (relations)** consisting of **rows (tuples)** and **columns (attributes)**.  
 It is based on solid mathematical foundations (set theory and predicate logic) and is the most widely used data model in database systems.
 
-### Core Terminology
+### Terminology
+
+<img src="../resources/figures/table-structure.png" >
 
 - **Relation**:  
   A table composed of rows and columns.
@@ -47,7 +51,7 @@ It is based on solid mathematical foundations (set theory and predicate logic) a
   The set of valid values that an attribute can take (e.g., integers, dates, predefined ranges).
 
 - **Relational Schema**:  
-  A formal description of a table’s structure, including:
+  Describes the structure of a table, including:
     - Attribute names
     - Data types
     - Primary Key (PK)
@@ -115,32 +119,86 @@ A table is the fundamental storage structure in a relational database.
 
 ## 3. Integrity Rules (Constraints)
 
-**Integrity constraints** ensure data accuracy and consistency within a database.
+**Integrity constraints** ensure data accuracy, consistency, completeness, and validity within a database.
+
+* Accuracy – Ensures that data is correct, free from errors, and reflects real-world values.
+* Consistency – Ensures that data remains uniform across the database (e.g., no conflicting information between tables).
+* Completeness – Ensures that all required data is present and not missing.
+* Validity - Ensures that data values are acceptable in type, format, and range.
+
+---
 
 ### Primary Key (PK)
 
 - Uniquely identifies each row in a table
 - Cannot contain `NULL` values
 - Must be unique
+- Enforces **entity integrity**
 - Examples:
   - `ProductID` in the **Product** table
-  - `StudentID` in the **Students** table
+  - `StudentID` in the **Student** table
+
+---
 
 ### Foreign Key (FK)
 
 - Establishes a relationship between two tables
 - Enforces **referential integrity**
-- Ensures that referenced data exists
+- Ensures that referenced data exists in the parent table
+- Prevents orphan records
+- Examples:
+  - `Order.CustomerID` → **Customer(CustomerID)**
+  - `Enrollment.StudentID` → **Student(StudentID)**
+
+---
 
 ### Unique Constraint
 
-- Ensures all values in a column are unique
-- Example: `Email` or `Username` in a **Users** table
+- Ensures all values in a column (or set of columns) are unique
+- Prevents duplicate entries
+- Examples:
+  - `Email` in a **User** table
+  - `Username` in a **User** table
+
+---
 
 ### Not Null Constraint
 
-- Ensures that a column cannot have `NULL` values
-- Example: `Name`, `CourseCode` in a **Course** table
+- Ensures that a column cannot contain `NULL` values
+- Enforces **data completeness**
+- Examples:
+  - `Name` in a **Course** table
+  - `OrderDate` in an **Order** table
+
+---
+
+### Check Constraint
+
+- Ensures that column values satisfy a specific condition
+- Enforces **data validity**
+- Examples:
+  - `Age >= 18`
+  - `Price > 0`
+  - `Rating BETWEEN 1 AND 5`
+  - `Status IN ('Pending', 'Shipped', 'Delivered')`
+
+---
+
+### Validity Constraint
+
+- Validity ensures that data values are acceptable in type, format, and range.
+- Typically enforced using:
+  - `CHECK` constraints
+  - Data types
+  - Controlled value lists
+- Examples:
+  - `Email` must follow a valid email format
+  - `GraduationYear <= CURRENT_YEAR`
+  - `Quantity >= 0`
+  - INT column allows values approximately in the range **−2,147,483,648 to 2,147,483,647**
+
+
+Together, these constraints ensure that the database remains **accurate**, **consistent**, **complete**, and **reliable**.
 
 ---
 
@@ -181,8 +239,8 @@ This means:
 
 ### Best Practices for Primary Keys
 
-- Keep primary keys **compact and simple** to improve performance (searching, constraint enforcement) 
-  Prefer integer-based keys.
+- Keep primary keys **compact and simple** to improve performance (searching, constraint enforcement).
+- Prefer integer-based keys.
 
   *Example:*  
   Use `ProductID = 1` instead of `ProductCode = 'SSD512GB'`.
@@ -201,6 +259,8 @@ This means:
 ### System Catalog
 
 The **system catalog** is a collection of internal tables that store **metadata** (data about data).
+
+<img src="../resources/figures/system-catalog.png">
 
 It contains information about:
 - Tables and columns
@@ -333,15 +393,7 @@ In real-world systems:
 
 One might attempt to store inventory-level details directly in the Product table:
 
-**Product**
-
-| ProductID | Name   | UnitPrice | SerialNumber | CustomerID |
-|----------:|--------|----------:|--------------|-----------:|
-| 1         | SSD    | 1000      | SR001        | 1          |
-| 1         | SSD    | 1000      | SR002        | 4          |
-| 2         | Laptop | 4000      | SR009        | 2          |
-| 2         | Laptop | 4000      | SR010        | NULL       |
-
+<img src="../resources/figures/normalization-1.png">
 
 Attempting to store inventory-level details directly in the **Product** table introduces
 **repeating groups** and mixes product, inventory, and customer assignment data in a single structure.
@@ -362,9 +414,11 @@ These issues compromise **data integrity** and waste storage space.
 To eliminate redundancy and anomalies, the repeating structure is **decomposed** into
 separate, well-defined entities:
 
+<img src="../resources/figures/normalization-2.png">
+
+
 - **Product** – stores product type information
-- **OrderItem** – represents products included in an order
-- **ProductInventory** – represents individual physical product units
+- **ProductInventory(InventoryRecord)** – represents individual physical product units
 
 This restructuring is part of the **normalization process**.
 
@@ -376,12 +430,12 @@ This restructuring is part of the **normalization process**.
 
 A **ProductInventory** record represents a **single physical unit** of a product.
 
-Each ProductInventory item:
+Each ProductInventory(InventoryRecord) item:
 - Belongs to **one Product**
 - Has a **unique identifier** (e.g., InventoryID or SerialNumber)
 - May or may not be sold or assigned
 
-**ProductInventory**
+**ProductInventory(InventoryRecord)**
 
 | InventoryID | ProductID | SerialNumber | Status     |
 |------------:|----------:|--------------|------------|
@@ -401,6 +455,9 @@ Each ProductInventory item:
 
 
 ---
+
+**Association Between OrderItem and ProductInventory**
+
 
 **OrderItem**
 
@@ -422,9 +479,8 @@ Each OrderItem:
 
 This entity resolves the **many-to-many** relationship between **Order** and **Product**.
 
----
 
-**Association Between OrderItem and ProductInventory**
+
 
 To track **which exact inventory units are sold**, an association is established between
 **OrderItem** and **ProductInventory**.
@@ -464,3 +520,6 @@ The **OrderItem** entity acts as the correct **semantic bridge** between sales a
 - `Status` reflects the current lifecycle state of the item
 
 ---
+
+
+
