@@ -20,6 +20,9 @@
     * [System Catalog](#system-catalog)
     * [Key Characteristics](#key-characteristics)
   * [Exercise1: E-Commerce System Design](#exercise1-e-commerce-system-design)
+  * [<img src="../resources/figures/ecommerce-er-v3.png">](#img-srcresourcesfiguresecommerce-er-v3png)
+    * [Relational Schema for E-Commerce System](#relational-schema-for-e-commerce-system)
+  * [Practical Relational Schema (Best Practice Alternative)](#practical-relational-schema-best-practice-alternative)
   * [Extension to Exercise 1: Tracking Individual Product Items](#extension-to-exercise-1-tracking-individual-product-items-)
     * [Refined Entity Definitions](#refined-entity-definitions)
     * [Define Relational Schemas](#define-relational-schemas)
@@ -353,14 +356,221 @@ The ER model includes:
 - **Primary keys** and **foreign keys** are implied by the stated business rules.
 - The resulting ER diagram is designed to support direct transformation into a **relational schema**.
 
+
+<img src="../resources/figures/ecommerce-er-v1.png">
+---
+<img src="../resources/figures/ecommerce-er-v3.png">
 ---
 
 **Task 3: Conversion of ER Model into an Relational (Logical) Model**
 
 * Define relational schemas
 
+### Relational Schema for E-Commerce System
+
+**Customer**
+
+Customer(
+CustomerID int PK,
+Name string,
+Email string,
+PhoneNumber string,
+ShippingAddress string
+)
+
+---
+
+**Order**
+
+Order(
+OrderID int PK,
+OrderDate date,
+TotalAmount double,
+Status string,
+CustomerID int FK → Customer(CustomerID)
+)
+
+---
+
+**Product**
+
+Product(
+ProductID int PK,
+Name string,
+Description string,
+Price double,
+StockQuantity int
+)
+
+---
+
+**Category**
+
+Category(
+CategoryID int PK,
+CategoryName string
+)
+
+---
+
+**ProductCategory**   (Junction table for Product–Category (M:N))
+
+ProductCategory(
+ProductID int PK, FK → Product(ProductID),
+CategoryID int PK, FK → Category(CategoryID)
+)
+
+---
+
+**OrderItem**   (Junction table for Order–Product (M:N))
+
+OrderItem(
+OrderItemID int PK,
+OrderID int FK → Order(OrderID),
+ProductID int FK → Product(ProductID),
+Quantity int
+)
+
+---
+
+**Payment**
+
+Payment(
+PaymentID int PK,
+PaymentDate date,
+AmountPaid double,
+PaymentMethod string,
+OrderID int FK → Order(OrderID)
+)
+
+---
+
+**Shipment**
+
+Shipment(
+ShipmentID int PK,
+ShipmentDate date,
+Carrier string,
+TrackingNumber string,
+OrderID int FK → Order(OrderID)
+)
+
+---
+
+**Review**
+
+Review(
+ReviewID int PK,
+Rating int,
+ReviewText string,
+ReviewDate date,
+CustomerID int FK → Customer(CustomerID),
+ProductID int FK → Product(ProductID)
+)
 
 
+## Practical Relational Schema (Best Practice Alternative)
+
+**Customer**
+
+Customer(
+id int PK,
+Name string,
+Email string,
+PhoneNumber string,
+ShippingAddress string
+)
+
+---
+
+**Order**
+
+Order(
+id int PK,
+OrderDate date,
+TotalAmount double,
+Status string,
+CustomerID int FK → Customer(CustomerID)
+)
+
+---
+
+**Product**
+
+Product(
+id int PK,
+Name string,
+Description string,
+Price double,
+StockQuantity int
+)
+
+---
+
+**Category**
+
+Category(
+id int PK,
+CategoryName string
+)
+
+---
+
+**ProductCategory**   (Junction table for Product–Category (M:N))
+
+ProductCategory(
+id int PK,
+ProductID int FK → Product(ProductID),
+CategoryID int FK → Category(CategoryID)
+)
+
+---
+
+**OrderItem**   (Junction table for Order–Product (M:N))
+
+OrderItem(
+id int PK,
+OrderID int FK → Order(OrderID),
+ProductID int FK → Product(ProductID),
+Quantity int
+)
+
+---
+
+**Payment**
+
+Payment(
+id int PK,
+PaymentDate date,
+AmountPaid double,
+PaymentMethod string,
+OrderID int FK → Order(OrderID)
+)
+
+---
+
+**Shipment**
+
+Shipment(
+id int PK,
+ShipmentDate date,
+Carrier string,
+TrackingNumber string,
+OrderID int FK → Order(OrderID)
+)
+
+---
+
+**Review**
+
+Review(
+id int PK,
+Rating int,
+ReviewText string,
+ReviewDate date,
+CustomerID int FK → Customer(CustomerID),
+ProductID int FK → Product(ProductID)
+)
 
 
 
