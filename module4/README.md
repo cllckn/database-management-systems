@@ -6,7 +6,23 @@
   * [1. Introduction to Structured Query Language (SQL)](#1-introduction-to-structured-query-language-sql)
     * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
     * [SQL Functions and Categories](#sql-functions-and-categories)
-  * [2. Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)](#2-basic-sql-dml-statements-select-insert-update-delete)
+  * [2. Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)](#2-basic-sql-data-definition-language-ddl-statements-create-alter-drop)
+    * [CREATE](#create)
+      * [CREATE DATABASE](#create-database)
+      * [CREATE SCHEMA](#create-schema)
+      * [CREATE TABLE](#create-table)
+        * [Commonly Used SQL and PostgreSQL Data Types](#commonly-used-sql-and-postgresql-data-types)
+        * [Best Practices for Choosing Data Types](#best-practices-for-choosing-data-types)
+    * [ALTER](#alter)
+    * [DROP](#drop)
+    * [Defining Constraints in SQL](#defining-constraints-in-sql)
+      * [NOT NULL Constraint](#not-null-constraint)
+      * [DEFAULT Constraint](#default-constraint)
+      * [UNIQUE Constraint](#unique-constraint)
+      * [CHECK Constraint](#check-constraint)
+      * [PRIMARY KEY Constraint](#primary-key-constraint)
+      * [FOREIGN KEY Constraint](#foreign-key-constraint)
+  * [3. Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)](#3-basic-sql-dml-statements-select-insert-update-delete)
     * [**SELECT**](#select)
     * [**WHERE**](#where)
     * [**DISTINCT**](#distinct)
@@ -27,29 +43,10 @@
     * [**INSERT INTO ... SELECT**](#insert-into--select)
     * [**UPDATE**](#update)
     * [**DELETE**](#delete)
-  * [3. Using a Programming Language to Interact With a Database](#3-using-a-programming-language-to-interact-with-a-database)
+  * [4. Using a Programming Language to Interact With a Database](#4-using-a-programming-language-to-interact-with-a-database)
     * [Database Drivers – Core Functions](#database-drivers--core-functions)
     * [Database Operations with Java and PostgreSQL](#database-operations-with-java-and-postgresql)
       * [Example Workflow (Conceptual)](#example-workflow-conceptual)
-  * [4. Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)](#4-basic-sql-data-definition-language-ddl-statements-create-alter-drop)
-    * [CREATE](#create)
-      * [CREATE DATABASE](#create-database)
-      * [CREATE SCHEMA](#create-schema)
-      * [CREATE TABLE](#create-table)
-        * [Commonly Used SQL and PostgreSQL Data Types](#commonly-used-sql-and-postgresql-data-types)
-        * [Best Practices for Choosing Data Types](#best-practices-for-choosing-data-types)
-    * [ALTER](#alter)
-    * [DROP](#drop)
-    * [Defining Constraints in SQL](#defining-constraints-in-sql)
-      * [NOT NULL Constraint](#not-null-constraint)
-      * [DEFAULT Constraint](#default-constraint)
-      * [UNIQUE Constraint](#unique-constraint)
-      * [CHECK Constraint](#check-constraint)
-      * [PRIMARY KEY Constraint](#primary-key-constraint)
-      * [FOREIGN KEY Constraint](#foreign-key-constraint)
-  * [Hands-on Exercise 1](#hands-on-exercise-1)
-  * [Hands-on Exercise 2](#hands-on-exercise-2)
-  * [Hands-on Exercise 3](#hands-on-exercise-3)
 <!-- TOC -->
 
 
@@ -61,7 +58,7 @@ SQL is used to interact with relational database management systems (RDBMS).
 
 **Efficient use of SQL improves database performance, optimizes queries, and ensures data integrity.**
 
-![](../resources/figures/database-system.png)
+![](../resources/figures/database-system-horizontal-with-sql.png)
 
 
 ### **Setting Up the Working Environment**
@@ -94,6 +91,22 @@ pgAdmin is the most commonly used graphical management tool for PostgreSQL.
   - [Download](../resources/dbs/pagila.backup)
 
 
+**Define a new role**
+
+The following credentials will be used for all database-related operations throughout the course.
+
+username: lectureuser
+password: lecturepassword
+
+```sql
+CREATE ROLE lectureuser WITH 
+  LOGIN 
+  PASSWORD 'lecturepassword'
+  SUPERUSER 
+  CREATEDB 
+  CREATEROLE;
+```
+
 ---
 
 ### SQL Functions and Categories
@@ -109,7 +122,462 @@ DML includes commands that manipulate data within tables:
 - Inserting, deleting, updating, and retrieving(querying) **data**.
 
 
-## 2. Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)
+
+---
+
+## 2. Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
+
+Used to define, modify, and remove database objects such as databases, tables, views, etc.
+
+---
+**Data integrity constraints are enforced when DDL statements are executed. If a data integrity violation occurs,
+the operation is aborted, ensuring that data remains consistent and accurate.**
+---
+
+### CREATE
+
+This statement is used to define and initialize various database objects, including databases,
+schemas, tables, views, indexes, stored procedures, functions, etc.
+It establishes the structure and properties of these objects within the database.
+
+#### CREATE DATABASE
+
+Constructs a new database.
+
+```sql
+CREATE DATABASE ecommercedb
+  ENCODING='UTF-8' -- Specifies UTF-8 character encoding for supporting Kazakh characters.
+  
+  LC_COLLATE='kk_KZ.UTF-8' -- Defines Kazakh-specific sorting and comparison rules.
+  --Affects ORDER BY, LIKE, ILIKE, and index behavior.
+  
+  LC_CTYPE='kk_KZ.UTF-8' -- Sets Kazakh-specific character classification and case conversion.
+  -- Affects case conversions (UPPER(), LOWER()), character classification (ISALPHA(), ISDIGIT()), and regular expressions.
+
+  OWNER postgres -- Assigns the database owner to the postgres user.
+  TEMPLATE=template0; -- Creates a clean database without default template settings.
+```
+
+#### CREATE SCHEMA
+
+A schema logically divides a database into sections, similar to a folder structure on a hard disk.
+
+Facilitates database management, multi-user collaboration on the same project (namespace management), and ensuring security.
+
+```sql
+CREATE SCHEMA schema1;
+
+```
+
+#### CREATE TABLE
+
+Used to define a table.
+
+When constructing a table, data types of each column must be specified.
+
+For the list of PostgreSQL data types:
+[PostgreSQL Data Types](https://www.postgresql.org/docs/10/static/datatype.html)
+
+Choosing appropriate data types for columns is crucial because:
+
+* It improves performance and optimizes resource utilization.
+  * Choose the smallest possible data type for each column to save space and boost performance.
+* It ensures data consistency and accuracy (validation).
+  * If we choose **INT** for the quantity field, sending a string is impossible.
+* It provides protection against certain types of security attacks.
+  * If we use a **JSON** type instead of **TEXT**, data that doesn't follow the JSON format cannot be stored.
+  * This prevents the storage of potentially harmful scripts like `"<script>..."`, thereby mitigating the risk of stored XSS attacks.
+
+
+##### Commonly Used SQL and PostgreSQL Data Types
+
+- **Numeric Types**:
+  - `SMALLINT`, `INTEGER`, and `BIGINT` store whole numbers (integers) without fractional parts.
+  - `DECIMAL` and `NUMERIC` store exact decimal values with user-defined precision.
+  - `REAL` and `DOUBLE PRECISION` store floating-point numbers with approximate precision.
+
+- **String Types**:
+  - `CHAR(n)` / `CHARACTER(n)` and `VARCHAR(n)` / `CHARACTER VARYING(n)` store fixed-length and variable-length character strings, respectively.
+  - `TEXT` stores variable-length character data without a length limit (PostgreSQL-specific).
+
+- **Bit String Types**:
+  - `BIT(n)` stores fixed-length bit strings.
+  - `BIT VARYING(n)` stores variable-length bit strings.
+
+- **Date/Time Types**:
+  - `DATE` stores calendar dates (year, month, day).
+  - `TIME [(p)] [WITH | WITHOUT TIME ZONE]` stores time of day (hours, minutes, seconds, optional fractional seconds).
+  - `TIMESTAMP [(p)] [WITH | WITHOUT TIME ZONE]` stores both date and time values.
+  - `INTERVAL` stores time spans (e.g., days, hours, minutes).
+
+- **Boolean Type**:
+  - `BOOLEAN` stores `TRUE`, `FALSE`, or `NULL`.
+
+- **SERIALs** (PostgreSQL-specific)
+  - The data types SMALLSERIAL, SERIAL, and BIGSERIAL are not true types but shorthand for defining integer
+    columns with auto-incrementing values, commonly used for unique identifiers.
+
+##### Best Practices for Choosing Data Types
+
+- **Use the smallest suitable type** to optimize storage and performance (e.g., `SMALLINT` instead of `INTEGER` if values fit).
+- **Prefer `NUMERIC` or `DECIMAL`** for exact precision in financial and monetary data.
+- **Use `TEXT` sparingly**; prefer `VARCHAR(n)` if a reasonable length limit is known.
+- **Choose `TIMESTAMP WITH TIME ZONE`** for time-sensitive applications to avoid timezone issues.
+- **Use `BOOLEAN`** instead of small integer flags for true/false values, as it improves readability,
+  enforces stricter validation, and prevents unintended values (e.g., `2` or `-1`).
+- **Avoid `DOUBLE PRECISION`** for exact calculations due to floating-point precision errors.
+- **Use `BIT` types** only when working with binary data or flags requiring bitwise operations.
+
+
+```sql
+CREATE TABLE products ( 
+    id SERIAL,
+    code CHAR(6) NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    date DATE DEFAULT '2019-01-01',
+    price MONEY,
+    quantity SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY(id),
+    CONSTRAINT "productsUnique" UNIQUE(code),
+    CONSTRAINT "productsCheck" CHECK(quantity >= 0)
+);
+
+```
+
+* Adding a new product
+
+```sql
+INSERT INTO products
+(code,name, price, date, quantity) VALUES
+    ('ELO001','TV', 1300, '2019-10-30', 5);
+```
+
+
+### ALTER
+
+The `ALTER` statement is used to modify the structure of existing database objects, such as tables, schemas, constraints, etc.
+It allows adding, deleting, or modifying columns, constraints, and other properties without affecting the stored data.
+
+* Add a new column
+```sql
+ALTER TABLE products ADD COLUMN "manufacturingCountry" VARCHAR(30);
+```
+
+* Modify an existing column
+```sql
+ALTER TABLE products ALTER COLUMN "manufacturingCountry" TYPE CHAR(20);
+```
+
+* Remove an existing column from a table
+```sql
+ALTER TABLE products DROP COLUMN "manufacturingCountry";
+
+```
+
+
+### DROP
+The `DROP` statement is used to permanently remove database objects such as tables, schemas, views, indexes, etc.
+Once an object is dropped, all associated data and dependencies are lost and cannot be recovered unless a backup exists.
+
+```sql
+
+DROP TABLE products;
+
+DROP SCHEMA schema1;
+
+DROP DATABASE ecommercedb;
+
+```
+
+
+
+
+### Defining Constraints in SQL
+
+SQL constraints help maintain data integrity by enforcing rules on table columns.
+
+The following table structure will be utilized throughout the constraints section.
+```sql
+CREATE TABLE products (
+    id SERIAL,
+    code CHAR(6) NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    date DATE DEFAULT '2019-01-01',
+    price MONEY,
+    quantity SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY(id),
+    CONSTRAINT "productsUnique" UNIQUE(code),
+    CONSTRAINT "productsCheck" CHECK(quantity >= 0)
+);
+```
+
+#### NOT NULL Constraint
+
+- Ensures that a column cannot contain NULL values.
+- Data must be provided for the column when inserting/updating a record.
+
+If no value is provided for the `code` column, an error occurs.
+
+```sql
+INSERT INTO products
+(name, price, date, quantity) VALUES
+('TV', 1300, '2019-10-30', 5);
+
+```
+
+
+To remove the NOT NULL constraint from the `code` column:
+```sql
+ALTER TABLE products ALTER COLUMN code DROP NOT NULL;
+
+```
+To add the NOT NULL constraint to the `code` column:
+
+```sql
+ALTER TABLE products ALTER COLUMN code SET NOT NULL;
+
+```
+
+
+#### DEFAULT Constraint
+
+- Assigns a default value to a column when no value is provided during an insert operation.
+
+```sql
+INSERT INTO products
+(code, name, price, quantity) VALUES
+('ELO004', 'TV', 1300, 5);
+
+```
+
+- If no value is provided for date, '2019-01-01' is assigned.
+
+To remove the DEFAULT constraint from the `date` column:
+```sql
+ALTER TABLE products ALTER COLUMN date DROP DEFAULT;
+
+```
+
+To add the DEFAULT constraint to the `date` column:
+```sql
+ALTER TABLE products ALTER COLUMN date SET DEFAULT '2019-01-01';
+
+```
+
+
+#### UNIQUE Constraint
+
+- Ensures that all values in a column (or combination of columns) are unique across the table.
+
+
+- The `code` column must contain unique values.
+```sql
+INSERT INTO products
+(code,name, price, date, quantity) VALUES
+('ELO001','TV', 1300, '2019-10-30', 5);
+```
+
+
+To remove the UNIQUE constraint from the `code` column:
+
+```sql
+ALTER TABLE products DROP CONSTRAINT "productsUnique";
+```
+
+
+To add the UNIQUE constraint to the `code` column:
+
+```sql
+ALTER TABLE products ADD CONSTRAINT "productsUnique" UNIQUE (code);
+```
+
+**Multi-Column UNIQUE Constraint**
+- Ensures that a combination of `code` and `name` is unique across the table.
+```sql
+ALTER TABLE products ADD CONSTRAINT "productsUnique" UNIQUE ("code,name");
+```
+
+
+#### CHECK Constraint
+
+- Restricts the values allowed in a column based on a specific condition.
+
+
+```sql
+CREATE TABLE products (
+    id SERIAL,
+    code CHAR(6) NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    date DATE DEFAULT '2019-01-01',
+    price MONEY,
+    quantity SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY(id),
+    CONSTRAINT "productsUnique" UNIQUE(code),
+    CONSTRAINT "productsCheck" CHECK(quantity >= 0)
+);
+```
+
+- Ensures that `quantity` is always greater than or equal to zero.
+
+- If an attempt is made to insert a record where `quantity` is `-3`, it will fail due to the CHECK constraint.
+```sql
+INSERT INTO products
+(code, name, price, date, quantity) VALUES
+('ELO004', 'Computer', 1300, '2016-04-05', -3);
+
+```
+
+To remove the CHECK constraint on the `quantity` column:
+```sql
+ALTER TABLE products DROP CONSTRAINT "productsCheck";
+
+```
+To add the CHECK constraint back to the `quantity` column:
+
+```sql
+ALTER TABLE products ADD CONSTRAINT "productsCheck" CHECK (quantity >= 0);
+
+```
+
+
+#### PRIMARY KEY Constraint
+
+- Uniquely identifies each record in a table.
+- A table can have only one primary key, which can consist of a single column or multiple columns.
+
+```sql
+CREATE TABLE products (
+    id SERIAL,
+    code CHAR(6) NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    date DATE DEFAULT '2019-01-01',
+    price MONEY,
+    quantity SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY(id),
+    CONSTRAINT "productsUnique" UNIQUE(code),
+    CONSTRAINT "productsCheck" CHECK(quantity >= 0)
+);
+```
+
+
+- `id` is the primary key of the `products` table.
+
+To remove the PRIMARY KEY constraint from the `id` column:
+
+```sql
+ALTER TABLE products DROP CONSTRAINT "productsPK";
+
+```
+
+To add the PRIMARY KEY constraint  to the `id` column:
+
+```sql
+ALTER TABLE products ADD CONSTRAINT "productsPK" PRIMARY KEY(id);
+
+```
+
+**Composite PRIMARY KEY**
+- A primary key defined using multiple columns (e.g., `id` and `code` together form the primary key).
+
+```sql
+ALTER TABLE products ADD CONSTRAINT "productsPK" PRIMARY KEY(id,code);
+
+```
+
+
+#### FOREIGN KEY Constraint
+
+- Establishes a relationship between two tables by linking a foreign key column in one table to a primary key in another table.
+- Helps enforce referential integrity.
+
+---
+**The data types of Foreign Key (FK) and Primary Key (PK) fields must be compatible to establish a relationship.**
+
+---
+
+* **Example**
+
+![](../resources/figures/fk1.png)
+
+| id   | ProductName | CategoryID | M<------->1 | id | CategoryName    |
+|-----|------------|--------------|-------------|----|--|
+| 101 | Coffee     | 1            |             | 1  | Beverages      |
+| 102 | Tea        | 1            |             | 2  | Condiments     |
+| 103 | Mustard    | 2            |             | 3  | Dairy Products |
+| 104 | Cheese     | 3            |             | 4  | Electronics |  
+| 105 | Yogurt     | 3            |             |
+| 106 | Honey           | NULL     |             |
+
+
+```sql
+CREATE TABLE "ProductCategories" (
+    id SERIAL,
+    name VARCHAR(30) NOT NULL,
+    CONSTRAINT "productCategoryPK" PRIMARY KEY(id)
+);
+
+```
+
+```sql
+CREATE TABLE products (
+    "id" SERIAL,
+    code CHAR(6) NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    "category" INTEGER NOT NULL, 
+    date DATE DEFAULT '2019-01-01',
+    price MONEY,
+    quantity SMALLINT DEFAULT 0,
+    CONSTRAINT "productsPK" PRIMARY KEY("id"),
+    CONSTRAINT "productsUnique" UNIQUE(code),
+    CONSTRAINT "productsCheck" CHECK(quantity >= 0),
+    CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"(id)
+);
+
+```
+
+
+
+- The `"category"` column in the `products` table references the `"id"` column in the `"ProductCategories"` table.
+
+By default, `ON DELETE` and `ON UPDATE` actions are adjusted as `NO ACTION`.
+
+* Different Foreign Key Behaviors
+
+  - **NO ACTION (default):** Prevents deletion or update of a referenced record if related records exist.
+  - **RESTRICT:** Similar to `NO ACTION`, explicitly prevents the operation.
+  - **CASCADE:** Automatically deletes or updates child records when the parent record is deleted or updated.
+  - **SET NULL:** Sets the foreign key column to `NULL` when the referenced record is deleted.
+  - **SET DEFAULT:** Sets the foreign key column to its default value when the referenced record is deleted.
+
+To remove the FOREIGN KEY constraint from the `"category"` column:
+```sql
+ALTER TABLE products DROP CONSTRAINT "productCategoryFK";
+
+```
+
+To add the FOREIGN KEY constraint with `NO ACTION` behavior:
+
+```sql
+ALTER TABLE products
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+```
+
+
+To add the FOREIGN KEY constraint with `CASCADE` behavior:
+
+
+```sql
+ALTER TABLE products
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+```
+
+---
+
+
+
+## 3. Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)
 
 | Command  | Description |
 |----------|------------|
@@ -151,15 +619,15 @@ SELECT * FROM "customers" WHERE "Country" = 'Türkiye' OR "Country" = 'Japan';
 
 SELECT * FROM "customers" WHERE "Country" = 'Kazakhstan' or "Country"='Russia';
 
-SELECT * FROM "order_details" WHERE "UnitPrice" = 14;
+SELECT * FROM "order_details" WHERE price = 14;
 
-SELECT * FROM "order_details" WHERE "UnitPrice" < 14;
+SELECT * FROM "order_details" WHERE price < 14;
 
-SELECT * FROM "order_details" WHERE "UnitPrice" <= 14;
+SELECT * FROM "order_details" WHERE price <= 14;
 
-SELECT * FROM "order_details" WHERE "UnitPrice" >= 14;
+SELECT * FROM "order_details" WHERE price >= 14;
 
-SELECT * FROM "order_details" WHERE "UnitPrice" > 14;
+SELECT * FROM "order_details" WHERE price > 14;
 ```
 
 ### **DISTINCT**
@@ -239,10 +707,10 @@ It works with **numeric, date, and text values**.
 - The **range boundaries are inclusive**.
 
 ```sql
-SELECT * FROM "products" WHERE "UnitPrice" BETWEEN 10 AND 20;
+SELECT * FROM products WHERE price BETWEEN 10 AND 20;
 --Find all products with a unit price between 10 and 20
 
-SELECT * FROM "products" WHERE "ProductName" BETWEEN 'C' AND 'M';
+SELECT * FROM products WHERE "ProductName" BETWEEN 'C' AND 'M';
 --Retrieves all products where ProductName starts with a letter from 'C' to 'M'.
 --SQL evaluates text values based on alphabetical order.
 --Example matches: 'Cheese', 'Honey', 'Juice', 'Milk', but not 'Apple' or 'Banana'.
@@ -290,7 +758,7 @@ Aliases improve readability and make query results more user-friendly.
 SELECT "CompanyName" AS "Customer Company" FROM "customers";
 --Renames the CompanyName column as "Customer Company" in the query result.
 
-SELECT "UnitPrice", "UnitPrice" * 1.18 AS "Unit Price With Tax" FROM "products";
+SELECT price, price * 1.18 AS "Unit Price With Tax" FROM products;
 --Retrieves the UnitPrice column.
 --Calculates the price with 18% VAT and renames the result as "Unit Price With Tax".
 
@@ -639,7 +1107,7 @@ This query removes all records from the customers table without deleting the tab
 
 
 
-## 3. Using a Programming Language to Interact With a Database
+## 4. Using a Programming Language to Interact With a Database
 
 Modern applications often need to store, retrieve, and manipulate data dynamically.
 To perform these database operations from within an application, database drivers are essential.
@@ -746,7 +1214,7 @@ public class DatabaseOperationsWithJava {
     {
       /***** Establishing Connection *****/
       Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Northwind",
-              "postgres", "LecturePassword");
+              "lectureuser", "lecturepassword");
       if (conn != null)
         System.out.println("Connected to the database!");
       else
@@ -791,472 +1259,3 @@ public class DatabaseOperationsWithJava {
 }
 ```
 
----
-
-## 4. Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)
-
-Used to define, modify, and remove database objects such as databases, tables, views, etc.
-
----
-**Data integrity constraints are enforced when DDL statements are executed. If a data integrity violation occurs, 
-the operation is aborted, ensuring that data remains consistent and accurate.**
----
-
-### CREATE
-
-The `CREATE` statement is used to define and initialize various database objects, including databases, 
-schemas, tables, views, indexes, stored procedures, functions, etc. 
-It establishes the structure and properties of these objects within the database.
-
-#### CREATE DATABASE
-
-Constructs a new database.
-
-```sql
-CREATE DATABASE "ShoppingApplicationDB"
-  ENCODING='UTF-8' -- Specifies UTF-8 character encoding for supporting Kazakh characters.
-  
-  LC_COLLATE='kk_KZ.UTF-8' -- Defines Kazakh-specific sorting and comparison rules.
-  --Affects ORDER BY, LIKE, ILIKE, and index behavior.
-  
-  LC_CTYPE='kk_KZ.UTF-8' -- Sets Kazakh-specific character classification and case conversion.
-  -- Affects case conversions (UPPER(), LOWER()), character classification (ISALPHA(), ISDIGIT()), and regular expressions.
-
-  OWNER postgres -- Assigns the database owner to the postgres user.
-  TEMPLATE=template0; -- Creates a clean database without default template settings.
-```
-
-#### CREATE SCHEMA
-
-A schema logically divides a database into sections, similar to a folder structure on a hard disk. 
-
-Facilitates database management, multi-user collaboration on the same project (namespace management), and ensuring security.
-
-```sql
-CREATE SCHEMA "schema1";
-
-```
-
-#### CREATE TABLE
-
-Used to define a table.
-
-When constructing a table, data types of each column must be specified.
-
-For the list of PostgreSQL data types:
-[PostgreSQL Data Types](https://www.postgresql.org/docs/10/static/datatype.html)
-
-Choosing appropriate data types for columns is crucial because:
-
-* It improves performance and optimizes resource utilization.
-  * Choose the smallest possible data type for each column to save space and boost performance.
-* It ensures data consistency and accuracy (validation).
-  * If we choose **INT** for the quantity field, sending a string is impossible.
-* It provides protection against certain types of security attacks.
-  * If we use a **JSON** type instead of **TEXT**, data that doesn't follow the JSON format cannot be stored.
-  * This prevents the storage of potentially harmful scripts like `"<script>..."`, thereby mitigating the risk of stored XSS attacks.
-
-  
-##### Commonly Used SQL and PostgreSQL Data Types
-
-- **Numeric Types**:
-  - `SMALLINT`, `INTEGER`, and `BIGINT` store whole numbers (integers) without fractional parts.
-  - `DECIMAL` and `NUMERIC` store exact decimal values with user-defined precision.
-  - `REAL` and `DOUBLE PRECISION` store floating-point numbers with approximate precision.
-
-- **String Types**:
-  - `CHAR(n)` / `CHARACTER(n)` and `VARCHAR(n)` / `CHARACTER VARYING(n)` store fixed-length and variable-length character strings, respectively.
-  - `TEXT` stores variable-length character data without a length limit (PostgreSQL-specific).
-
-- **Bit String Types**:
-  - `BIT(n)` stores fixed-length bit strings.
-  - `BIT VARYING(n)` stores variable-length bit strings.
-
-- **Date/Time Types**:
-  - `DATE` stores calendar dates (year, month, day).
-  - `TIME [(p)] [WITH | WITHOUT TIME ZONE]` stores time of day (hours, minutes, seconds, optional fractional seconds).
-  - `TIMESTAMP [(p)] [WITH | WITHOUT TIME ZONE]` stores both date and time values.
-  - `INTERVAL` stores time spans (e.g., days, hours, minutes).
-
-- **Boolean Type**:
-  - `BOOLEAN` stores `TRUE`, `FALSE`, or `NULL`.
-
-- **SERIALs** (PostgreSQL-specific)
-  - The data types SMALLSERIAL, SERIAL, and BIGSERIAL are not true types but shorthand for defining integer 
-  columns with auto-incrementing values, commonly used for unique identifiers.
-
-##### Best Practices for Choosing Data Types
-
-- **Use the smallest suitable type** to optimize storage and performance (e.g., `SMALLINT` instead of `INTEGER` if values fit).
-- **Prefer `NUMERIC` or `DECIMAL`** for exact precision in financial and monetary data.
-- **Use `TEXT` sparingly**; prefer `VARCHAR(n)` if a reasonable length limit is known.
-- **Choose `TIMESTAMP WITH TIME ZONE`** for time-sensitive applications to avoid timezone issues.
-- **Use `BOOLEAN`** instead of small integer flags for true/false values, as it improves readability, 
-enforces stricter validation, and prevents unintended values (e.g., `2` or `-1`).
-- **Avoid `DOUBLE PRECISION`** for exact calculations due to floating-point precision errors.
-- **Use `BIT` types** only when working with binary data or flags requiring bitwise operations.
-
-
-```sql
-CREATE TABLE "Products" (  --CREATE TABLE schema1."Products"
-    "productID" SERIAL,
-    "code" CHAR(6) NOT NULL,
-    "name" VARCHAR(40) NOT NULL,
-    "date" DATE DEFAULT '2019-01-01',
-    "unitPrice" MONEY,
-    "quantity" SMALLINT DEFAULT 0,
-    CONSTRAINT "productsPK" PRIMARY KEY("productID"),
-    CONSTRAINT "productsUnique" UNIQUE("code"),
-    CONSTRAINT "productsCheck" CHECK("quantity" >= 0)
-);
-
-```
-
-* Adding a new product
-
-```sql
-INSERT INTO "Products"
-("code","name", "unitPrice", "date", "quantity") VALUES
-    ('ELO001','TV', 1300, '2019-10-30', 5);
-```
-
-
-### ALTER
-
-The `ALTER` statement is used to modify the structure of existing database objects, such as tables, schemas, constraints, etc. 
-It allows adding, deleting, or modifying columns, constraints, and other properties without affecting the stored data.
-
-* Add a new column
-```sql
-ALTER TABLE "Products" ADD COLUMN "manufacturingCountry" VARCHAR(30);
-```
-
-* Modify an existing column
-```sql
-ALTER TABLE "Products" ALTER COLUMN "manufacturingCountry" TYPE CHAR(20);
-```
-
-* Remove an existing column from a table
-```sql
-ALTER TABLE "Products" DROP COLUMN "manufacturingCountry";
-
-```
-
-
-### DROP
-The `DROP` statement is used to permanently remove database objects such as tables, schemas, views, indexes, etc. 
-Once an object is dropped, all associated data and dependencies are lost and cannot be recovered unless a backup exists.
-
-```sql
-
-DROP TABLE "Products";
-
-DROP SCHEMA "schema1";
-
-DROP DATABASE "ShoppingApplicationDB";
-
-```
-
-
-
-
-### Defining Constraints in SQL
-
-SQL constraints help maintain data integrity by enforcing rules on table columns.
-
-The following table structure will be utilized throughout the constraints section.
-```sql
-CREATE TABLE "Products" (
-    "productID" SERIAL,
-    "code" CHAR(6) NOT NULL,
-    "name" VARCHAR(40) NOT NULL,
-    "date" DATE DEFAULT '2019-01-01',
-    "unitPrice" MONEY,
-    "quantity" SMALLINT DEFAULT 0,
-    CONSTRAINT "productsPK" PRIMARY KEY("productID"),
-    CONSTRAINT "productsUnique" UNIQUE("code"),
-    CONSTRAINT "productsCheck" CHECK("quantity" >= 0)
-);
-```
-
-#### NOT NULL Constraint
-
-- Ensures that a column cannot contain NULL values.
-- Data must be provided for the column when inserting/updating a record.
-
-If no value is provided for the `"code"` column, an error occurs.
-
-```sql
-INSERT INTO "Products"
-("name", "unitPrice", "date", "quantity") VALUES
-('TV', 1300, '2019-10-30', 5);
-
-```
-
-
-To remove the NOT NULL constraint from the `"code"` column:
-```sql
-ALTER TABLE "Products" ALTER COLUMN "code" DROP NOT NULL;
-
-```
-To add the NOT NULL constraint to the `"code"` column:
-
-```sql
-ALTER TABLE "Products" ALTER COLUMN "code" SET NOT NULL;
-
-```
-
-
-#### DEFAULT Constraint
-
-- Assigns a default value to a column when no value is provided during an insert operation.
-
-```sql
-INSERT INTO "Products"
-("code", "name", "unitPrice", "quantity") VALUES
-('ELO004', 'TV', 1300, 5);
-
-```
-
-- If no value is provided for "date", '2019-01-01' is assigned.
-
-To remove the DEFAULT constraint from the `"date"` column:
-```sql
-ALTER TABLE "Products" ALTER COLUMN "date" DROP DEFAULT;
-
-```
-
-To add the DEFAULT constraint to the `"date"` column:
-```sql
-ALTER TABLE "Products" ALTER COLUMN "date" SET DEFAULT '2019-01-01';
-
-```
-
-
-#### UNIQUE Constraint
-
-- Ensures that all values in a column (or combination of columns) are unique across the table.
-
-
-- The `"code"` column must contain unique values.
-```sql
-INSERT INTO "Products"
-("code","name", "unitPrice", "date", "quantity") VALUES
-('ELO001','TV', 1300, '2019-10-30', 5);
-```
-
-
-To remove the UNIQUE constraint from the `"code"` column:
-
-```sql
-ALTER TABLE "Products" DROP CONSTRAINT "productsUnique";
-```
-
-
-To add the UNIQUE constraint to the `"code"` column:
-
-```sql
-ALTER TABLE "Products" ADD CONSTRAINT "productsUnique" UNIQUE ("code");
-```
-
-**Multi-Column UNIQUE Constraint**
-- Ensures that a combination of `"code"` and `"name"` is unique across the table.
-```sql
-ALTER TABLE "Products" ADD CONSTRAINT "productsUnique" UNIQUE ("code,name");
-```
-
-
-#### CHECK Constraint
-
-- Restricts the values allowed in a column based on a specific condition.
-
-
-```sql
-CREATE TABLE "Products" (
-    "productID" SERIAL,
-    "code" CHAR(6) NOT NULL,
-    "name" VARCHAR(40) NOT NULL,
-    "date" DATE DEFAULT '2019-01-01',
-    "unitPrice" MONEY,
-    "quantity" SMALLINT DEFAULT 0,
-    CONSTRAINT "productsPK" PRIMARY KEY("productID"),
-    CONSTRAINT "productsUnique" UNIQUE("code"),
-    CONSTRAINT "productsCheck" CHECK("quantity" >= 0)
-);
-```
-
-- Ensures that `"quantity"` is always greater than or equal to zero.
-
-- If an attempt is made to insert a record where `"quantity"` is `-3`, it will fail due to the CHECK constraint.
-```sql
-INSERT INTO "Products"
-("code", "name", "unitPrice", "date", "quantity") VALUES
-('ELO004', 'Computer', 1300, '2016-04-05', -3);
-
-```
-
-To remove the CHECK constraint on the `"quantity"` column:
-```sql
-ALTER TABLE "Products" DROP CONSTRAINT "productsCheck";
-
-```
-To add the CHECK constraint back to the `"quantity"` column:
-
-```sql
-ALTER TABLE "Products" ADD CONSTRAINT "productsCheck" CHECK ("quantity" >= 0);
-
-```
-
-
-#### PRIMARY KEY Constraint
-
-- Uniquely identifies each record in a table.
-- A table can have only one primary key, which can consist of a single column or multiple columns.
-
-```sql
-CREATE TABLE "Products" (
-    "productID" SERIAL,
-    "code" CHAR(6) NOT NULL,
-    "name" VARCHAR(40) NOT NULL,
-    "date" DATE DEFAULT '2019-01-01',
-    "unitPrice" MONEY,
-    "quantity" SMALLINT DEFAULT 0,
-    CONSTRAINT "productsPK" PRIMARY KEY("productID"),
-    CONSTRAINT "productsUnique" UNIQUE("code"),
-    CONSTRAINT "productsCheck" CHECK("quantity" >= 0)
-);
-```
-
-
-- `"productID"` is the primary key of the `"Products"` table.
-
-To remove the PRIMARY KEY constraint from the `"productID"` column:
-
-```sql
-ALTER TABLE "Products" DROP CONSTRAINT "productsPK";
-
-```
-
-To add the PRIMARY KEY constraint  to the `"productID"` column:
-
-```sql
-ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID");
-
-```
-
-**Composite PRIMARY KEY**
-- A primary key defined using multiple columns (e.g., `"productID"` and `"code"` together form the primary key).
-
-```sql
-ALTER TABLE "Products" ADD CONSTRAINT "productsPK" PRIMARY KEY("productID","code");
-
-```
-
-
-#### FOREIGN KEY Constraint
-
-- Establishes a relationship between two tables by linking a foreign key column in one table to a primary key in another table.
-- Helps enforce referential integrity.
-
----
-**The data types of Foreign Key (FK) and Primary Key (PK) fields must be compatible to establish a relationship.**
-
----
-
-* **Example**
-
-![](../resources/figures/fk1.png)
-
-| id   | ProductName | CategoryID | M<------->1 | id | CategoryName    |
-|-----|------------|--------------|-------------|----|--|
-| 101 | Coffee     | 1            |             | 1  | Beverages      |
-| 102 | Tea        | 1            |             | 2  | Condiments     |
-| 103 | Mustard    | 2            |             | 3  | Dairy Products |
-| 104 | Cheese     | 3            |             | 4  | Electronics |  
-| 105 | Yogurt     | 3            |             |
-| 106 | Honey           | NULL     |             |
-
-
-```sql
-CREATE TABLE "ProductCategories" (
-    id SERIAL,
-    name VARCHAR(30) NOT NULL,
-    CONSTRAINT "productCategoryPK" PRIMARY KEY(id)
-);
-
-```
-
-```sql
-CREATE TABLE "Products" (
-    "id" SERIAL,
-    "code" CHAR(6) NOT NULL,
-    "name" VARCHAR(40) NOT NULL,
-    "category" INTEGER NOT NULL, 
-    "date" DATE DEFAULT '2019-01-01',
-    "unitPrice" MONEY,
-    "quantity" SMALLINT DEFAULT 0,
-    CONSTRAINT "productsPK" PRIMARY KEY("id"),
-    CONSTRAINT "productsUnique" UNIQUE("code"),
-    CONSTRAINT "productsCheck" CHECK("quantity" >= 0),
-    CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"(id)
-);
-
-```
-
-
-
-- The `"category"` column in the `"Products"` table references the `"id"` column in the `"ProductCategories"` table.
-
-By default, `ON DELETE` and `ON UPDATE` actions are adjusted as `NO ACTION`.
-
-* Different Foreign Key Behaviors
-
-  - **NO ACTION (default):** Prevents deletion or update of a referenced record if related records exist.
-  - **RESTRICT:** Similar to `NO ACTION`, explicitly prevents the operation.
-  - **CASCADE:** Automatically deletes or updates child records when the parent record is deleted or updated.
-  - **SET NULL:** Sets the foreign key column to `NULL` when the referenced record is deleted.
-  - **SET DEFAULT:** Sets the foreign key column to its default value when the referenced record is deleted.
-
-To remove the FOREIGN KEY constraint from the `"category"` column:
-```sql
-ALTER TABLE "Products" DROP CONSTRAINT "productCategoryFK";
-
-```
-
-To add the FOREIGN KEY constraint with `NO ACTION` behavior:
-
-```sql
-ALTER TABLE "Products"
-ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-```
-
-
-To add the FOREIGN KEY constraint with `CASCADE` behavior:  
-
-
-```sql
-ALTER TABLE "Products"
-ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
-```
-
-
----
-
-## [Hands-on Exercise 1](./exercises)
-
----
-
-
----
-
-## [Hands-on Exercise 2](./exercises)
-
----
-
----
-
-## [Hands-on Exercise 3](./exercises)
-
----
