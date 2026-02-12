@@ -16,13 +16,13 @@ Students must analyze each diagram carefully and complete the required tasks.
 
 **ER Diagram 1**
 
-![ER Diagram 1](../../module2/exercises/exercise1/er-hands-on-exercise-1-v3.png)
+![ER Diagram 1](../../resources/figures/er-hands-on-exercise-1-v3.png)
 
 ---
 
 **ER Diagram 2**
 
-![ER Diagram 1](../../module2/exercises/exercise2/er-hands-on-exercise-2-v3.png)
+![ER Diagram 1](../../resources/figures/er-hands-on-exercise-2-v3.png)
 
 
 ---
@@ -31,34 +31,22 @@ Students must analyze each diagram carefully and complete the required tasks.
 
 For **each ER Diagram**:
 
-1. Identify:
-    - Entities
-    - Attributes
-    - Primary Keys
-    - Foreign Keys
-    - Relationship types (1:1, 1:M, M:N)
-    - Participation (mandatory / optional)
+1. Convert the ER model into a **Relational Schema**.
 
-2. Convert the ER model into a **Relational Schema**.
-
-3. Define appropriate constraints:
+2. Define appropriate constraints:
     - `PRIMARY KEY`
     - `FOREIGN KEY`
     - `NOT NULL`
     - `UNIQUE`
     - (Optional) `CHECK` constraints if logically required
 
-4. Construct the corresponding tables using:
+3. Construct the corresponding tables using:
     - Google Sheets
     - Microsoft Excel
     - Or any similar tabular tool
 
-5. Insert **at least 3 valid records into each table**.
+4. Insert **at least 3 valid records into each table**.
 
-6. Clearly indicate which fields:
-    - Must be `NOT NULL`
-    - Must be `UNIQUE`
-    - Are optional (nullable)
 
 ---
 
