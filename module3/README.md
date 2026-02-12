@@ -24,11 +24,9 @@
   * [Practical Relational Schema (Best Practice Alternative)](#practical-relational-schema-best-practice-alternative)
   * [Extension to Exercise 1: Tracking Individual Product Items](#extension-to-exercise-1-tracking-individual-product-items-)
     * [Refined Entity Definitions](#refined-entity-definitions)
-    * [Define Relational Schemas](#define-relational-schemas)
 <!-- TOC -->
 
 ![Database System](../resources/figures/db-development-lifecycle.png)
-
 
 ---
 
@@ -382,7 +380,7 @@ PhoneNumber string,
 ShippingAddress string
 )
 
----
+
 
 **Order**
 
@@ -394,7 +392,7 @@ Status string,
 CustomerID int FK → Customer(CustomerID)
 )
 
----
+
 
 **Product**
 
@@ -406,7 +404,7 @@ Price double,
 StockQuantity int
 )
 
----
+
 
 **Category**
 
@@ -415,7 +413,7 @@ CategoryID int PK,
 CategoryName string
 )
 
----
+
 
 **ProductCategory**   (Junction table for Product–Category (M:N))
 
@@ -424,7 +422,7 @@ ProductID int PK, FK → Product(ProductID),
 CategoryID int PK, FK → Category(CategoryID)
 )
 
----
+
 
 **OrderItem**   (Junction table for Order–Product (M:N))
 
@@ -435,7 +433,7 @@ ProductID int FK → Product(ProductID),
 Quantity int
 )
 
----
+
 
 **Payment**
 
@@ -447,7 +445,7 @@ PaymentMethod string,
 OrderID int FK → Order(OrderID)
 )
 
----
+
 
 **Shipment**
 
@@ -459,7 +457,7 @@ TrackingNumber string,
 OrderID int FK → Order(OrderID)
 )
 
----
+
 
 **Review**
 
@@ -472,6 +470,7 @@ CustomerID int FK → Customer(CustomerID),
 ProductID int FK → Product(ProductID)
 )
 
+---
 
 ## Practical Relational Schema (Best Practice Alternative)
 
@@ -485,7 +484,7 @@ PhoneNumber string,
 ShippingAddress string
 )
 
----
+
 
 **Order**
 
@@ -497,7 +496,7 @@ Status string,
 CustomerID int FK → Customer(CustomerID)
 )
 
----
+
 
 **Product**
 
@@ -509,7 +508,7 @@ Price double,
 StockQuantity int
 )
 
----
+
 
 **Category**
 
@@ -518,7 +517,7 @@ id int PK,
 CategoryName string
 )
 
----
+
 
 **ProductCategory**   (Junction table for Product–Category (M:N))
 
@@ -528,7 +527,7 @@ ProductID int FK → Product(ProductID),
 CategoryID int FK → Category(CategoryID)
 )
 
----
+
 
 **OrderItem**   (Junction table for Order–Product (M:N))
 
@@ -539,7 +538,7 @@ ProductID int FK → Product(ProductID),
 Quantity int
 )
 
----
+
 
 **Payment**
 
@@ -551,7 +550,7 @@ PaymentMethod string,
 OrderID int FK → Order(OrderID)
 )
 
----
+
 
 **Shipment**
 
@@ -563,7 +562,7 @@ TrackingNumber string,
 OrderID int FK → Order(OrderID)
 )
 
----
+
 
 **Review**
 
@@ -577,6 +576,7 @@ ProductID int FK → Product(ProductID)
 )
 
 
+---
 
 ## Extension to Exercise 1: Tracking Individual Product Items 
 
@@ -752,7 +752,6 @@ The **OrderItem** entity acts as the correct **semantic bridge** between sales a
 
 ---
 
-### Define Relational Schemas
 
 
 
