@@ -510,7 +510,7 @@ ALTER TABLE products ADD CONSTRAINT "productsPK" PRIMARY KEY(id,code);
 
 
 ```sql
-CREATE TABLE "ProductCategories" (
+CREATE TABLE productcategories (
     id SERIAL,
     name VARCHAR(30) NOT NULL,
     CONSTRAINT "productCategoryPK" PRIMARY KEY(id)
@@ -530,14 +530,14 @@ CREATE TABLE products (
     CONSTRAINT "productsPK" PRIMARY KEY("id"),
     CONSTRAINT "productsUnique" UNIQUE(code),
     CONSTRAINT "productsCheck" CHECK(quantity >= 0),
-    CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"(id)
+    CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES productcategories(id)
 );
 
 ```
 
 
 
-- The `"category"` column in the `products` table references the `"id"` column in the `"ProductCategories"` table.
+- The `"category"` column in the `products` table references the `"id"` column in the `productcategories` table.
 
 By default, `ON DELETE` and `ON UPDATE` actions are adjusted as `NO ACTION`.
 
@@ -559,7 +559,7 @@ To add the FOREIGN KEY constraint with `NO ACTION` behavior:
 
 ```sql
 ALTER TABLE products
-ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES productcategories("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ```
 
@@ -569,7 +569,7 @@ To add the FOREIGN KEY constraint with `CASCADE` behavior:
 
 ```sql
 ALTER TABLE products
-ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES "ProductCategories"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES productcategories("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ```
 
