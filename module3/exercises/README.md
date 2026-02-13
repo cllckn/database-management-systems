@@ -56,13 +56,29 @@ For **each ER Diagram**:
 
 Write the relational schema using the following format:
 
-EntityName(
-Attribute1 DataType PK,
-Attribute2 DataType NOT NULL,
-Attribute3 DataType,
-Attribute4 DataType UNIQUE,
-ForeignKeyAttribute DataType NOT NULL FK → ReferencedTable(ReferencedPK)
-)
+    EntityName(
+    Attribute1 DataType PK,
+    Attribute2 DataType NOT NULL,
+    Attribute3 DataType,
+    Attribute4 DataType UNIQUE,
+    ForeignKeyAttribute DataType NOT NULL FK → ReferencedTable(ReferencedPK)
+    )
+    ---
+    Company(
+        id int PK, 
+        name String, 
+        phoneNumber String, 
+        address String 
+    )
+
+    Department (
+        id int PK, 
+        departmentID String, 
+        name String, 
+        budget double, 
+        company int FK -> Company(id), 
+        manager int FK -> Employee(id)
+    )
 
 
 Guidelines:
@@ -106,6 +122,28 @@ For each table:
     - Optional relationships may contain NULL where allowed.
 
 ---
+
+#### Company
+
+| id (PK) | name (NOT NULL, UNIQUE) | phoneNumber     | address (NOT NULL)                         |
+|---------|--------------------------|-----------------|--------------------------------------------|
+| 1       | DataSphere Inc | NULL            | 88 King Street, Istanbul, TR               |
+| 2       | GreenEnergy Solutions | +49-30-123456   | 45 Solar Park, Barcelona, SP               |
+| 3       | MedSys Global | +7-747-999-6534 | 21 Health Boulevard, Petropavl, Kazakhstan |
+| 4       | TechNova Ltd | NULL            | 12 Silicon Avenue, San Francisco, RU       |
+
+#### Department
+
+| id (PK) | departmentID (NOT NULL, UNIQUE) | name (NOT NULL) | budget | company (FK → Company.id) |
+|---------|----------------------------------|-----------------|--------|----------------------------|
+| 1 | D-IT-001 | IT Department | 500000 | 1 |
+| 2 | D-FIN-002 | Finance | NULL | 2 |
+| 3 | D-RD-003 | Research & Development | 750000 | 1 |
+| 4 | D-HR-004 | Human Resources | NULL | 4 |
+
+
+
+
 
 # Task 2 – ER Diagram 2 → Relational Schema
 
