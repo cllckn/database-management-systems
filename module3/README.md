@@ -21,9 +21,8 @@
     * [Key Characteristics](#key-characteristics)
   * [Exercise1: E-Commerce System Design](#exercise1-e-commerce-system-design)
     * [Relational Schema for E-Commerce System](#relational-schema-for-e-commerce-system)
-  * [Practical Relational Schema (Best Practice Alternative)](#practical-relational-schema-best-practice-alternative)
+    * [Practical Relational Schema (Best Practice Alternative)](#practical-relational-schema-best-practice-alternative)
   * [Extension to Exercise 1: Tracking Individual Product Items](#extension-to-exercise-1-tracking-individual-product-items-)
-    * [Refined Entity Definitions](#refined-entity-definitions)
 <!-- TOC -->
 
 ![Database System](../resources/figures/db-development-lifecycle.png)
@@ -359,7 +358,7 @@ The ER model includes:
 
 ***
 
-<img src="../resources/figures/ecommerce-er-v3.png">
+<img src="../resources/figures/ecommerce-er-v4.png">
 
 ***
 
@@ -372,208 +371,208 @@ The ER model includes:
 
 **Customer**
 
-Customer(
-CustomerID int PK,
-Name string,
-Email string,
-PhoneNumber string,
-ShippingAddress string
-)
+    Customer(
+    CustomerID int PK,
+    Name string,
+    Email string,
+    PhoneNumber string,
+    ShippingAddress string
+    )
 
 
 
 **Order**
 
-Order(
-OrderID int PK,
-OrderDate date,
-TotalAmount double,
-Status string,
-CustomerID int FK → Customer(CustomerID)
-)
+    Order(
+    OrderID int PK,
+    OrderDate date,
+    TotalAmount double,
+    Status string,
+    CustomerID int FK → Customer(CustomerID)
+    )
 
 
 
 **Product**
 
-Product(
-ProductID int PK,
-Name string,
-Description string,
-Price double,
-StockQuantity int
-)
+    Product(
+    ProductID int PK,
+    Name string,
+    Description string,
+    Price double,
+    StockQuantity int
+    )
 
 
 
 **Category**
 
-Category(
-CategoryID int PK,
-CategoryName string
-)
+    Category(
+    CategoryID int PK,
+    CategoryName string
+    )
 
 
 
 **ProductCategory**   (Junction table for Product–Category (M:N))
 
-ProductCategory(
-ProductID int PK, FK → Product(ProductID),
-CategoryID int PK, FK → Category(CategoryID)
-)
+    ProductCategory(
+    ProductID int PK, FK → Product(ProductID),
+    CategoryID int PK, FK → Category(CategoryID)
+    )
 
 
 
 **OrderItem**   (Junction table for Order–Product (M:N))
 
-OrderItem(
-OrderItemID int PK,
-OrderID int FK → Order(OrderID),
-ProductID int FK → Product(ProductID),
-Quantity int
-)
+    OrderItem(
+    OrderItemID int PK,
+    OrderID int FK → Order(OrderID),
+    ProductID int FK → Product(ProductID),
+    Quantity int
+    )
 
 
 
 **Payment**
 
-Payment(
-PaymentID int PK,
-PaymentDate date,
-AmountPaid double,
-PaymentMethod string,
-OrderID int FK → Order(OrderID)
-)
+    Payment(
+    PaymentID int PK,
+    PaymentDate date,
+    AmountPaid double,
+    PaymentMethod string,
+    OrderID int FK → Order(OrderID)
+    )
 
 
 
 **Shipment**
 
-Shipment(
-ShipmentID int PK,
-ShipmentDate date,
-Carrier string,
-TrackingNumber string,
-OrderID int FK → Order(OrderID)
-)
+    Shipment(
+    ShipmentID int PK,
+    ShipmentDate date,
+    Carrier string,
+    TrackingNumber string,
+    OrderID int FK → Order(OrderID)
+    )
 
 
 
 **Review**
 
-Review(
-ReviewID int PK,
-Rating int,
-ReviewText string,
-ReviewDate date,
-CustomerID int FK → Customer(CustomerID),
-ProductID int FK → Product(ProductID)
-)
+    Review(
+    ReviewID int PK,
+    Rating int,
+    ReviewText string,
+    ReviewDate date,
+    CustomerID int FK → Customer(CustomerID),
+    ProductID int FK → Product(ProductID)
+    )
 
 ---
 
-## Practical Relational Schema (Best Practice Alternative)
+### Practical Relational Schema (Best Practice Alternative)
 
 **Customer**
 
-Customer(
-id int PK,
-Name string,
-Email string,
-PhoneNumber string,
-ShippingAddress string
-)
+    Customer(
+    id int PK,
+    Name string,
+    Email string,
+    PhoneNumber string,
+    ShippingAddress string
+    )
 
 
 
 **Order**
 
-Order(
-id int PK,
-OrderDate date,
-TotalAmount double,
-Status string,
-CustomerID int FK → Customer(CustomerID)
-)
+    Order(
+    id int PK,
+    OrderDate date,
+    TotalAmount double,
+    Status string,
+    CustomerID int FK → Customer(CustomerID)
+    )
 
 
 
 **Product**
 
-Product(
-id int PK,
-Name string,
-Description string,
-Price double,
-StockQuantity int
-)
+    Product(
+    id int PK,
+    Name string,
+    Description string,
+    Price double,
+    StockQuantity int
+    )
 
 
 
 **Category**
 
-Category(
-id int PK,
-CategoryName string
-)
+    Category(
+    id int PK,
+    CategoryName string
+    )
 
 
 
 **ProductCategory**   (Junction table for Product–Category (M:N))
 
-ProductCategory(
-id int PK,
-ProductID int FK → Product(ProductID),
-CategoryID int FK → Category(CategoryID)
-)
+    ProductCategory(
+    id int PK,
+    ProductID int FK → Product(ProductID),
+    CategoryID int FK → Category(CategoryID)
+    )
 
 
 
 **OrderItem**   (Junction table for Order–Product (M:N))
 
-OrderItem(
-id int PK,
-OrderID int FK → Order(OrderID),
-ProductID int FK → Product(ProductID),
-Quantity int
-)
+    OrderItem(
+    id int PK,
+    OrderID int FK → Order(OrderID),
+    ProductID int FK → Product(ProductID),
+    Quantity int
+    )
 
 
 
 **Payment**
 
-Payment(
-id int PK,
-PaymentDate date,
-AmountPaid double,
-PaymentMethod string,
-OrderID int FK → Order(OrderID)
-)
+    Payment(
+    id int PK,
+    PaymentDate date,
+    AmountPaid double,
+    PaymentMethod string,
+    OrderID int FK → Order(OrderID)
+    )
 
 
 
 **Shipment**
 
-Shipment(
-id int PK,
-ShipmentDate date,
-Carrier string,
-TrackingNumber string,
-OrderID int FK → Order(OrderID)
-)
+    Shipment(
+    id int PK,
+    ShipmentDate date,
+    Carrier string,
+    TrackingNumber string,
+    OrderID int FK → Order(OrderID)
+    )
 
 
 
 **Review**
 
-Review(
-id int PK,
-Rating int,
-ReviewText string,
-ReviewDate date,
-CustomerID int FK → Customer(CustomerID),
-ProductID int FK → Product(ProductID)
-)
+    Review(
+    id int PK,
+    Rating int,
+    ReviewText string,
+    ReviewDate date,
+    CustomerID int FK → Customer(CustomerID),
+    ProductID int FK → Product(ProductID)
+    )
 
 
 ---
@@ -599,7 +598,7 @@ While this is sufficient for many scenarios, it is **not adequate** for systems 
 
 ---
 
-**Why Product-Level Tracking Is Not Enough**
+**Why Product Type-Level Tracking Is Not Enough**
 
 In realistic business scenarios—such as licensed software, electronic devices, subscriptions,
 serialized goods, or warranty-based products—it is necessary to track **individual product units**
@@ -648,39 +647,7 @@ This restructuring is part of the **normalization process**.
 
 ---
 
-### Refined Entity Definitions
-
-**ProductInventory**
-
-A **ProductInventory** record represents a **single physical unit** of a product.
-
-Each ProductInventory(InventoryRecord) item:
-- Belongs to **one Product**
-- Has a **unique identifier** (e.g., InventoryID or SerialNumber)
-- May or may not be sold or assigned
-
-**ProductInventory(InventoryRecord)**
-
-| InventoryID | ProductID | SerialNumber | Status     |
-|------------:|----------:|--------------|------------|
-| 101         | 1         | SR001        | Available  |
-| 102         | 1         | SR002        | Sold       |
-| 201         | 2         | SR009        | Sold       |
-| 202         | 2         | SR010        | Available  |
-
-
-**Product**
-
-| ProductID | Name             | UnitPrice |
-|----------:|------------------|----------:|
-| 1         | SSD 512GB        | 1000      |
-| 2         | Laptop Pro 15    | 4000      |
-| 3         | Wireless Mouse   | 150       |
-
-
----
-
-**Association Between OrderItem and ProductInventory**
+**Association Between OrderItem and ProductInventory(InventoryRecord)**
 
 
 **OrderItem**
@@ -718,7 +685,7 @@ The **OrderItem** entity acts as the correct **semantic bridge** between sales a
 
 **Cardinality Summary**
 
-- **OrderItem → ProductInventory**
+- **OrderItem → ProductInventory(InventoryRecord)**
   - Minimum: one (for fulfilled orders)
   - Maximum: many
 
@@ -726,7 +693,7 @@ The **OrderItem** entity acts as the correct **semantic bridge** between sales a
   - Minimum: zero
   - Maximum: one
 
-**ProductInventory**
+**ProductInventory(InventoryRecord)**
 
 | InventoryID | ProductID (FK) | OrderItemID (FK) | SerialNumber | Status     |
 |------------:|----------------|------------------|--------------|------------|
@@ -737,9 +704,10 @@ The **OrderItem** entity acts as the correct **semantic bridge** between sales a
 | 301         | 3              | NULL             | MOU-SR-050   | Available  |
 
 
+
 ***
 
-<img src="../resources/figures/ecommerce-er-v3.png">
+<img src="../resources/figures/ecommerce-er-v4.png">
 
 ***
 
