@@ -1,222 +1,124 @@
-# Hands-on Exercise1: Design and Implementation of a Bank Account Database
+# Hands-On Exercise 1: Relational Schema Design and Constraint Implementation in PostgreSQL
 
+## Objectives
 
-## **Objective**
-In this assignment, you will design a **banking system database** while applying essential 
-**SQL constraints** such as **NOT NULL, DEFAULT, PRIMARY KEY, FOREIGN KEY (NO ACTION), CHECK,** and **UNIQUE**.
+In this exercise, you will design and implement a small relational database in PostgreSQL.  
+The goal is to practice:
 
-## **Business Rules**
+- Defining relational schemas
+- Implementing primary keys (PK)
+- Defining foreign keys (FK)
+- Applying constraints (NOT NULL, UNIQUE, CHECK, DEFAULT)
+- Testing referential integrity using INSERT and DELETE operations
 
-1. A customer has an id, first name, last name, email, phone number, date of birth, and registered date.
-2. A customer can have multiple accounts, but each account must belong to a single customer.
-3. Each account has an id, customer id, unique account number, account type, balance, and opening date.
-4. An account must be of type "Individual" or "Business".
-5. An account balance must be non-negative.
-6. Each transaction has an id, account id, amount, transaction type ("Deposit" or "Withdrawal"), and transaction date.
-7. Each transaction must be linked to an account, an account may have many transactions.
-8. Transaction amounts must always be greater than zero.
-9. System-generated timestamps should be recorded for customer registration, account opening, and transactions.
+---
 
+## Scenario
 
+A company manages its customers.
 
-## **Task 1: Design an ER Diagram**
-- Using **Crow’s Foot Notation**, design an **ER Diagram** representing the banking system based on the business rules above.
+- Each **Customer** belongs to a **CustomerType** (e.g., Regular, Premium, Corporate).
+- Each customer must be associated with a valid customer type.
+- Referential integrity must be enforced between parent and child tables.
 
+---
 
+## Step 1 — Relational Schema
 
-## **Task 2: Define a Relational Schema**
-- Construct a **text-based relational schema** using the **business rules**.
-- Ensure that **data types** and **constraints** are clearly specified.
+You are given the following relational schema.
 
+---
 
-## **Task 3: Implement Database Schema**
-Define the following **tables** with appropriate **data types** and constraints:
+### CustomerTypes
 
+        customertypes(
+        id PK,
+        type_name NOT NULL UNIQUE,
+        discount_rate CHECK (discount_rate >= 0 AND discount_rate <= 50)
+        )
 
-### **BankDB Database**
+### Customers
 
-Construct the BankDB database.
-
-### **Customers Table**
-Stores customer information.
-
-| Column Name  | Data Type | Constraints | Description |
-|-------------|----------|------------|-------------|
-| `id` | `SERIAL` | `PRIMARY KEY` | Unique identifier for each customer |
-| `first_name` | `VARCHAR(50)` | `NOT NULL` | Customer’s first name |
-| `last_name` | `VARCHAR(50)` | `NOT NULL` | Customer’s last name |
-| `email` | `VARCHAR(100)` | `UNIQUE, NOT NULL` | Ensures each email is unique |
-| `phone` | `VARCHAR(15)` | `UNIQUE` | Customer phone number (optional but must be unique) |
-| `date_of_birth` | `DATE` | `NOT NULL` | Customer’s date of birth |
-| `registered_on` | `TIMESTAMP` | `DEFAULT CURRENT_TIMESTAMP` | Auto-filled registration date |
-
-### **Accounts Table**
-Stores bank account details.
-
-| Column Name      | Data Type | Constraints                                              | Description |
-|------------------|----------|----------------------------------------------------------|-------------|
-| `id`             | `SERIAL` | `PRIMARY KEY`                                            | Unique identifier for each account |
-| `customer_id`    | `INTEGER` | `FOREIGN KEY` references `id` in `Customers` (NO ACTION) | Links to Customers table |
-| `account_number` | `VARCHAR(15)` | `UNIQUE, NOT NULL`                                       | Ensures each account number is unique |
-| `account_type`   | `VARCHAR(20)` | `CHECK (account_type IN ('Individual', 'Business'))`     | Restricts account type to Savings or Checking |
-| `balance`        | `DECIMAL(15,2)` | `CHECK (balance >= 0) DEFAULT 0.00`                      | Ensures non-negative balance |
-| `opening_date`   | `TIMESTAMP` | `DEFAULT CURRENT_TIMESTAMP`                              | Auto-filled account creation date |
-
-### **Transactions Table**
-Stores account transactions.
-
-| Column Name  | Data Type | Constraints | Description |
-|-------------|----------|------------|-------------|
-| `id` | `SERIAL` | `PRIMARY KEY` | Unique identifier for each transaction |
-| `account_id` | `INTEGER` | `FOREIGN KEY` references `id` in `Accounts` (NO ACTION) | Links to Accounts table |
-| `amount` | `DECIMAL(15,2)` | `CHECK (amount > 0)` | Ensures only positive transaction amounts |
-| `transaction_type` | `VARCHAR(10)` | `CHECK (transaction_type IN ('Deposit', 'Withdrawal'))` | Restricts values to Deposit or Withdrawal |
-| `transaction_date` | `TIMESTAMP` | `DEFAULT CURRENT_TIMESTAMP` | Auto-filled transaction timestamp |
-
-
-
-## **Task 4: Execution Steps**
-1. **Write SQL statements** to **initialize the database**.
-2. **Write SQL statements** to **construct tables** with appropriate constraints.
-3. **Test constraints** by:
-    - Inserting a customer without an email (**should fail**).
-    - Inserting an account with a negative balance (**should fail**).
-    - Inserting a transaction with an invalid type (**should fail**).
-    - Inserting valid data and verifying the records.
-
-
-
+        customers(
+        id PK,
+        customer_code NOT NULL UNIQUE,
+        full_name NOT NULL,
+        email UNIQUE,
+        type_id NOT NULL FK → customertypes(id),
+        registration_date DEFAULT CURRENT_DATE,
+        credit_limit CHECK (credit_limit >= 0)
+        )
 
 
 
 
 ---
-   
-# **Hands-on Exercise 2: Advanced Constraints and Database Normalization**
 
-## **Objective**
-In this exercise, you will extend the **banking system database** by:
-- Introducing **new constraints** to improve data consistency.
-- **Normalizing** the database by creating separate tables for **account types** and **transaction types** to avoid data repetition.
+## Step 2 — Implementation Tasks
 
+### Task 1 
 
-
-## **New Business Rules**
-1. A **customer's first name and last name** must start with a capital letter.
-2. A **customer's date of birth** must ensure they are at least **18 years old**.
-3. An **account type** should be stored in a separate table and referenced in the **Accounts** table.
-4. A **transaction type** should be stored in a separate table and referenced in the **Transactions** table.
-
-
-
-## **Task 1: Extend the ER Diagram**
-- Modify the **ER Diagram** using **Crow’s Foot Notation** to include:
-   - A new **AccountTypes** table.
-   - A new **TransactionTypes** table.
-   - Updated relationships to reference these tables.
-
-
-
-## **Task 2: Define the Extended Relational Schema**
-- Construct an **updated text-based relational schema** considering the new business rules.
-
-
-
-## **Task 3: Implement the Extended Database Schema**
-Define the following **tables** with appropriate **data types** and constraints:
-
-
-
-
-
---- 
-
-# **Hands-on Exercise 3: Design and Implementation of a Blog System Database**
-
-## **Objective**
-In this assignment, you will design a **blogging system database** while applying essential **SQL constraints**, including **NOT NULL, DEFAULT, PRIMARY KEY, FOREIGN KEY (NO ACTION), CHECK,** and **UNIQUE**.
+* Construct a database named `ecommercedb`
+* Define tables `customertypes` and `customers`
+  - SERIAL primary keys
+  - Properly named constraints
+  - A FOREIGN KEY constraint
 
 ---
 
-## **Business Rules**
-1. Each **author** must have a unique **email** and **username**.
-2. An **author** can write multiple **posts**, but a **post** must belong to a single **author**.
-3. Each **post** has a **title, content, and a timestamp** of when it was published.
-4. Each **post** must belong to a **category**.
-5. A **category name** must be unique.
-6. A **post** can have multiple **images**, but each **image** must belong to a single **post**.
-7. System-generated timestamps should be recorded for **author registration, post publishing, and image uploads**.
+# Step 3 — Insert Sample Data
+
+Insert at least **3 records** into each table.
+
+### Example Data Requirements
+
+#### CustomerTypes
+- Regular (0%)
+- Premium (10%)
+- Corporate (20%)
+
+#### Customers
+- At least 3 customers
+- Each must reference a valid CustomerType
 
 ---
 
-## **Task 1: Design an ER Diagram**
-- Using **Crow’s Foot Notation**, design an **ER Diagram** representing the blog system based on the business rules above.
+# Step 4 — Relationship Testing
+
+Perform the following tests and document the results.
 
 ---
 
-## **Task 2: Define a Relational Schema**
-- Construct a **text-based relational schema** using the **business rules**.
-- Ensure that **data types** and **constraints** are clearly specified.
+### Test 1 — Valid Insert
+
+Insert a new customer referencing an existing CustomerType.  
+✔ Expected: Successful insertion.
 
 ---
 
-## **Task 3: Implement Database Schema**
+### Test 2 — Invalid Foreign Key Insert
 
-Define the following **tables** with appropriate **data types** and constraints:
+Try inserting a customer with a non-existing `type_id`.
 
-### **Authors Table**
-Stores information about authors.
-
-| Column Name   | Data Type     | Constraints                        | Description                            |
-|--------------|--------------|------------------------------------|----------------------------------------|
-| `id`         | `SERIAL`      | `PRIMARY KEY`                     | Unique identifier for each author     |
-| `username`   | `VARCHAR(50)` | `UNIQUE, NOT NULL`                | Ensures each username is unique       |
-| `email`      | `VARCHAR(100)`| `UNIQUE, NOT NULL`                | Ensures each email is unique          |
-| `registered_on` | `TIMESTAMP`  | `DEFAULT CURRENT_TIMESTAMP`      | Auto-filled registration date         |
+✔ Expected: Foreign key violation error.
 
 ---
 
-### **Categories Table**
-Stores post categories.
+### Test 3 — Delete Parent (Restricted)
 
-| Column Name | Data Type     | Constraints         | Description                      |
-|------------|--------------|---------------------|----------------------------------|
-| `id`       | `SERIAL`      | `PRIMARY KEY`      | Unique identifier for category  |
-| `name`     | `VARCHAR(50)` | `UNIQUE, NOT NULL` | Unique name for each category   |
+Attempt to delete a `CustomerType` that is still referenced by customers.
+
+✔ Expected: Deletion rejected due to the FK constraint.
 
 ---
 
-### **Posts Table**
-Stores blog posts.
+### Test 4 — Constraint Testing
 
-| Column Name   | Data Type     | Constraints                                      | Description                               |
-|--------------|--------------|--------------------------------------------------|-------------------------------------------|
-| `id`         | `SERIAL`      | `PRIMARY KEY`                                   | Unique identifier for each post          |
-| `author_id`  | `INTEGER`     | `FOREIGN KEY` references `id` in `Authors` (NO ACTION) | Links post to an author        |
-| `category_id`| `INTEGER`     | `FOREIGN KEY` references `id` in `Categories` (NO ACTION) | Links post to a category      |
-| `title`      | `VARCHAR(255)`| `NOT NULL`                                     | Title of the post                        |
-| `content`    | `TEXT`        | `NOT NULL`                                     | Main content of the post                 |
-| `published_on` | `TIMESTAMP`  | `DEFAULT CURRENT_TIMESTAMP`                   | Auto-filled post publication timestamp   |
+Perform and observe:
+
+- Insert a customer with duplicate `customer_code` → should fail.
+- Insert a customer with duplicate `email` → should fail.
+- Insert negative `credit_limit` → should fail.
+- Insert CustomerType with discount > 50 → should fail.
 
 ---
-
-### **Post Images Table**
-Stores images related to blog posts.
-
-| Column Name | Data Type     | Constraints                                     | Description                         |
-|------------|--------------|-------------------------------------------------|-------------------------------------|
-| `id`       | `SERIAL`      | `PRIMARY KEY`                                  | Unique identifier for each image   |
-| `post_id`  | `INTEGER`     | `FOREIGN KEY` references `id` in `Posts` (NO ACTION) | Links image to a post          |
-| `image_url`| `TEXT`        | `NOT NULL`                                     | URL/path of the image              |
-| `uploaded_on` | `TIMESTAMP`  | `DEFAULT CURRENT_TIMESTAMP`                   | Auto-filled upload timestamp       |
-
----
-
-## **Task 4: Execution Steps**
-1. **Write SQL statements** to **initialize the database**.
-2. **Write SQL statements** to **construct tables** with appropriate constraints.
-3. **Test constraints** by:
-    - Inserting an author without an email (**should fail**).
-    - Inserting a post without a category (**should fail**).
-    - Inserting an image without linking it to a post (**should fail**).
-    - Inserting valid data and verifying the records.
