@@ -501,14 +501,14 @@ ALTER TABLE products ADD CONSTRAINT "productsPK" PRIMARY KEY(id,code);
 
 **products**      M ---------------------------------------------------------------1 **productcategories**
 
-| id   | ProductName | CategoryID | M<------->1 | id | CategoryName    |
-|-----|------------|--------------|-------------|----|--|
-| 101 | Coffee     | 1            |             | 1  | Beverages      |
-| 102 | Tea        | 1            |             | 2  | Condiments     |
-| 103 | Mustard    | 2            |             | 3  | Dairy Products |
-| 104 | Cheese     | 3            |             | 4  | Electronics |  
-| 105 | Yogurt     | 3            |             |
-| 106 | Honey           | NULL     |             |
+| id   | name    | category | M<------->1 | id | name            |
+|-----|---------|----------|-------------|----|----------------|
+| 101 | Coffee  | 1        |             | 1  | Beverages      |
+| 102 | Tea     | 1        |             | 2  | Condiments     |
+| 103 | Mustard | 2        |             | 3  | Dairy Products |
+| 104 | Cheese  | 3        |             | 4  | Electronics    |  
+| 105 | Yogurt  | 3        |             |
+| 106 | Honey   | NULL     |             |
 
 
 ```sql
@@ -522,24 +522,24 @@ CREATE TABLE productcategories (
 
 ```sql
 CREATE TABLE products (
-    "id" SERIAL,
+    id SERIAL,
     code CHAR(6) NOT NULL,
     name VARCHAR(40) NOT NULL,
-    "category" INTEGER NOT NULL, 
+    category INTEGER NOT NULL, 
     date DATE DEFAULT '2019-01-01',
     price MONEY,
     quantity SMALLINT DEFAULT 0,
-    CONSTRAINT "productsPK" PRIMARY KEY("id"),
+    CONSTRAINT "productsPK" PRIMARY KEY(id),
     CONSTRAINT "productsUnique" UNIQUE(code),
     CONSTRAINT "productsCheck" CHECK(quantity >= 0),
-    CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES productcategories(id)
+    CONSTRAINT "productCategoryFK" FOREIGN KEY(category) REFERENCES productcategories(id)
 );
 
 ```
 
 
 
-- The `"category"` column in the `products` table references the `"id"` column in the `productcategories` table.
+- The `category` column in the `products` table references the `id` column in the `productcategories` table.
 
 By default, `ON DELETE` and `ON UPDATE` actions are adjusted as `NO ACTION`.
 
@@ -551,7 +551,7 @@ By default, `ON DELETE` and `ON UPDATE` actions are adjusted as `NO ACTION`.
   - **SET NULL:** Sets the foreign key column to `NULL` when the referenced record is deleted.
   - **SET DEFAULT:** Sets the foreign key column to its default value when the referenced record is deleted.
 
-To remove the FOREIGN KEY constraint from the `"category"` column:
+To remove the FOREIGN KEY constraint from the `category` column:
 ```sql
 ALTER TABLE products DROP CONSTRAINT "productCategoryFK";
 
@@ -561,7 +561,7 @@ To add the FOREIGN KEY constraint with `NO ACTION` behavior:
 
 ```sql
 ALTER TABLE products
-ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES productcategories("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY(category) REFERENCES productcategories(id) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ```
 
@@ -571,7 +571,7 @@ To add the FOREIGN KEY constraint with `CASCADE` behavior:
 
 ```sql
 ALTER TABLE products
-ADD CONSTRAINT "productCategoryFK" FOREIGN KEY("category") REFERENCES productcategories("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT "productCategoryFK" FOREIGN KEY(category) REFERENCES productcategories(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ```
 
