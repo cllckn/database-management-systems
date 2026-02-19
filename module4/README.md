@@ -7,15 +7,15 @@
     * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
     * [SQL Functions and Categories](#sql-functions-and-categories)
   * [2. Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)](#2-basic-sql-data-definition-language-ddl-statements-create-alter-drop)
-    * [CREATE](#create)
+    * [2.1.CREATE](#21create)
       * [CREATE DATABASE](#create-database)
       * [CREATE SCHEMA](#create-schema)
       * [CREATE TABLE](#create-table)
         * [Commonly Used SQL and PostgreSQL Data Types](#commonly-used-sql-and-postgresql-data-types)
         * [Best Practices for Choosing Data Types](#best-practices-for-choosing-data-types)
-    * [ALTER](#alter)
-    * [DROP](#drop)
-    * [Defining Constraints in SQL](#defining-constraints-in-sql)
+    * [2.2.ALTER](#22alter)
+    * [2.3.DROP](#23drop)
+    * [2.4.Defining Constraints in SQL](#24defining-constraints-in-sql)
       * [NOT NULL Constraint](#not-null-constraint)
       * [DEFAULT Constraint](#default-constraint)
       * [UNIQUE Constraint](#unique-constraint)
@@ -68,7 +68,7 @@ To work with SQL databases efficiently, a proper working environment is required
 **Installing PostgreSQL**
 PostgreSQL is an open-source and powerful relational database management system.
 - **Download Link**: [Download PostgreSQL](https://www.postgresql.org/download)
-- Supports Windows, macOS, and Linux.
+- Supports Linux, macOS, Windows.
 - Complies with SQL standards and offers extensive plugin support.
 
 **Installing pgAdmin**
@@ -80,7 +80,7 @@ pgAdmin is the most commonly used graphical management tool for PostgreSQL.
 **Importing and Exporting Sample Databases**
 
 * **Northwind Sample Database**
-  - A well-known example database that simulates a trading company's operations.
+  - A well-known example database that stores a trading company's data.
   - Can be imported using **pgAdmin**.
   - [Download](../resources/dbs/northwind.backup)
 
@@ -129,12 +129,12 @@ DML includes commands that manipulate data within tables:
 
 Used to define, modify, and remove database objects such as databases, tables, views, etc.
 
----
-**Data integrity constraints are enforced when DDL statements are executed. If a data integrity violation occurs,
-the operation is aborted, ensuring that data remains consistent and accurate.**
----
 
-### CREATE
+>***Data integrity constraints are enforced when DDL statements are executed. If a data integrity violation occurs,
+the operation is aborted, ensuring that data remains consistent and accurate.***
+
+
+### 2.1.CREATE
 
 This statement is used to define and initialize various database objects, including databases,
 schemas, tables, views, indexes, stored procedures, functions, etc.
@@ -253,7 +253,7 @@ INSERT INTO products
 ```
 
 
-### ALTER
+### 2.2.ALTER
 
 The `ALTER` statement is used to modify the structure of existing database objects, such as tables, schemas, constraints, etc.
 It allows adding, deleting, or modifying columns, constraints, and other properties without affecting the stored data.
@@ -275,7 +275,7 @@ ALTER TABLE products DROP COLUMN "manufacturingCountry";
 ```
 
 
-### DROP
+### 2.3.DROP
 The `DROP` statement is used to permanently remove database objects such as tables, schemas, views, indexes, etc.
 Once an object is dropped, all associated data and dependencies are lost and cannot be recovered unless a backup exists.
 
@@ -292,7 +292,7 @@ DROP DATABASE ecommercedb;
 
 
 
-### Defining Constraints in SQL
+### 2.4.Defining Constraints in SQL
 
 SQL constraints help maintain data integrity by enforcing rules on table columns.
 
@@ -497,7 +497,9 @@ ALTER TABLE products ADD CONSTRAINT "productsPK" PRIMARY KEY(id,code);
 
 * **Example**
 
-![](../resources/figures/fk1.png)
+<img src="../resources/figures/fk-product-categories.png" width="600">
+
+**products**      M ---------------------------------------------------------------1 **productcategories**
 
 | id   | ProductName | CategoryID | M<------->1 | id | CategoryName    |
 |-----|------------|--------------|-------------|----|--|
