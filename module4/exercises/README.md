@@ -31,24 +31,23 @@ You are given the following relational schema.
 
 ### CustomerTypes
 
-        customertypes(
-        id PK,
-        type_name NOT NULL UNIQUE,
-        discount_rate CHECK (discount_rate >= 0 AND discount_rate <= 50)
+        customertypes (
+            id INT PK,
+            type_name VARCHAR(50) NOT NULL UNIQUE,
+            discount_rate DECIMAL(5,2) CHECK (discount_rate >= 0 AND discount_rate <= 50)
         )
 
 ### Customers
 
-        customers(
-        id PK,
-        customer_code NOT NULL UNIQUE,
-        full_name NOT NULL,
-        email UNIQUE,
-        type_id NOT NULL FK → customertypes(id),
-        registration_date DEFAULT CURRENT_DATE,
-        credit_limit CHECK (credit_limit >= 0)
+        customers (
+            id INT PK,
+            customer_code VARCHAR(20) NOT NULL UNIQUE,
+            full_name VARCHAR(100) NOT NULL,
+            email VARCHAR(255) UNIQUE,
+            type_id INT NOT NULL FK → customertypes(id),
+            registration_date DATE DEFAULT CURRENT_DATE,
+            credit_limit DECIMAL(12,2) CHECK (credit_limit >= 0)
         )
-
 
 
 
