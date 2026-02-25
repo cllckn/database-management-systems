@@ -11,6 +11,7 @@
     * [Database Drivers – Core Functions](#database-drivers--core-functions)
     * [Database Operations with Java and MongoDB](#database-operations-with-java-and-mongodb)
       * [Example Workflow (Conceptual)](#example-workflow-conceptual)
+    * [Database Operations with Node.js and MongoDB](#database-operations-with-nodejs-and-mongodb)
   * [Hands-on Exercise](#hands-on-exercise)
 <!-- TOC -->
 
@@ -369,11 +370,19 @@ link: https://www.mongodb.com/try/download/community
 ![DB Class Diagram](../resources/db-class-diagram.png)
 
 
-```java
 
 
+### Database Operations with Node.js and MongoDB
+
+You can use MongoDB Cloud (https://account.mongodb.com/account/login
+) without installation, or install MongoDB on your computer from the following
+link: https://www.mongodb.com/try/download/community
+
+To install mongodb driver
+
+```shell
+npm install mongodb
 ```
-
 
 ***
 ## Hands-on Exercise
