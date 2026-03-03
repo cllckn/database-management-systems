@@ -1,4 +1,4 @@
-# **Module 4: Fundamentals of Structured Query Language (SQL)**
+# Module 4: Fundamentals of Structured Query Language (SQL)
 
 
 <!-- TOC -->
@@ -22,30 +22,33 @@
       * [CHECK Constraint](#check-constraint)
       * [PRIMARY KEY Constraint](#primary-key-constraint)
       * [FOREIGN KEY Constraint](#foreign-key-constraint)
+      * [Establishing Unary (Recursive) Relationships](#establishing-unary-recursive-relationships)
+  * [Hands-on Exercise: Implementing ecommerce db](#hands-on-exercise-implementing-ecommerce-db)
   * [3. Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)](#3-basic-sql-dml-statements-select-insert-update-delete)
-    * [**SELECT**](#select)
-    * [**WHERE**](#where)
-    * [**DISTINCT**](#distinct)
-    * [**ORDER BY**](#order-by)
-    * [**LIKE / NOT LIKE**](#like--not-like)
-    * [**BETWEEN**](#between)
-    * [**IN**](#in)
-    * [**Querying NULL and Non-NULL Values**](#querying-null-and-non-null-values)
-    * [**AS (Alias for Columns and Tables) for Columns**](#as-alias-for-columns-and-tables-for-columns)
-    * [**SQL JOIN Operations**](#sql-join-operations)
-      * [**1. INNER JOIN**](#1-inner-join)
-      * [**2. LEFT JOIN (LEFT OUTER JOIN)**](#2-left-join-left-outer-join)
-      * [**3. RIGHT JOIN (RIGHT OUTER JOIN)**](#3-right-join-right-outer-join)
-      * [**4. FULL JOIN (FULL OUTER JOIN)**](#4-full-join-full-outer-join)
-      * [**Summary of Join Operations**](#summary-of-join-operations)
-    * [**SELECT ... INTO**](#select--into)
-    * [**INSERT**](#insert)
-    * [**INSERT INTO ... SELECT**](#insert-into--select)
-    * [**UPDATE**](#update)
-    * [**DELETE**](#delete)
+    * [3.1 SELECT](#31-select)
+      * [Anatomy of a SQL SELECT Statement](#anatomy-of-a-sql-select-statement)
+      * [WHERE](#where)
+      * [DISTINCT](#distinct)
+      * [ORDER BY](#order-by)
+      * [LIKE / NOT LIKE](#like--not-like)
+      * [BETWEEN](#between)
+      * [IN](#in)
+    * [3.2 Querying NULL and Non-NULL Values](#32-querying-null-and-non-null-values)
+    * [3.3 AS (Alias for Columns and Tables) for Columns](#33-as-alias-for-columns-and-tables-for-columns)
+    * [3.4 SQL JOIN Operations](#34-sql-join-operations)
+      * [1. INNER JOIN](#1-inner-join)
+      * [2. LEFT JOIN (LEFT OUTER JOIN)](#2-left-join-left-outer-join)
+      * [3. RIGHT JOIN (RIGHT OUTER JOIN)](#3-right-join-right-outer-join)
+      * [4. FULL JOIN (FULL OUTER JOIN)](#4-full-join-full-outer-join)
+      * [5. Unary (Recursive) Relationships](#5-unary-recursive-relationships)
+    * [3.5 SELECT ... INTO](#35-select--into)
+    * [3.6 INSERT](#36-insert)
+    * [INSERT INTO ... SELECT](#insert-into--select)
+    * [3.7 UPDATE](#37-update)
+    * [3.8 DELETE](#38-delete)
   * [4. Using a Programming Language to Interact With a Database](#4-using-a-programming-language-to-interact-with-a-database)
-    * [Database Drivers – Core Functions](#database-drivers--core-functions)
-    * [Database Operations with Java and PostgreSQL](#database-operations-with-java-and-postgresql)
+    * [4.1.Database Drivers – Core Functions](#41database-drivers--core-functions)
+    * [4.2.Database Operations with Java and PostgreSQL](#42database-operations-with-java-and-postgresql)
       * [Example Workflow (Conceptual)](#example-workflow-conceptual)
 <!-- TOC -->
 
@@ -484,6 +487,7 @@ ALTER TABLE products ADD CONSTRAINT "productsPK" PRIMARY KEY(id,code);
 
 ```
 
+---
 
 #### FOREIGN KEY Constraint
 
@@ -577,6 +581,88 @@ ADD CONSTRAINT "productCategoryFK" FOREIGN KEY(category) REFERENCES productcateg
 
 ---
 
+#### Establishing Unary (Recursive) Relationships
+
+<img src="../resources/figures/er-unary-relationship.png" width="1000">
+
+Relational Schema:
+
+```text
+Employee (
+  id INT PK,
+  firstName VARCHAR(50) NOT NULL,
+  lastName VARCHAR(50) NOT NULL,
+  gender CHAR(1),
+  supervisor INT FK → Employee(id)
+)
+```
+
+SQL Statement:
+
+```sql
+CREATE TABLE employee (
+    id INT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    gender CHAR(1),
+    supervisor INT,
+    CONSTRAINT "EmployeePK"PRIMARY KEY (id),
+    -- Foreign Key Constraint (Self-Referencing)
+    CONSTRAINT "EmployeeSupervisorFK" 
+        FOREIGN KEY (supervisor) REFERENCES employee(id)
+        ON DELETE SET NULL
+);
+```
+
+Insert records:
+
+```sql
+-- 1. Insert the "Top-Level" Employees (No supervisors)
+INSERT INTO employee (id, first_name,  last_name, gender, supervisor)
+VALUES (1, 'Alice', 'Smith', 'F', NULL);
+
+INSERT INTO employee (id, first_name,  last_name, gender, supervisor)
+VALUES (2, 'Bob', 'Johnson', 'M', NULL);
+
+-- 2. Insert the next two employees who report to the ones above
+INSERT INTO employee (id, first_name,  last_name, gender, supervisor)
+VALUES (3, 'Charlie', 'Davis', 'M', 1); -- Reports to Alice
+
+INSERT INTO employee (id, first_name,  last_name, gender, supervisor)
+VALUES (4, 'Diana', 'Prince', 'F', 2);  -- Reports to Bob
+```
+
+
+## Hands-on Exercise: Implementing ecommerce db
+
+[ER diagram and relational schema](../module3/README.md#exercise1-e-commerce-system-design)
+
+```sql
+create table customers(
+    id serial,
+    name varchar(50) not null,
+    email varchar(100),
+    phone_number char(12),
+    shipping_address varchar(200),
+    CONSTRAINT CustomerPK PRIMARY KEY(id),
+    constraint EmailUNQ UNIQUE (email)
+);
+
+create table orders(
+    id serial,
+    order_date date default current_date,
+    total_amount numeric(10,2),
+    status varchar(30),
+    customer int,
+    CONSTRAINT orderPK primary key (id),
+    constraint OrderCustomer foreign key (customer) references customers(id)
+);
+
+--...
+
+```
+
+
 
 
 ## 3. Basic SQL DML Statements (SELECT, INSERT, UPDATE, DELETE)
@@ -595,8 +681,44 @@ ADD CONSTRAINT "productCategoryFK" FOREIGN KEY(category) REFERENCES productcateg
 
 ---
 
-### **SELECT**
+### 3.1 SELECT
 The **SELECT** statement is used to retrieve data from the database (searching/listing).
+
+#### Anatomy of a SQL SELECT Statement
+
+To understand a SELECT statement, you have to distinguish between how you write it (Syntax) and how the database 
+runs it (Logic).
+
+> **The DBMS does not execute your query from top to bottom.**
+
+1) The Written Anatomy (Syntactic Order)
+
+```sql
+SELECT DISTINCT column_name, AGG_FUNC(column) -- 1. What to show
+FROM table_name                               -- 2. Where to get it
+JOIN another_table ON condition               -- 3. How to link tables
+WHERE condition                               -- 4. How to filter rows
+GROUP BY column_name                          -- 5. How to group rows
+HAVING group_condition                        -- 6. How to filter groups
+ORDER BY column_name ASC/DESC                 -- 7. How to sort results
+LIMIT number OFFSET number;                   -- 8. How many to show
+```
+
+
+2) The Execution Anatomy (Logical Order)
+
+| Priority | Clause         | What happens at this stage? |
+|----------|---------------|-----------------------------|
+| 1 | FROM / JOIN | The database goes to the hard drive and finds the tables. It builds a "virtual table" in memory. |
+| 2 | WHERE | It throws away all rows that don't match your filter. This happens before any grouping or calculation. |
+| 3 | GROUP BY | It collapses the remaining rows into "buckets" based on your specified column. |
+| 4 | HAVING | It filters the groups (e.g., "Only show groups where the average price > 100"). |
+| 5 | SELECT | Finally, it looks at the columns you actually want. It calculates expressions like (price * 0.1). |
+| 6 | DISTINCT | It scans the final list and removes any duplicate rows. |
+| 7 | ORDER BY | It takes the final result set and sorts it. |
+| 8 | LIMIT / OFFSET | It discards everything except the specific number of rows you requested. |
+
+
 
 ```sql
 SET search_path TO schema,public;
@@ -606,7 +728,7 @@ SELECT * FROM "customers";
 SELECT "CompanyName", "ContactName" FROM "customers";
 ```
 
-### **WHERE**
+#### WHERE
 
 The WHERE clause is used to filter records based on specified conditions, returning only the rows that meet the query condition.
 
@@ -632,7 +754,7 @@ SELECT * FROM "order_details" WHERE price >= 14;
 SELECT * FROM "order_details" WHERE price > 14;
 ```
 
-### **DISTINCT**
+#### DISTINCT
 
 The **DISTINCT** keyword is used to eliminate duplicate rows from the query results, ensuring that only unique records are retrieved.
 
@@ -646,7 +768,7 @@ SELECT DISTINCT "OrderID", "Discount" FROM "order_details" ORDER BY "OrderID";
 --Retrieves unique combinations of OrderID and Discount values from the order_details table.
 ```
 
-### **ORDER BY**
+#### ORDER BY
 
 The **ORDER BY** clause is used to sort the query results in either **ascending (ASC)** or **descending (DESC)** order 
 based on one or more columns. Sorting can be applied to both **alphabetic (text)** and **numeric** values.
@@ -667,7 +789,7 @@ SELECT * FROM "customers" ORDER BY "ContactName" DESC, "CompanyName";
 SELECT * FROM "customers" ORDER BY "Country", "ContactName";
 ```
 
-### **LIKE / NOT LIKE**
+#### LIKE / NOT LIKE
 
 The **LIKE** and **NOT LIKE** operators are used with the **WHERE** clause to filter records based on a specified pattern. 
 These operators are particularly useful for searching text data in a flexible manner.
@@ -699,7 +821,7 @@ SELECT * FROM "customers" WHERE "Country" LIKE '%pa%';
 --Retrieves all records where the Country name contains 'pa' anywhere.
 ```
 
-### **BETWEEN**
+#### BETWEEN
 
 The **BETWEEN** operator is used in the **WHERE** clause to filter records within a specified range. 
 It works with **numeric, date, and text values**.
@@ -709,7 +831,7 @@ It works with **numeric, date, and text values**.
 - The **range boundaries are inclusive**.
 
 ```sql
-SELECT * FROM products WHERE price BETWEEN 10 AND 20;
+SELECT * FROM products WHERE "UnitPrice" BETWEEN 10 AND 20;
 --Find all products with a unit price between 10 and 20
 
 SELECT * FROM products WHERE "ProductName" BETWEEN 'C' AND 'M';
@@ -718,7 +840,7 @@ SELECT * FROM products WHERE "ProductName" BETWEEN 'C' AND 'M';
 --Example matches: 'Cheese', 'Honey', 'Juice', 'Milk', but not 'Apple' or 'Banana'.
 ```
 
-### **IN**
+#### IN
 
 The **IN** operator is used in the **WHERE** clause to filter records that match **any** value in a given list. 
 It is an alternative to using multiple **OR** conditions.
@@ -729,7 +851,7 @@ WHERE "public"."customers"."Country" IN ('Argentina', 'Kazakhstan');
 --Find all customers from Argentina or Kazakhstan
 ```
 
-### **Querying NULL and Non-NULL Values**
+### 3.2 Querying NULL and Non-NULL Values
 
 In SQL, **NULL** represents missing or undefined data. A field containing **NULL** does not hold any value, including an empty string (`''`) or zero (`0`).
 
@@ -744,7 +866,7 @@ SELECT * FROM "customers" WHERE "Region" IS NULL;
 --Retrieves all records where the Region field does not have a value (is NULL).
 ```
 
-### **AS (Alias for Columns and Tables) for Columns**
+### 3.3 AS (Alias for Columns and Tables) for Columns
 
 The **AS** keyword is used to assign an **alias (temporary name)** to columns or tables in SQL queries. 
 Aliases improve readability and make query results more user-friendly.
@@ -760,7 +882,7 @@ Aliases improve readability and make query results more user-friendly.
 SELECT "CompanyName" AS "Customer Company" FROM "customers";
 --Renames the CompanyName column as "Customer Company" in the query result.
 
-SELECT price, price * 1.18 AS "Unit Price With Tax" FROM products;
+SELECT "UnitPrice", "UnitPrice" * 1.18 AS "Unit Price With Tax" FROM products;
 --Retrieves the UnitPrice column.
 --Calculates the price with 18% VAT and renames the result as "Unit Price With Tax".
 
@@ -770,11 +892,19 @@ FROM "orders"
 WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 --Concatenates ShipPostalCode and ShipAddress, separating them with a comma, and assigns the alias "Shipping Address".
 --Filters orders where the OrderDate is between July 4, 1996, and July 9, 1996.
+
+
+SELECT c."CompanyName" AS "Customer Company" FROM customers as c;
+SELECT c."CompanyName" AS "Customer Company" FROM customers c;
+-- Gives the table a "nickname".
+-- It’s incredibly useful when joining multiple tables so you don't have to type the full table name every time.
+
+
 ```
 
 ---
 
-### **SQL JOIN Operations**
+### 3.4 SQL JOIN Operations
 
 
 * **Categories Table**
@@ -799,15 +929,29 @@ WHERE "OrderDate" BETWEEN '07/04/1996' AND '07/09/1996';
 
 
 
-#### **1. INNER JOIN**
+#### 1. INNER JOIN
 Returns only the records that have matching values in both tables.
 - Only products with a valid `CategoryID` in the **Categories** table are included.
 - Any product with a `NULL` `CategoryID` is excluded.
 
 ```sql
-SELECT Products.ProductID, Products.ProductName, Categories.CategoryName
-FROM Products
-INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
+SELECT
+  products."ProductID",
+  products."ProductName",
+  categories."CategoryName"
+FROM products
+INNER JOIN categories ON products."CategoryID" = categories."CategoryID";
+```
+
+or
+
+```SQL
+SELECT
+  p."ProductID",
+  p."ProductName",
+  c."CategoryName"
+FROM products p
+INNER JOIN categories c ON p."CategoryID" = c."CategoryID";
 ```
 
 * **Products and Categories Tables (Side by Side)**
@@ -834,38 +978,41 @@ INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 
 ```sql
-SELECT 
-  "public"."orders"."OrderID",
-  "public"."customers"."CompanyName",
-  "public"."customers"."ContactName",
-  "public"."orders"."OrderDate"
-FROM "orders" 
-INNER JOIN "customers" ON "orders"."CustomerID" = "customers"."CustomerID" 
+SELECT
+  o."OrderID",
+  c."CompanyName",
+  c."ContactName",
+  o."OrderDate"
+FROM "public"."orders" o
+INNER JOIN "public"."customers" c ON o."CustomerID" = c."CustomerID";
 ```
 
 ```sql
-SELECT 
-  "orders"."OrderID",
-  "orders"."OrderDate",
-  "customers"."CompanyName",
-  "employees"."FirstName",
-  "employees"."LastName"
-FROM "orders"
-INNER JOIN "customers" ON "orders"."CustomerID" = "customers"."CustomerID"
-INNER JOIN "employees" ON "orders"."EmployeeID" = "employees"."EmployeeID";
+SELECT
+  o."OrderID",
+  o."OrderDate",
+  c."CompanyName",
+  e."FirstName",
+  e."LastName"
+FROM "orders" o
+INNER JOIN "customers" c ON o."CustomerID" = c."CustomerID"
+INNER JOIN "employees" e ON o."EmployeeID" = e."EmployeeID";
 ```
 
 
 
-#### **2. LEFT JOIN (LEFT OUTER JOIN)**
+#### 2. LEFT JOIN (LEFT OUTER JOIN)
 Returns all records from the **Products (left)** table, and matching records from the **Categories(right)** table.
 - If a product does not have a matching category, `NULL` is returned for the category.
 - Ensures all products are included in the result.
 
 ```sql
-SELECT Products.ProductID, Products.ProductName, Categories.CategoryName
-FROM Products
-LEFT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
+SELECT
+  p."ProductID",
+  p."ProductName",
+  c."CategoryName"
+FROM products p
+LEFT JOIN categories c ON p."CategoryID" = c."CategoryID";
 
 ```
 * **Products and Categories Tables (Side by Side)**
@@ -892,25 +1039,28 @@ LEFT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ```sql
 SELECT
-  "orders"."OrderID",
-  "customers"."CompanyName",
-  "orders"."OrderDate"
-FROM "customers"
-LEFT JOIN "orders" ON "orders"."CustomerID" = "customers"."CustomerID" 
-ORDER BY "OrderID" DESC;
+  o."OrderID",
+  c."CompanyName",
+  o."OrderDate"
+FROM "customers" c
+LEFT JOIN "orders" o ON o."CustomerID" = c."CustomerID"
+ORDER BY o."OrderID" DESC;
 ```
 
 
 
-#### **3. RIGHT JOIN (RIGHT OUTER JOIN)**
+#### 3. RIGHT JOIN (RIGHT OUTER JOIN)
 Returns all records from the **Categories** table, and matching records from the **Products** table.
 - If a category does not have a matching product, `NULL` is returned for the product fields.
 - Ensures all categories are included in the result.
 
 ```sql
-SELECT Products.ProductID, Products.ProductName, Categories.CategoryName
-FROM Products
-RIGHT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
+SELECT
+  p."ProductID",
+  p."ProductName",
+  c."CategoryName"
+FROM products p
+RIGHT JOIN categories c ON p."CategoryID" = c."CategoryID";
 
 ```
 * **Products and Categories Tables (Side by Side)**
@@ -941,13 +1091,13 @@ RIGHT JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ```sql
 SELECT
-  "orders"."OrderID",
-  "employees"."FirstName",
-  "employees"."LastName",
-  "orders"."OrderDate"
-FROM "orders"
-RIGHT OUTER JOIN "employees" ON "orders"."EmployeeID" = "employees"."EmployeeID" 
-ORDER BY "OrderID" DESC;
+  o."OrderID",
+  e."FirstName",
+  e."LastName",
+  o."OrderDate"
+FROM "orders" o
+RIGHT OUTER JOIN "employees" e ON o."EmployeeID" = e."EmployeeID"
+ORDER BY o."OrderID" DESC;
 ```
 ```sql
 INSERT INTO "employees" ("EmployeeID","FirstName", "LastName")
@@ -955,16 +1105,18 @@ VALUES (10, 'Jack', 'Doe');
 ```
 ---
 
-#### **4. FULL JOIN (FULL OUTER JOIN)**
+#### 4. FULL JOIN (FULL OUTER JOIN)
 Returns all records from both tables.
 - If a product does not have a category, `NULL` appears in the `CategoryName`.
 - If a category does not have any products, `NULL` appears in the `ProductID` and `ProductName`.
 
 ```sql
-SELECT Products.ProductID, Products.ProductName, Categories.CategoryName
-FROM Products
-FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
-
+SELECT
+  p."ProductID",
+  p."ProductName",
+  c."CategoryName"
+FROM products p
+FULL JOIN categories c ON p."CategoryID" = c."CategoryID";
 ```
 
 * **Products and Categories Tables (Side by Side)**
@@ -995,7 +1147,76 @@ FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 ---
 
-#### **Summary of Join Operations**
+#### 5. Unary (Recursive) Relationships
+
+
+```sql
+CREATE TABLE employee (
+    id INT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    gender CHAR(1),
+    supervisor INT,
+    CONSTRAINT "EmployeePK"PRIMARY KEY (id),
+    -- Foreign Key Constraint (Self-Referencing)
+    CONSTRAINT "EmployeeSupervisorFK" 
+        FOREIGN KEY (supervisor) REFERENCES employee(id)
+        ON DELETE SET NULL
+);
+```
+
+Insert records:
+
+```sql
+-- 1. Insert the "Top-Level" Employees (No supervisors)
+INSERT INTO employee (id, first_name,  last_name, gender, supervisor)
+VALUES (1, 'Alice', 'Smith', 'F', NULL);
+
+INSERT INTO employee (id, first_name,  last_name, gender, supervisor)
+VALUES (2, 'Bob', 'Johnson', 'M', NULL);
+
+-- 2. Insert the next two employees who report to the ones above
+INSERT INTO employee (id, first_name,  last_name, gender, supervisor)
+VALUES (3, 'Charlie', 'Davis', 'M', 1); -- Reports to Alice
+
+INSERT INTO employee (id, first_name,  last_name, gender, supervisor)
+VALUES (4, 'Diana', 'Prince', 'F', 2);  -- Reports to Bob
+```
+
+**To retrieve `employee` and related `supervisor`**
+
+To perform an Inner Join on a unary (self-referencing) relationship, we must treat the single employee table as if it 
+were two separate tables. We do this by using aliases (e.g., e for the employee and s for the supervisor).
+
+
+```sql
+SELECT 
+    e.first_name AS "Employee Name",
+    s.first_name AS "Supervisor Name"
+FROM 
+    employee e
+INNER JOIN 
+    employee s ON e.supervisor = s.id;
+
+```
+
+```sql
+SELECT 
+    e.first_name AS "Employee Name",
+    s.first_name AS "Supervisor Name"
+FROM 
+    employee e
+LEFT JOIN 
+    employee s ON e.supervisor = s.id;
+
+```
+
+
+---
+
+
+**Summary of Join Operations**
+
 - **INNER JOIN** → Only matching records from both tables.
 - **LEFT JOIN** → All products, and matching categories (`NULL` for unmatched categories).
 - **RIGHT JOIN** → All categories, and matching products (`NULL` for unmatched products).
@@ -1004,23 +1225,23 @@ FULL JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 Each **JOIN** type is used based on how we want to combine the data from different tables.  
 
 
-### **SELECT ... INTO**
+### 3.5 SELECT ... INTO
 
 Used to copy data from an existing table into a **new table**.  
 The new table **must not already exist** before executing the query.
 
 **Example:**  
-Copies the `CompanyName` and `ContactName` columns from the `customers` table into a new table named `Backup`.
+Copies the `CompanyName` and `ContactName` columns from the `customers` table into a new table named `customers_backup`.
 
-**Note:** If `Backup` already exists, the operation will fail.
+**Note:** If `customers_backup` already exists, the operation will fail.
 
 ```sql
-SELECT "CompanyName", "ContactName" INTO "Backup" FROM "customers";
+SELECT "CompanyName", "ContactName" INTO customers_backup FROM "customers";
 ```
 
 ---
 
-### **INSERT**
+### 3.6 INSERT
 
 ---
 **Data integrity constraints are enforced when insert, update, and delete statements are executed. If a data integrity violation occurs,
@@ -1047,7 +1268,7 @@ VALUES (9, 'Health', 'Health Products'),
        (10, 'Cleaning', 'Cleaning Products');
 ```
 
-### **INSERT INTO ... SELECT**
+### INSERT INTO ... SELECT
 
 Copies data from one table into another **existing table**.
 - Unlike `SELECT ... INTO`, the target table **must exist** before executing the query.
@@ -1056,13 +1277,13 @@ Copies data from one table into another **existing table**.
 
 
 ```sql
-INSERT INTO "Backup" SELECT "CompanyName", "ContactName" FROM "customers";
+INSERT INTO customers_backup SELECT "CompanyName", "ContactName" FROM "customers";
 
 ```
 
 ---
 
-### **UPDATE**
+### 3.7 UPDATE
 
 The **UPDATE** statement is used to modify existing records in a table.
 - **Data integrity constraints** are enforced during the update process.
@@ -1080,7 +1301,7 @@ WHERE "CustomerID" = '1';
 ```
 ---
 
-### **DELETE**
+### 3.8 DELETE
 
 The **DELETE** statement is used to remove one or more records from a table.
 - **Data integrity constraints** are enforced during the deletion process.
@@ -1115,7 +1336,7 @@ Modern applications often need to store, retrieve, and manipulate data dynamical
 To perform these database operations from within an application, database drivers are essential.
 These drivers act as a bridge between the programming language and the database management system (DBMS).
 
-### Database Drivers – Core Functions
+### 4.1.Database Drivers – Core Functions
 Database drivers typically provide the following core capabilities:
 - **Establishing a connection** to the database.
 - **Executing queries** (e.g., `SELECT`, `INSERT`, `UPDATE`, `DELETE`).
@@ -1124,7 +1345,7 @@ Database drivers typically provide the following core capabilities:
 - **Closing the connection** after operations are completed.
 
 
-### Database Operations with Java and PostgreSQL
+### 4.2.Database Operations with Java and PostgreSQL
 
 Java applications can seamlessly interact with PostgreSQL databases using **JDBC** (Java Database Connectivity).  
 JDBC is a **standard API** that defines a set of interfaces and classes for connecting to relational databases,
