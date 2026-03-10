@@ -1220,8 +1220,6 @@ FULL JOIN categories c ON p."CategoryID" = c."CategoryID";
 | 106       | Honey       | NULL           |
 | NULL      | NULL        | Electronics    |
 
-- In this case, the result is similar to **LEFT JOIN** because all categories have products.
-- If there were a category without products, it would appear in the table with `NULL` values in `ProductID` and `ProductName`.
 
 ---
 
