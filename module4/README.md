@@ -808,15 +808,15 @@ SELECT * FROM "customers" WHERE "Country" = 'Türkiye' OR "Country" = 'Japan';
 
 SELECT * FROM "customers" WHERE "Country" = 'Kazakhstan' or "Country"='Russia';
 
-SELECT * FROM "order_details" WHERE price = 14;
+SELECT * FROM "order_details" WHERE "UnitPrice" = 14;
 
-SELECT * FROM "order_details" WHERE price < 14;
+SELECT * FROM "order_details" WHERE "UnitPrice" < 14;
 
-SELECT * FROM "order_details" WHERE price <= 14;
+SELECT * FROM "order_details" WHERE "UnitPrice" <= 14;
 
-SELECT * FROM "order_details" WHERE price >= 14;
+SELECT * FROM "order_details" WHERE "UnitPrice" >= 14;
 
-SELECT * FROM "order_details" WHERE price > 14;
+SELECT * FROM "order_details" WHERE "UnitPrice" > 14;
 ```
 
 #### DISTINCT
