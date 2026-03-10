@@ -2,7 +2,7 @@
 
 
 <!-- TOC -->
-* [**Module 4: Fundamentals of Structured Query Language (SQL)**](#module-4-fundamentals-of-structured-query-language-sql)
+* [Module 4: Fundamentals of Structured Query Language (SQL)](#module-4-fundamentals-of-structured-query-language-sql)
   * [1. Introduction to Structured Query Language (SQL)](#1-introduction-to-structured-query-language-sql)
     * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
     * [SQL Functions and Categories](#sql-functions-and-categories)
@@ -638,6 +638,8 @@ VALUES (4, 'Diana', 'Prince', 'F', 2);  -- Reports to Bob
 [ER diagram and relational schema](../module3/README.md#exercise1-e-commerce-system-design)
 
 ```sql
+create database ecommercedb;
+
 create table customers(
     id serial,
     name varchar(50) not null,
@@ -658,7 +660,66 @@ create table orders(
     constraint OrderCustomer foreign key (customer) references customers(id)
 );
 
---...
+-- .....................
+
+
+
+CREATE TABLE products (
+    id SERIAL,
+    code CHAR(6) NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    unit_price MONEY,
+    stock_quantity SMALLINT DEFAULT 0,
+    registration_date DATE DEFAULT CURRENT_DATE,
+    CONSTRAINT "productsPK" PRIMARY KEY(id),
+    CONSTRAINT "productsUnique" UNIQUE(code),
+    CONSTRAINT "productsCheck" CHECK(stock_quantity >= 0)
+);
+
+CREATE TABLE categories (
+                id SERIAL,
+                name VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE product_categories (
+                                 id SERIAL,
+                                 product int NOT NULL,
+                                 category int NOT NULL,
+                                 CONSTRAINT "productCategoryPK" PRIMARY KEY(id),
+                                 CONSTRAINT "productFK" FOREIGN KEY(product) REFERENCES products(id),
+                                 CONSTRAINT "categoryFK" FOREIGN KEY(category) REFERENCES categories(id)
+);
+
+
+
+-- .....................
+
+
+INSERT INTO categories (name) VALUES
+                                ('Laptops'),
+                                ('Peripherals'),
+                                ('Storage Components'),
+                                ('Graphics Hardware'),
+                                ('Tablets'),
+                                ('Mobile Devices');
+
+
+INSERT INTO products (code, name, unit_price, stock_quantity) VALUES
+                                                                ('LPT001', 'Alfa Book Pro 14', 1450.00, 12),
+                                                                ('MOU772', 'Sigma Optical Mouse X1', 45.50, 85),
+                                                                ('SSD990', 'Alfa SSD Pro 2TB', 185.00, 40),
+                                                                ('GPU409', 'Delta Graphics Engine V8', 1200.00, 8),
+                                                                ('TAB900', 'Sigma Tab Pro 12', 799.00, 25);
+
+
+-- Linking by ID (assuming sequential SERIAL generation)
+INSERT INTO product_categories (product, category) VALUES
+                                                    (1, 1), -- Alfa Book      -> Laptops
+                                                    (2, 2), -- Sigma Mouse     -> Peripherals
+                                                    (3, 3), -- Alfa SSD        -> Storage Components
+                                                    (4, 4), -- Delta Graphics  -> Graphics Hardware
+                                                    (4, 2); -- Delta Graphics  -> Peripherals (assigned to two categories)
+
 
 ```
 
@@ -688,6 +749,9 @@ The **SELECT** statement is used to retrieve data from the database (searching/l
 
 To understand a SELECT statement, you have to distinguish between how you write it (Syntax) and how the database 
 runs it (Logic).
+
+<img src="../resources/figures/select-statement-anotomy.png" width="900">
+
 
 > **The DBMS does not execute your query from top to bottom.**
 
@@ -730,10 +794,11 @@ SELECT "CompanyName", "ContactName" FROM "customers";
 
 #### WHERE
 
-The WHERE clause is used to filter records based on specified conditions, returning only the rows that meet the query condition.
+The WHERE clause is used to filter records based on specified conditions, returning only the rows that meet the 
+query condition.
 
 ```sql
-SELECT * FROM "customers" WHERE "Country" = 'Argentina';
+SELECT * FROM "customers" WHERE "Country" = 'Spain';
 
 SELECT * FROM "customers" WHERE "Country" != 'Brazil';
 
