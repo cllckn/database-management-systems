@@ -995,9 +995,12 @@ SELECT c."CompanyName" AS "Customer Company" FROM customers c;
 
 
 #### 1. INNER JOIN
-Returns only the records that have matching values in both tables.
-- Only products with a valid `CategoryID` in the **Categories** table are included.
-- Any product with a `NULL` `CategoryID` is excluded.
+
+An **INNER JOIN** returns only the rows where a **matching value exists in both tables**.
+
+* A row will appear in the result **only if the related row exists in the other table**.
+* If there is no matching record, that row is **not included in the result**.
+
 
 ```sql
 SELECT
@@ -1029,6 +1032,16 @@ INNER JOIN categories c ON p."CategoryID" = c."CategoryID";
 | 104       | Cheese     | 3            |             | 4          | Electronics |  
 | 105       | Yogurt     | 3            |             |
 | 106       | Honey           | NULL     |             |
+
+**Step-by-Step Execution**
+
+When the DBMS runs an INNER JOIN, it performs these steps:
+
+1. Iterate: It looks at the first row of the Products table.
+2. Match: It looks at the CategoryID in that row (e.g., 1).
+3. Search: It goes to the Categories table and looks for an id that is exactly 1.
+4. Combine: If it finds it, it joins the columns from both tables into one wide row.
+5. Discard: If it doesn't find it, it throws that row away and moves to the next product.
 
 
 * **Result Table:**
