@@ -747,8 +747,8 @@ The **SELECT** statement is used to retrieve data from the database (searching/l
 
 #### Anatomy of a SQL SELECT Statement
 
-To understand a SELECT statement, you have to distinguish between how you write it (Syntax) and how the database 
-runs it (Logic).
+To understand a SELECT statement, you have to distinguish between how you write it (Syntax) and how the DBMS 
+executes it (Logic).
 
 <img src="../resources/figures/select-statement-anotomy.png" width="900">
 
@@ -758,7 +758,7 @@ runs it (Logic).
 1) The Written Anatomy (Syntactic Order)
 
 ```sql
-SELECT DISTINCT column_name, AGG_FUNC(column) -- 1. What to show
+SELECT DISTINCT column_name, AGG_FUNC(column) -- 1. What to show (In the SELECT clause, we specify which columns should be retrieved.)
 FROM table_name                               -- 2. Where to get it
 JOIN another_table ON condition               -- 3. How to link tables
 WHERE condition                               -- 4. How to filter rows
