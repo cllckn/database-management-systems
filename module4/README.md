@@ -971,8 +971,13 @@ SELECT c."CompanyName" AS "Customer Company" FROM customers c;
 
 ### 3.4 SQL JOIN Operations
 
+The following schema will be used to explain the join operations.
 
-* **Categories Table**
+
+<img src="../resources/figures/fk3.png" width="700">
+
+
+**Categories Table**
 
 | CategoryID | CategoryName    |
 |------------|----------------|
@@ -981,7 +986,7 @@ SELECT c."CompanyName" AS "Customer Company" FROM customers c;
 | 3          | Dairy Products |
 | 4          | Electronics |  
 
-* **Products Table**
+**Products Table**
 
 | ProductID | ProductName      | CategoryID |
 |-----------|-----------------|------------|
@@ -996,7 +1001,7 @@ SELECT c."CompanyName" AS "Customer Company" FROM customers c;
 
 #### 1. INNER JOIN
 
-An **INNER JOIN** returns only the rows where a **matching value exists in both tables**.
+The resulting table contains only the rows that match in both tables.
 
 * A row will appear in the result **only if the related row exists in the other table**.
 * If there is no matching record, that row is **not included in the result**.
@@ -1022,7 +1027,7 @@ FROM products p
 INNER JOIN categories c ON p."CategoryID" = c."CategoryID";
 ```
 
-* **Products and Categories Tables (Side by Side)**
+**Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|-------------|--|--|
@@ -1032,6 +1037,17 @@ INNER JOIN categories c ON p."CategoryID" = c."CategoryID";
 | 104       | Cheese     | 3            |             | 4          | Electronics |  
 | 105       | Yogurt     | 3            |             |
 | 106       | Honey           | NULL     |             |
+
+**Result Set:**
+
+| ProductID | ProductName | CategoryName    |
+|-----------|------------|----------------|
+| 101       | Coffee     | Beverages      |
+| 102       | Tea        | Beverages      |
+| 103       | Mustard    | Condiments     |
+| 104       | Cheese     | Dairy Products |
+| 105       | Yogurt     | Dairy Products |
+
 
 **Step-by-Step Execution**
 
@@ -1044,15 +1060,6 @@ When the DBMS runs an INNER JOIN, it performs these steps:
 5. Discard: If it doesn't find it, it throws that row away and moves to the next product.
 
 
-* **Result Table:**
-
-| ProductID | ProductName | CategoryName    |
-|-----------|------------|----------------|
-| 101       | Coffee     | Beverages      |
-| 102       | Tea        | Beverages      |
-| 103       | Mustard    | Condiments     |
-| 104       | Cheese     | Dairy Products |
-| 105       | Yogurt     | Dairy Products |
 
 
 ```sql
@@ -1093,7 +1100,7 @@ FROM products p
 LEFT JOIN categories c ON p."CategoryID" = c."CategoryID";
 
 ```
-* **Products and Categories Tables (Side by Side)**
+**Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|----|--|--|
@@ -1104,8 +1111,8 @@ LEFT JOIN categories c ON p."CategoryID" = c."CategoryID";
 | 105       | Yogurt     | 3            |  |
 | 106       | Honey           | NULL     |             |
 
-* **Result Table:**
-* 
+**Result Set:**
+
 | ProductID | ProductName | CategoryName    |
 |-----------|------------|----------------|
 | 101       | Coffee     | Beverages      |
@@ -1141,7 +1148,7 @@ FROM products p
 RIGHT JOIN categories c ON p."CategoryID" = c."CategoryID";
 
 ```
-* **Products and Categories Tables (Side by Side)**
+**Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 | CategoryID | CategoryName   |
 |-----------|------------|--------------|----|------------|----------------|
@@ -1152,7 +1159,7 @@ RIGHT JOIN categories c ON p."CategoryID" = c."CategoryID";
 | 105       | Yogurt     | 3            |  |
 | 106       | Honey           | NULL     |             |
 
-* **Result Table:**
+**Result Set:**
 
 | ProductID | ProductName | CategoryName   |
 |-----------|-------------|----------------|
@@ -1197,7 +1204,7 @@ FROM products p
 FULL JOIN categories c ON p."CategoryID" = c."CategoryID";
 ```
 
-* **Products and Categories Tables (Side by Side)**
+**Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
 |-----------|------------|--------------|----|--|--|
@@ -1208,7 +1215,7 @@ FULL JOIN categories c ON p."CategoryID" = c."CategoryID";
 | 105       | Yogurt     | 3            |  |
 | 106       | Honey           | NULL     |             |
 
-* **Result Table:**
+**Result Table:**
 
 | ProductID | ProductName | CategoryName   |
 |-----------|-------------|----------------|
