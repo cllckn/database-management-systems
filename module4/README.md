@@ -971,6 +971,16 @@ SELECT c."CompanyName" AS "Customer Company" FROM customers c;
 
 ### 3.4 SQL JOIN Operations
 
+In the relational model, meaningful data is distributed across related tables to avoid redundancy.
+
+To retrieve meaningful information, data from these tables must often be combined using **SQL JOIN** operations.
+
+**JOIN operations** are used to combine rows from two or more tables based on a related column.
+
+Typically, this relationship is established through a **Primary Key (PK)** in one table and a **Foreign Key (FK)** 
+in another table.
+
+
 The following schema will be used to explain the join operations.
 
 
@@ -1001,42 +1011,22 @@ The following schema will be used to explain the join operations.
 
 #### 1. INNER JOIN
 
-The resulting table contains only the rows that match in both tables.
+An **INNER JOIN** returns only the rows that have **matching values in both tables**.
 
 * A row will appear in the result **only if the related row exists in the other table**.
-* If there is no matching record, that row is **not included in the result**.
+* If a row in one table does **not** have a corresponding row in the other table, it **does not appear in the result**.
 
-
-```sql
-SELECT
-  products."ProductID",
-  products."ProductName",
-  categories."CategoryName"
-FROM products
-INNER JOIN categories ON products."CategoryID" = categories."CategoryID";
-```
-
-or
-
-```SQL
-SELECT
-  p."ProductID",
-  p."ProductName",
-  c."CategoryName"
-FROM products p
-INNER JOIN categories c ON p."CategoryID" = c."CategoryID";
-```
 
 **Products and Categories Tables (Side by Side)**
 
-| ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
-|-----------|------------|--------------|-------------|--|--|
-| 101       | Coffee     | 1            |             |1          | Beverages      |
-| 102       | Tea        | 1            |             |2          | Condiments     |
-| 103       | Mustard    | 2            |             |3          | Dairy Products |
-| 104       | Cheese     | 3            |             | 4          | Electronics |  
-| 105       | Yogurt     | 3            |             |
-| 106       | Honey           | NULL     |             |
+| ProductID | ProductName | CategoryID | M<------->1 | CategoryID | CategoryName    |
+|-----------|-------------|------------|-------------|------------|-----------------|
+| 101       | Coffee      | 1          |             | 1          | Beverages       |
+| 102       | Tea         | 1          |             | 2          | Condiments      |
+| 103       | Mustard     | 2          |             | 3          | Dairy Products  |
+| 104       | Cheese      | 3          |             | **4**      | **Electronics** |  
+| 105       | Yogurt      | 3          |             |
+| **106**   | **Honey**   | **NULL**   |             |
 
 **Result Set:**
 
@@ -1060,7 +1050,27 @@ When the DBMS runs an INNER JOIN, it performs these steps:
 5. Discard: If it doesn't find it, it throws that row away and moves to the next product.
 
 
+```sql
+SELECT
+  products."ProductID",
+  products."ProductName",
+  categories."CategoryName"
+FROM products
+INNER JOIN categories ON products."CategoryID" = categories."CategoryID";
+```
 
+or
+
+```SQL
+SELECT
+  p."ProductID",
+  p."ProductName",
+  c."CategoryName"
+FROM products p
+INNER JOIN categories c ON p."CategoryID" = c."CategoryID";
+```
+
+**Retrieve orders and related customers**
 
 ```sql
 SELECT
@@ -1084,22 +1094,11 @@ INNER JOIN "customers" c ON o."CustomerID" = c."CustomerID"
 INNER JOIN "employees" e ON o."EmployeeID" = e."EmployeeID";
 ```
 
-
-
 #### 2. LEFT JOIN (LEFT OUTER JOIN)
 Returns all records from the **Products (left)** table, and matching records from the **Categories(right)** table.
 - If a product does not have a matching category, `NULL` is returned for the category.
 - Ensures all products are included in the result.
 
-```sql
-SELECT
-  p."ProductID",
-  p."ProductName",
-  c."CategoryName"
-FROM products p
-LEFT JOIN categories c ON p."CategoryID" = c."CategoryID";
-
-```
 **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 |CategoryID | CategoryName    |
@@ -1122,6 +1121,20 @@ LEFT JOIN categories c ON p."CategoryID" = c."CategoryID";
 | 105       | Yogurt     | Dairy Products |
 | 106       | Honey      | NULL           |
 
+
+```sql
+SELECT
+  p."ProductID",
+  p."ProductName",
+  c."CategoryName"
+FROM products p
+LEFT JOIN categories c ON p."CategoryID" = c."CategoryID";
+
+```
+
+**Retrieve all customers and related orders**
+
+
 ```sql
 SELECT
   o."OrderID",
@@ -1139,15 +1152,6 @@ Returns all records from the **Categories** table, and matching records from the
 - If a category does not have a matching product, `NULL` is returned for the product fields.
 - Ensures all categories are included in the result.
 
-```sql
-SELECT
-  p."ProductID",
-  p."ProductName",
-  c."CategoryName"
-FROM products p
-RIGHT JOIN categories c ON p."CategoryID" = c."CategoryID";
-
-```
 **Products and Categories Tables (Side by Side)**
 
 | ProductID | ProductName | CategoryID | M<------->1 | CategoryID | CategoryName   |
@@ -1173,6 +1177,17 @@ RIGHT JOIN categories c ON p."CategoryID" = c."CategoryID";
 - If all categories have at least one associated product, the result is the same as **INNER JOIN**.
 - If there is a category without any associated products(i.e. electronics), it appears in the table with `NULL` values in `ProductID` and `ProductName`.
 
+```sql
+SELECT
+  p."ProductID",
+  p."ProductName",
+  c."CategoryName"
+FROM products p
+RIGHT JOIN categories c ON p."CategoryID" = c."CategoryID";
+
+```
+
+**Retrieve all employees and related orders**
 
 ```sql
 SELECT
