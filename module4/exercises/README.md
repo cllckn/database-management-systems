@@ -247,6 +247,265 @@ transactions (
 | 3  | TRF       | Transfer | Transfer between bank accounts      | 2.00 |
 
 
+---
+
+
+
+# Hands-on Exercise 3: SQL Querying with the Northwind Database
+
+### Objective
+
+The objective of this exercise is to practice fundamental **SQL querying skills** using the **Northwind sample database**.
+
+Students will learn how to:
+
+- Define a new database
+- Import an existing database schema and data
+- Write SQL queries using:
+    - `SELECT`
+    - `WHERE`
+    - `DISTINCT`
+    - `LIKE`
+    - `BETWEEN`
+    - `IN`
+    - `INNER JOIN`
+    - `LEFT JOIN`
+    - `RIGHT JOIN`
+
+---
+
+# Part 1 — Database Setup
+
+## Task 1 — Define a New Database
+
+Construct a new empty database named:
+
+```
+northwind_lab
+```
+
+
+Connect to the newly created database before proceeding to the next step.
+
+---
+
+## Task 2 — Import the Northwind Database
+
+Download the **Northwind sample database script** from the course materials.
+
+The file is available in the **main lecture repository** under:
+
+```
+Module 4 → Setting Up the Working Environment
+```
+
+After downloading the script:
+
+1. Open your database client (pgAdmin, intelliJ, or similar).
+2. Connect to the `northwind_lab` database.
+3. Execute the SQL script to import the tables and populate the database.
+
+The imported database should include 15 tables.
+
+Verify that the database has been imported successfully.
+
+Example verification queries:
+
+---
+
+# Part 2 — Basic SELECT Queries
+
+## Task 3
+
+Retrieve **all columns** from the `Products` table.
+
+---
+
+## Task 4
+
+Retrieve the following columns from the `Products` table:
+
+- `ProductName`
+- `UnitPrice`
+- `UnitsInStock`
+
+---
+
+## Task 5
+
+Retrieve **all customers** from the `Customers` table.
+
+---
+
+# Part 3 — DISTINCT
+
+## Task 6
+
+Retrieve the **distinct list of countries** from the `Customers` table.
+
+---
+
+## Task 7
+
+Retrieve the **distinct list of cities** where customers are located.
+
+---
+
+# Part 4 — WHERE Clause
+
+## Task 8
+
+Retrieve all products with a **UnitPrice greater than 50**.
+
+---
+
+## Task 9
+
+Retrieve all customers located in **Germany**.
+
+---
+
+## Task 10
+
+Retrieve orders placed in the year **1997**.
+
+---
+
+# Part 5 — LIKE Operator
+
+## Task 11
+
+Retrieve customers whose **CompanyName starts with 'A'**.
+
+---
+
+## Task 12
+
+Retrieve products whose **ProductName contains the word 'chocolate'**.
+
+---
+
+## Task 13
+
+Retrieve employees whose **LastName starts with 'D'**.
+
+---
+
+# Part 6 — BETWEEN Operator
+
+## Task 14
+
+Retrieve products whose **UnitPrice is between 20 and 40**.
+
+---
+
+## Task 15
+
+Retrieve orders placed **between '1997-01-01' and '1997-12-31'**.
+
+---
+
+# Part 7 — IN Operator
+
+## Task 16
+
+Retrieve customers located in the following countries:
+
+- Germany
+- France
+- Spain
+
+---
+
+## Task 17
+
+Retrieve products that belong to the following category IDs:
+
+- 1
+- 2
+- 3
+
+---
+
+# Part 8 — INNER JOIN
+
+## Task 18
+
+Retrieve the following information by joining the `Products` and `Categories` tables:
+
+- `ProductName`
+- `CategoryName`
+
+---
+
+## Task 19
+
+Retrieve the following information for each order by joining the `Orders` and `Customers` tables:
+
+- `OrderID`
+- `OrderDate`
+- `CompanyName`
+
+---
+
+## Task 20
+
+Retrieve the following information for each product by joining the `Products` and `Suppliers` tables:
+
+- `ProductName`
+- `CompanyName` (Supplier)
+
+---
+
+# Part 9 — LEFT JOIN
+
+## Task 21
+
+Retrieve all **customers and their orders**.
+
+The result must include **customers who have not placed any orders**.
+
+Tables to use:
+
+- `Customers`
+- `Orders`
+
+---
+
+## Task 22
+
+Retrieve all **products and their categories**, including products that do not belong to any category.
+
+Tables to use:
+
+- `Products`
+- `Categories`
+
+---
+
+# Part 10 — RIGHT JOIN
+
+## Task 23
+
+Retrieve all **orders and their associated customers**, ensuring that all orders appear in the result.
+
+Tables to use:
+
+- `Orders`
+- `Customers`
+
+---
+
+## Task 24
+
+Retrieve all **suppliers and the products they supply**, ensuring that all suppliers appear in the result.
+
+Tables to use:
+
+- `Suppliers`
+- `Products`
+
+
 
 
 
