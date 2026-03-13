@@ -284,32 +284,21 @@ Construct a new empty database named:
 northwind_lab
 ```
 
-
-Connect to the newly created database before proceeding to the next step.
-
 ---
 
 ## Task 2 — Import the Northwind Database
 
-Download the **Northwind sample database script** from the course materials.
+[Download **Northwind sample database**](../../resources/dbs/northwind.backup)
 
-The file is available in the **main lecture repository** under:
-
-```
-Module 4 → Setting Up the Working Environment
-```
 
 After downloading the script:
 
 1. Open your database client (pgAdmin, intelliJ, or similar).
 2. Connect to the `northwind_lab` database.
-3. Execute the SQL script to import the tables and populate the database.
+3. Import (restore) the Northwind sample database.
 
 The imported database should include 15 tables.
 
-Verify that the database has been imported successfully.
-
-Example verification queries:
 
 ---
 
@@ -317,13 +306,13 @@ Example verification queries:
 
 ## Task 3
 
-Retrieve **all columns** from the `Products` table.
+Retrieve **all columns** from the `products` table.
 
 ---
 
 ## Task 4
 
-Retrieve the following columns from the `Products` table:
+Retrieve the following columns from the `products` table:
 
 - `ProductName`
 - `UnitPrice`
@@ -333,7 +322,7 @@ Retrieve the following columns from the `Products` table:
 
 ## Task 5
 
-Retrieve **all customers** from the `Customers` table.
+Retrieve **all customers** from the `customers` table.
 
 ---
 
@@ -341,7 +330,7 @@ Retrieve **all customers** from the `Customers` table.
 
 ## Task 6
 
-Retrieve the **distinct list of countries** from the `Customers` table.
+Retrieve the **distinct list of countries** from the `customers` table.
 
 ---
 
