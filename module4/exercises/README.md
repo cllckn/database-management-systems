@@ -251,6 +251,7 @@ transactions (
 
 
 
+
 # Hands-on Exercise 3: SQL Querying with the Northwind Database
 
 ### Objective
@@ -356,7 +357,7 @@ Retrieve all customers located in **Germany**.
 
 ## Task 10
 
-Retrieve orders placed in the year **1997**.
+Retrieve orders placed after the year `'1996/01/01'`.
 
 ---
 
@@ -390,7 +391,7 @@ Retrieve products whose **UnitPrice is between 20 and 40**.
 
 ## Task 15
 
-Retrieve orders placed **between '1997-01-01' and '1997-12-31'**.
+Retrieve orders placed **between '1996-01-01' and '1996-06-30'**.
 
 ---
 
@@ -400,8 +401,7 @@ Retrieve orders placed **between '1997-01-01' and '1997-12-31'**.
 
 Retrieve customers located in the following countries:
 
-- Germany
-- France
+- Japan
 - Spain
 
 ---
@@ -420,7 +420,7 @@ Retrieve products that belong to the following category IDs:
 
 ## Task 18
 
-Retrieve the following information by joining the `Products` and `Categories` tables:
+Retrieve the following information by joining the `products` and `categories` tables:
 
 - `ProductName`
 - `CategoryName`
@@ -429,7 +429,7 @@ Retrieve the following information by joining the `Products` and `Categories` ta
 
 ## Task 19
 
-Retrieve the following information for each order by joining the `Orders` and `Customers` tables:
+Retrieve the following information for each order by joining the `orders` and `customers` tables:
 
 - `OrderID`
 - `OrderDate`
@@ -439,7 +439,7 @@ Retrieve the following information for each order by joining the `Orders` and `C
 
 ## Task 20
 
-Retrieve the following information for each product by joining the `Products` and `Suppliers` tables:
+Retrieve the following information for each product by joining the `products` and `suppliers` tables:
 
 - `ProductName`
 - `CompanyName` (Supplier)
@@ -456,8 +456,8 @@ The result must include **customers who have not placed any orders**.
 
 Tables to use:
 
-- `Customers`
-- `Orders`
+- `customers`
+- `orders`
 
 ---
 
@@ -467,8 +467,8 @@ Retrieve all **products and their categories**, including products that do not b
 
 Tables to use:
 
-- `Products`
-- `Categories`
+- `products`
+- `categories`
 
 ---
 
@@ -480,8 +480,8 @@ Retrieve all **orders and their associated customers**, ensuring that all orders
 
 Tables to use:
 
-- `Orders`
-- `Customers`
+- `orders`
+- `customers`
 
 ---
 
@@ -491,8 +491,9 @@ Retrieve all **suppliers and the products they supply**, ensuring that all suppl
 
 Tables to use:
 
-- `Suppliers`
-- `Products`
+- `suppliers`
+- `products`
+
 
 
 
