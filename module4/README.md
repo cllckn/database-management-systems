@@ -50,6 +50,7 @@
     * [4.1.Database Drivers – Core Functions](#41database-drivers--core-functions)
     * [4.2.Database Operations with Java and PostgreSQL](#42database-operations-with-java-and-postgresql)
       * [Example Workflow (Conceptual)](#example-workflow-conceptual)
+      * [IntelliJ IDEA for Java Development](#intellij-idea-for-java-development)
 <!-- TOC -->
 
 
@@ -503,7 +504,7 @@ ALTER TABLE products ADD CONSTRAINT "productsPK" PRIMARY KEY(id,code);
 
 <img src="../resources/figures/fk-product-categories.png" width="600">
 
-**products**      M ---------------------------------------------------------------1 **productcategories**
+**products** M<------->1 **productcategories**
 
 | id   | name    | category | M<------->1 | id | name            |
 |-----|---------|----------|-------------|----|----------------|
@@ -540,8 +541,6 @@ CREATE TABLE products (
 );
 
 ```
-
-
 
 - The `category` column in the `products` table references the `id` column in the `productcategories` table.
 
@@ -1286,6 +1285,15 @@ VALUES (4, 'Diana', 'Prince', 'F', 2);  -- Reports to Bob
 To perform an Inner Join on a unary (self-referencing) relationship, we must treat the single employee table as if it 
 were two separate tables. We do this by using aliases (e.g., e for the employee and s for the supervisor).
 
+**Employee (e) and Supervisor (s) — Side by Side View**
+
+| e.id | e.first_name | e.supervisor | M<----->1 | s.id | s.first_name |
+|------|--------------|--------------|-----------|------|--------------|
+| 1    | Alice        | NULL         |           | 1    | Alice        |
+| 2    | Bob          | NULL         |           | 2    | Bob          |
+| 3    | Charlie      | 1            |           | 3    | Charlie      |
+| 4    | Diana        | 2            |           | 4    | Diana        |
+
 
 ```sql
 SELECT 
@@ -1297,6 +1305,14 @@ INNER JOIN
     employee s ON e.supervisor = s.id;
 
 ```
+**Result Set After Inner Join**
+
+| Employee (e) | Supervisor (s) |
+|--------------|----------------|
+| Charlie      | Alice          |
+| Diana        | Bob            |
+
+
 
 ```sql
 SELECT 
@@ -1309,6 +1325,14 @@ LEFT JOIN
 
 ```
 
+**Result Set After Left Join**
+
+| Employee (e) | Supervisor (s) |
+|--------------|----------------|
+| Alice        | NULL           |
+| Bob          | NULL           |
+| Charlie      | Alice          |
+| Diana        | Bob            |
 
 ---
 
@@ -1325,7 +1349,7 @@ Each **JOIN** type is used based on how we want to combine the data from differe
 
 ### 3.5 SELECT ... INTO
 
-Used to copy data from an existing table into a **new table**.  
+Used to insert a result set into a **new table**.  
 The new table **must not already exist** before executing the query.
 
 **Example:**  
@@ -1342,8 +1366,8 @@ SELECT "CompanyName", "ContactName" INTO customers_backup FROM "customers";
 ### 3.6 INSERT
 
 ---
-**Data integrity constraints are enforced when insert, update, and delete statements are executed. If a data integrity violation occurs,
-the operation is aborted, ensuring that data remains consistent and accurate.**
+**Data integrity constraints are enforced when insert, update, and delete statements are executed. If a data integrity 
+violation occurs, the operation is aborted, ensuring that data remains consistent and accurate.**
 ---
 
 Add new records to a table.
@@ -1368,7 +1392,7 @@ VALUES (9, 'Health', 'Health Products'),
 
 ### INSERT INTO ... SELECT
 
-Copies data from one table into another **existing table**.
+Used to insert a result set into an **existing table**.
 - Unlike `SELECT ... INTO`, the target table **must exist** before executing the query.
 - The number and types of columns in the `SELECT` statement must match the target table.
 - **Data integrity constraints** are enforced during this operation.
@@ -1421,10 +1445,8 @@ DELETE FROM "customers";
 
 This query removes all records from the customers table without deleting the table itself.
 
-**Warning: Omitting the WHERE clause will delete all records from the table. If you want to remove all records and reset identity values, consider using TRUNCATE TABLE instead.**
-
-
-
+**Warning: Omitting the WHERE clause will delete all records from the table. If you want to remove all records and 
+reset identity values, consider using TRUNCATE TABLE instead.**
 
 
 
@@ -1517,65 +1539,202 @@ or through maven with the following configuration:
 5. **Close** the statement and connection to free resources.
 
 
+
+#### IntelliJ IDEA for Java Development
+
+To develop a Java program, an IDE and JDK are required. 
+
+[Click here for details](https://github.com/cllckn/software-testing/tree/main/module1#setting-up-the-development-environment)
+
+
 **Code Example: A Java-based program for DB operations**
 
 
 ```java
-/**Below is a Java program that demonstrates how to connect to a PostgreSQL database, execute a query, 
- * and retrieve data from the **customers** table.
- * Ensure that the JDK and PostgreSQL JDBC driver is properly installed and added to the classpath before running this program.
- * */
-import java.sql.*;  // Database Driver
+package cc.ku.dbms.module4;
 
-public class DatabaseOperationsWithJava {
+import java.sql.*;
 
-  public static void main(String[] args)
-  {
-    try
-    {
-      /***** Establishing Connection *****/
-      Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Northwind",
-              "lectureuser", "lecturepassword");
+/**
+ * Full CRUD operations on the Northwind (nw) PostgreSQL database.
+ * Table: customers (CustomerID, CompanyName, ContactName, Country)
+ *
+ * Ensure the PostgreSQL JDBC driver is on the classpath before running.
+ */
+public class DatabaseCRUDOperations {
+
+  // ── Connection settings ───────────────────────────────────────────────────
+  private static final String URL      = "jdbc:postgresql://localhost:5432/northwind";
+  private static final String USER     = "lectureuser";
+  private static final String PASSWORD = "lecturepassword";
+
+  // ── Entry point ───────────────────────────────────────────────────────────
+  public static void main(String[] args) {
+    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+
       if (conn != null)
-        System.out.println("Connected to the database!");
-      else
+        System.out.println("Connected to the database!\n");
+      else {
         System.out.println("Connection attempt failed!");
-
-      //String sql = "SELECT \"CustomerID\", \"CompanyName\", \"Country\" FROM \"customers\"";
-      String sql = "SELECT * FROM customers";
-
-
-      /***** Executing Query *****/
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(sql);
-
-      /***** Closing Connection *****/
-      conn.close();
-
-      String customerID = null;
-      String companyName = null;
-      String country;
-
-      while (rs.next())
-      {
-        /***** Assign field values to variables *****/
-        customerID  = rs.getString("CustomerID");
-        companyName = rs.getString("CompanyName");
-        country = rs.getString("Country");
-
-        /***** Print to console *****/
-        System.out.print("Customer ID: " + customerID);
-        System.out.print(", Company Name: " + companyName);
-        System.out.println(", Country: " + country);
+        return;
       }
 
-      /***** Release Resources *****/
-      rs.close();
-      stmt.close();
+      // ── CREATE ────────────────────────────────────────────────────────
+      System.out.println("=== CREATE ===");
+      addNewCustomer(conn, "NEWCO", "New Company Ltd.", "Jane Smith", "Germany");
 
-    } catch (Exception e) {
+      // ── READ (all) ────────────────────────────────────────────────────
+      System.out.println("\n=== READ (all) ===");
+      readAllCustomers(conn);
+
+      // ── READ (single) ─────────────────────────────────────────────────
+      System.out.println("\n=== READ (single: NEWCO) ===");
+      readCustomerById(conn, "NEWCO");
+
+      // ── UPDATE ────────────────────────────────────────────────────────
+      System.out.println("\n=== UPDATE ===");
+      updateCustomer(conn, "NEWCO", "Updated Company Ltd.", "Bob Jones", "France");
+
+      // ── READ after update ─────────────────────────────────────────────
+      System.out.println("\n=== READ after UPDATE ===");
+      readCustomerById(conn, "NEWCO");
+
+      // ── DELETE ────────────────────────────────────────────────────────
+      System.out.println("\n=== DELETE ===");
+      deleteCustomer(conn, "NEWCO");
+
+      // ── Confirm deletion ──────────────────────────────────────────────
+      System.out.println("\n=== READ after DELETE ===");
+      readCustomerById(conn, "NEWCO");
+
+    } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
+
+  // ── CREATE ────────────────────────────────────────────────────────────────
+  /**
+   * Inserts a new customer row.
+   * Uses a PreparedStatement to prevent SQL injection.
+   */
+  public static void addNewCustomer(Connection conn,
+                                    String customerID,
+                                    String companyName,
+                                    String contactName,
+                                    String country) throws SQLException {
+
+    String sql = "INSERT INTO customers (\"CustomerID\", \"CompanyName\", \"ContactName\", \"Country\") "
+            + "VALUES (?, ?, ?, ?)";
+
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+      pstmt.setString(1, customerID);
+      pstmt.setString(2, companyName);
+      pstmt.setString(3, contactName);
+      pstmt.setString(4, country);
+
+      int rowsAffected = pstmt.executeUpdate();
+      System.out.println("Inserted " + rowsAffected + " row(s). CustomerID: " + customerID);
+    }
+  }
+
+  // ── READ (all) ────────────────────────────────────────────────────────────
+  /**
+   * Reads and prints all customers.
+   */
+  public static void readAllCustomers(Connection conn) throws SQLException {
+
+    String sql = "SELECT \"CustomerID\", \"CompanyName\", \"ContactName\", \"Country\" FROM customers";
+
+    try (Statement stmt = conn.createStatement();
+         ResultSet rs   = stmt.executeQuery(sql)) {
+
+      int count = 0;
+      while (rs.next()) {
+        printCustomer(rs);
+        count++;
+      }
+      System.out.println("Total rows: " + count);
+    }
+  }
+
+  // ── READ (single) ─────────────────────────────────────────────────────────
+  /**
+   * Reads and prints a single customer by CustomerID.
+   */
+  public static void readCustomerById(Connection conn, String customerID) throws SQLException {
+
+    String sql = "SELECT \"CustomerID\", \"CompanyName\", \"ContactName\", \"Country\" "
+            + "FROM customers WHERE \"CustomerID\" = ?";
+
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+      pstmt.setString(1, customerID);
+
+      try (ResultSet rs = pstmt.executeQuery()) {
+        if (rs.next())
+          printCustomer(rs);
+        else
+          System.out.println("No customer found with ID: " + customerID);
+      }
+    }
+  }
+
+  // ── UPDATE ────────────────────────────────────────────────────────────────
+  /**
+   * Updates an existing customer's CompanyName, ContactName, and Country.
+   */
+  public static void updateCustomer(Connection conn,
+                                    String customerID,
+                                    String newCompanyName,
+                                    String newContactName,
+                                    String newCountry) throws SQLException {
+
+    String sql = "UPDATE customers "
+            + "SET \"CompanyName\" = ?, \"ContactName\" = ?, \"Country\" = ? "
+            + "WHERE \"CustomerID\" = ?";
+
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+      pstmt.setString(1, newCompanyName);
+      pstmt.setString(2, newContactName);
+      pstmt.setString(3, newCountry);
+      pstmt.setString(4, customerID);
+
+      int rowsAffected = pstmt.executeUpdate();
+      if (rowsAffected > 0)
+        System.out.println("Updated CustomerID: " + customerID);
+      else
+        System.out.println("No customer found with ID: " + customerID);
+    }
+  }
+
+  // ── DELETE ────────────────────────────────────────────────────────────────
+  /**
+   * Deletes a customer by CustomerID.
+   */
+  public static void deleteCustomer(Connection conn, String customerID) throws SQLException {
+
+    String sql = "DELETE FROM customers WHERE \"CustomerID\" = ?";
+
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+      pstmt.setString(1, customerID);
+
+      int rowsAffected = pstmt.executeUpdate();
+      if (rowsAffected > 0)
+        System.out.println("Deleted CustomerID: " + customerID);
+      else
+        System.out.println("No customer found with ID: " + customerID);
+    }
+  }
+
+  // ── Helper ────────────────────────────────────────────────────────────────
+  /**
+   * Prints a single customer row from the current ResultSet position.
+   */
+  private static void printCustomer(ResultSet rs) throws SQLException {
+    System.out.printf("ID: %-10s | Company: %-30s | Contact: %-20s | Country: %s%n",
+            rs.getString("CustomerID"),
+            rs.getString("CompanyName"),
+            rs.getString("ContactName"),
+            rs.getString("Country"));
   }
 }
 ```
