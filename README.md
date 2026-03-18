@@ -160,13 +160,12 @@ Students will be evaluated based on the following components:
 
 ## Exams Schedule
 
-| **Component**                   | **Date**                 |
-|---------------------------------|--------------------------|
+| **Component**                   | **Date**                                 |
+|---------------------------------|------------------------------------------|
 | Assignment 1 Oral Examination   | Week 7 (the week starting March 2, 2026) |
-| Assignment 2 Oral Examination   | Week X (starting Week X) |
-| Midterm Exam                    | Z                        |
-| Final Exam                      | Z                        |
-
+| Assignment 2 Oral Examination   | Week 13 (the week starting April 13, 2026)                |
+| Midterm Exam                    | TBA                                      |
+| Final Exam                      | TBA                                      |
 
 
 ## Course Policies
@@ -177,15 +176,13 @@ Students will be evaluated based on the following components:
 - **Communication:** All official communication will occur via the **university Learning Management System (LMS)** or the instructor’s email (`cceken@ku.edu.kz`). Students are expected to check their university email regularly.
 
 
-
 ## Tools
 - PostgreSQL, pgAdmin  (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) any version that can
 be installed without issues.
 - IntelliJ — available free of charge for students  
   https://www.jetbrains.com/idea/download
 
-
-
+  
 ## Resources
 
 - **Main Repository:**  
@@ -193,7 +190,6 @@ be installed without issues.
 
 - **Textbooks & Online Resources:**
   - Carlos Coronel, Steven Morris, and Peter Rob, *Database Systems: Design, Implementation, and Management*, Cengage Learning.
-
 
 
 ## Acknowledgement
