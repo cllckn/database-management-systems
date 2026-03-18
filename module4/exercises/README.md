@@ -279,7 +279,8 @@ Students will learn how to:
 
 ## Task 1 — Define a New Database
 
-Construct a new empty database named:
+1. Open your database client (pgAdmin, intelliJ, or similar).
+2. Construct a new empty database named:
 
 ```
 northwind_lab
@@ -294,9 +295,8 @@ northwind_lab
 
 After downloading the script:
 
-1. Open your database client (pgAdmin, intelliJ, or similar).
-2. Connect to the `northwind_lab` database.
-3. Import (restore) the Northwind sample database.
+1. Connect to the `northwind_lab` database using your database client (pgAdmin, intelliJ, or similar).
+2. Import (restore) the Northwind sample database.
 
 The imported database should include 15 tables.
 
@@ -391,7 +391,7 @@ Retrieve products whose **UnitPrice is between 20 and 40**.
 
 ## Task 15
 
-Retrieve orders placed **between '1996-01-01' and '1996-06-30'**.
+Retrieve orders placed **between '1996-01-01' and '1996-10-30'**.
 
 ---
 
@@ -493,6 +493,7 @@ Tables to use:
 
 - `suppliers`
 - `products`
+
 
 
 
