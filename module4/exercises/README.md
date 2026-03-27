@@ -497,6 +497,116 @@ Tables to use:
 
 
 
+---
+
+
+
+
+# Hands-on Exercise 4: Java Console Application – CRUD Operations on Northwind
+
+---
+
+## Objective
+
+The objective of this exercise is to develop a **Java console application** that performs **CRUD (Create, Read, Update, Delete)** operations on the `categories` table in the **Northwind database**.
+
+Students will gain practical experience in:
+
+- Connecting Java applications to a relational database
+- Using **JDBC** for database interaction
+- Implementing CRUD operations programmatically
+- Handling user input in a console-based application
+
+---
+
+## Prerequisite Setup
+
+## Task 1 — Define a New Database
+
+1. Open your database client (pgAdmin, IntelliJ, or similar).
+2. Construct a new empty database named:
+
+northwinddb
+
+---
+
+## Task 2 — Import the Northwind Database
+
+[Download **Northwind sample database**](../../resources/dbs/northwind.backup)
+
+After downloading the file:
+
+1. Connect to the `northwinddb` database using your database client (pgAdmin, IntelliJ, or similar).
+2. Import (restore) the Northwind sample database.
+
+Ensure that the `categories` table exists and contains data.
+
+---
+
+## Task 3 — Understand the categories Table
+
+The `Categories` table typically includes:
+
+- CategoryID (Primary Key)
+- CategoryName
+- Description
+
+Students will perform CRUD operations on this table.
+
+---
+
+## Task 4 — Java Application Development
+
+Develop a **Java console application** that connects to the PostgreSQL database.
+
+
+## Task 5 — Implement CRUD Operations
+
+Your application must support the following operations:
+
+### Create (Insert)
+
+- Allow the user to add a new category
+- Input: CategoryID, Category Name and Description
+- Store the new record in the database
+
+---
+
+### Read (Select)
+
+- Display all categories
+- Optionally allow:
+    - Searching by Category Name
+    - Viewing a specific Category by ID
+
+---
+
+### Update
+
+- Allow the user to update an existing category
+- Input:
+    - Category ID
+    - New Category Name and/or Description
+
+---
+
+### Delete
+
+- Allow the user to delete a category
+- Input: CategoryID
+- Ensure proper handling of related records (if any)
+
+---
+
+## Task 6 — Testing
+
+Test your application by:
+
+- Inserting multiple categories
+- Updating existing records
+- Deleting records
+- Retrieving and verifying data
+
 
 
 
