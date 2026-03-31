@@ -7,6 +7,7 @@
     * [Comparison with Relational DB:](#comparison-with-relational-db)
     * [Main Types of NoSQL Databases](#main-types-of-nosql-databases)
     * [MongoDB NoSQL Database](#mongodb-nosql-database)
+      * [Two Key Structures in a Cluster**](#two-key-structures-in-a-cluster)
   * [Using a Programming Language to Interact With a Database](#using-a-programming-language-to-interact-with-a-database)
     * [Database Drivers – Core Functions](#database-drivers--core-functions)
     * [Database Operations with Java and MongoDB](#database-operations-with-java-and-mongodb)
@@ -129,11 +130,28 @@ horizontal scaling across multiple servers, making it suitable for modern distri
 flexibility, scalability, and ease of use, MongoDB is widely used in web applications, real-time analytics, IoT
 systems, and any environment where data structure can change over time.
 
-In MongoDB, a cluster refers to a group of interconnected servers (nodes) that work together as a single unified
-database system, providing scalability, redundancy, and high availability.
+A cluster is a group of interconnected servers (nodes) that work
+together as a single unified database system, providing:
+- Scalability
+- Redundancy
+- High availability
 
-1) A replica set (cluster) provides high availability by copying the same data across multiple servers. In a replica set, read
-   performance can also be improved by directing read operations to the nearest replica node.
+#### Two Key Structures in a Cluster**
+
+1) **Replica Set**
+
+Provides  redundancy and high availability. 
+
+The same data is copied across multiple nodes.
+
+
+- One **Primary** node handles all writes
+- One or more **Secondary** nodes replicate data from the primary
+- If the primary fails, a secondary is **automatically promoted** to primary
+
+In a replica set, read performance can also be improved by directing read operations to the nearest replica node.
+
+
 ```text
                +----------------------+
                |     Client App       |
@@ -156,9 +174,20 @@ database system, providing scalability, redundancy, and high availability.
 SECONDARIES replicate data **from the PRIMARY**
 If PRIMARY fails → one SECONDARY becomes PRIMARY
 ```
+---
 
-2) Sharding (with sharding cluster) splits big data across multiple servers (shards). The mongos router directs client
-   requests to the correct shard.
+2) **Sharding**
+   
+Provides **horizontal scalability**.
+
+Large datasets are split and distributed across multiple (shards).
+
+
+- Data is divided into **shards** — each shard holds a portion of the data
+- A **shard key** determines how data is distributed
+- A **mongos router** directs queries to the correct shard
+
+
 
 ```text
 
@@ -188,6 +217,22 @@ If PRIMARY fails → one SECONDARY becomes PRIMARY
 
 ```
 
+---
+
+**Key Difference**
+
+| | Replica Set | Sharding |
+|---|---|---|
+| Purpose | Redundancy & availability | Scalability & performance |
+| Data distribution | Same data on every node | Different data on each node |
+| Handles | Node failures | Large data volumes & high traffic |
+
+
+**In Practice**
+
+A production MongoDB cluster typically uses **both together** —
+sharding splits the data for scale, and each shard is itself
+a replica set for fault tolerance.
 
 **Example**
 
