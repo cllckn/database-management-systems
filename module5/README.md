@@ -11,8 +11,13 @@
     * [Database Drivers – Core Functions](#database-drivers--core-functions)
     * [Database Operations with Java and MongoDB](#database-operations-with-java-and-mongodb)
       * [Example Workflow (Conceptual)](#example-workflow-conceptual)
-    * [Database Operations with Node.js and MongoDB](#database-operations-with-nodejs-and-mongodb)
-  * [Hands-on Exercise](#hands-on-exercise)
+      * [IntelliJ IDEA for Java Development](#intellij-idea-for-java-development)
+  * [Implementing Relationships: Embedding vs Linking](#implementing-relationships-embedding-vs-linking)
+    * [What is Embedding?](#what-is-embedding)
+    * [What is Linking (Referencing)?](#what-is-linking-referencing)
+    * [Case Study: Book & Author Storage Strategies](#case-study-book--author-storage-strategies)
+      * [Option 1: Embedding Authors into Book](#option-1-embedding-authors-into-book)
+      * [Option 2: Linking Authors to Book](#option-2-linking-authors-to-book)
 <!-- TOC -->
 
 
@@ -309,7 +314,7 @@ You can use MongoDB Cloud (https://account.mongodb.com/account/login
 link: https://www.mongodb.com/try/download/community
 
 #### Example Workflow (Conceptual)
-1. **Load the driver** using maven package manager.
+1. **Load the drivers** using maven package manager.
 
 `pom.xml`
 ```xml
@@ -363,34 +368,510 @@ link: https://www.mongodb.com/try/download/community
 
 
 
-**Code Example**
+#### IntelliJ IDEA for Java Development
 
-* Define `ecommercedb.products` collection.
+To develop a Java program, an IDE and JDK are required.
 
-![DB Class Diagram](../resources/db-class-diagram.png)
-
-
+[Click here for details](https://github.com/cllckn/software-testing/tree/main/module1#setting-up-the-development-environment)
 
 
-### Database Operations with Node.js and MongoDB
+**Code Example: A Java-based program for DB CRUD operations**
 
-You can use MongoDB Cloud (https://account.mongodb.com/account/login
-) without installation, or install MongoDB on your computer from the following
-link: https://www.mongodb.com/try/download/community
+* Define `nw.customers` collection.
+* Insert the following sample records.
 
-To install mongodb driver
-
-```shell
-npm install mongodb
+```json
+[
+  {
+    "CustomerID": "ALFKI",
+    "CompanyName": "Alfreds Futterkiste",
+    "ContactName": "Maria Anders",
+    "Country": "Germany"
+  },
+  {
+    "CustomerID": "ANATR",
+    "CompanyName": "Ana Trujillo Emparedados y Helados",
+    "ContactName": "Ana Trujillo",
+    "Country": "Mexico"
+  },
+  {
+    "CustomerID": "ANTON",
+    "CompanyName": "Antonio Moreno Taquería",
+    "ContactName": "Antonio Moreno",
+    "Country": "Mexico"
+  },
+  {
+    "CustomerID": "AROUT",
+    "CompanyName": "Around the Horn",
+    "ContactName": "Thomas Hardy",
+    "Country": "UK"
+  },
+  {
+    "CustomerID": "BERGS",
+    "CompanyName": "Berglunds snabbköp",
+    "ContactName": "Christina Berglund",
+    "Country": "Sweden"
+  }
+]
 ```
 
-***
-## Hands-on Exercise
+```java
 
-1. Define `ecommercedb.products` collection in `MongoDB`.
-2. Initialize a new project with Maven support.
-3. Include the necessary database drivers for MongoDB operations.
-4. Define a package named `cc.ku.ict.module5.exercises.exercise1`.
-5. Run the program given above that performs operations on the  MongoDB database (Check the db connection parameters).
-7. Define `findByName(String name)` and `findByPrice(double price)` methods.
+package cc.ku.dbms.module5;
+
+import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.InsertOneResult;
+import com.mongodb.client.result.UpdateResult;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+
+/**
+ * Full CRUD operations on the Northwind MongoDB database.
+ * Collection: customers
+ * Fields: CustomerID, CompanyName, ContactName, Country
+ *
+ * Dependencies (add to pom.xml or build.gradle):
+ *   MongoDB Java Driver: org.mongodb:mongodb-driver-sync:4.11.0
+ */
+public class MongoDBCRUDOperations {
+
+    // ── Connection settings ───────────────────────────────────────────────────
+    private static final String URI         = "mongodb+srv://lectureuser:lecturepassword@cluster0.zxbhndn.mongodb.net/?appName=Cluster0";
+    private static final String DB_NAME     = "nw";
+    private static final String COLLECTION  = "customers";
+
+    // ── Entry point ───────────────────────────────────────────────────────────
+    public static void main(String[] args) {
+
+        // try-with-resources: MongoClient closes automatically
+        try (MongoClient mongoClient = MongoClients.create(URI)) {
+
+            MongoDatabase database   = mongoClient.getDatabase(DB_NAME);
+            MongoCollection<Document> customers = database.getCollection(COLLECTION);
+
+            System.out.println("Connected to MongoDB — database: " + DB_NAME + "\n");
+
+            // ── INSERT ────────────────────────────────────────────────────────
+            System.out.println("=== INSERT ===");
+            addNewCustomer(customers, "NEWCO", "New Company Ltd.", "Alice Smith", "Germany");
+
+            // ── READ (all) ────────────────────────────────────────────────────
+            System.out.println("\n=== READ (all) ===");
+            readAllCustomers(customers);
+
+            // ── READ (single) ─────────────────────────────────────────────────
+            System.out.println("\n=== READ (single: NEWCO) ===");
+            readCustomerById(customers, "NEWCO");
+
+            // ── UPDATE ────────────────────────────────────────────────────────
+            System.out.println("\n=== UPDATE ===");
+            updateCustomer(customers, "NEWCO", "Updated Company Ltd.", "Bob Jones", "Spain");
+
+            // ── READ after update ─────────────────────────────────────────────
+            System.out.println("\n=== READ after UPDATE ===");
+            readCustomerById(customers, "NEWCO");
+
+            // ── DELETE ────────────────────────────────────────────────────────
+            System.out.println("\n=== DELETE ===");
+            //deleteCustomer(customers, "NEWCO");
+
+            // ── Confirm deletion ──────────────────────────────────────────────
+            System.out.println("\n=== READ after DELETE ===");
+            readCustomerById(customers, "NEWCO");
+        }
+    }
+
+    // ── INSERT ────────────────────────────────────────────────────────────────
+    /**
+     * Inserts a new customer document into the collection.
+     */
+    public static void addNewCustomer(MongoCollection<Document> collection,
+                                      String customerID,
+                                      String companyName,
+                                      String contactName,
+                                      String country) {
+
+        Document newCustomer = new Document("CustomerID",   customerID)
+                .append("CompanyName",  companyName)
+                .append("ContactName",  contactName)
+                .append("Country",      country);
+
+        InsertOneResult result = collection.insertOne(newCustomer);
+        System.out.println("Inserted document ID : " + result.getInsertedId());
+        System.out.println("CustomerID           : " + customerID);
+    }
+
+    // ── READ (all) ────────────────────────────────────────────────────────────
+    /**
+     * Reads and prints all customer documents.
+     */
+    public static void readAllCustomers(MongoCollection<Document> collection) {
+
+        FindIterable<Document> docs = collection.find();
+
+        int count = 0;
+        for (Document doc : docs) {
+            printCustomer(doc);
+            count++;
+        }
+        System.out.println("Total documents: " + count);
+    }
+
+    // ── READ (single) ─────────────────────────────────────────────────────────
+    /**
+     * Finds a single customer document by CustomerID.
+     */
+    public static void readCustomerById(MongoCollection<Document> collection,
+                                        String customerID) {
+
+        Bson filter = Filters.eq("CustomerID", customerID);
+        Document doc = collection.find(filter).first();
+
+        if (doc != null)
+            printCustomer(doc);
+        else
+            System.out.println("No customer found with CustomerID: " + customerID);
+    }
+
+    // ── UPDATE ────────────────────────────────────────────────────────────────
+    /**
+     * Updates CompanyName, ContactName, and Country for a given CustomerID.
+     * Uses $set so only the specified fields are modified.
+     */
+    public static void updateCustomer(MongoCollection<Document> collection,
+                                      String customerID,
+                                      String newCompanyName,
+                                      String newContactName,
+                                      String newCountry) {
+
+        Bson filter = Filters.eq("CustomerID", customerID);
+        Bson update = Updates.combine(
+                Updates.set("CompanyName", newCompanyName),
+                Updates.set("ContactName", newContactName),
+                Updates.set("Country",     newCountry)
+        );
+
+        UpdateResult result = collection.updateOne(filter, update);
+
+        if (result.getMatchedCount() > 0)
+            System.out.println("Updated CustomerID  : " + customerID
+                    + " | Modified count: " + result.getModifiedCount());
+        else
+            System.out.println("No customer found with CustomerID: " + customerID);
+    }
+
+    // ── DELETE ────────────────────────────────────────────────────────────────
+    /**
+     * Deletes a customer document by CustomerID.
+     */
+    public static void deleteCustomer(MongoCollection<Document> collection,
+                                      String customerID) {
+
+        Bson filter       = Filters.eq("CustomerID", customerID);
+        DeleteResult result = collection.deleteOne(filter);
+
+        if (result.getDeletedCount() > 0)
+            System.out.println("Deleted CustomerID  : " + customerID);
+        else
+            System.out.println("No customer found with CustomerID: " + customerID);
+    }
+
+    // ── Helper ────────────────────────────────────────────────────────────────
+    /**
+     * Prints a customer document in a formatted table row.
+     */
+    private static void printCustomer(Document doc) {
+        System.out.printf("ID: %-10s | Company: %-30s | Contact: %-20s | Country: %s%n",
+                doc.getString("CustomerID"),
+                doc.getString("CompanyName"),
+                doc.getString("ContactName"),
+                doc.getString("Country"));
+    }
+}
+
+```
+
+---
+
+## Implementing Relationships: Embedding vs Linking
+
+
+### What is Embedding?
+Storing related data **inside** the same document.
+The child data lives as a nested array or object within the parent.
+```json
+{
+  "name": "Parent Document",
+  "children": [
+    { "field": "value" },
+    { "field": "value" }
+  ]
+}
+```
+
+**When to use**
+- Related data is always read together
+- Child data belongs to one parent only
+- Child count is small and bounded
+
+**Pros**
+- Single query fetches everything
+- Faster reads, no joins needed
+- Atomic updates on the whole document
+
+**Cons**
+- Document grows large over time
+- Child data cannot be queried independently
+- Updating one child rewrites the whole document
+
+**Embedding Orders into Customer**
+```json
+{
+  "CustomerID": "ALFKI",
+  "CompanyName": "Alfreds Futterkiste",
+  "Country": "Germany",
+  "Orders": [
+    { "OrderID": 10643, "OrderDate": "1997-08-25", "TotalAmount": 814.50 },
+    { "OrderID": 10692, "OrderDate": "1997-10-03", "TotalAmount": 878.00 }
+  ]
+}
+```
+
+**Retrieve customer with embedded orders**
+```java
+MongoCollection<Document> customers = db.getCollection("customers");
+
+Document customer = customers
+        .find(Filters.eq("CustomerID", "ALFKI"))
+        .first();
+
+if (customer != null) {
+    System.out.println("Company : " + customer.getString("CompanyName"));
+
+    List<Document> orders = customer.getList("Orders", Document.class);
+    for (Document order : orders) {
+        System.out.println("  OrderID : " + order.getInteger("OrderID")
+                + " | Date: "  + order.getString("OrderDate")
+                + " | Total: " + order.getDouble("TotalAmount"));
+    }
+}
+```
+
+
+---
+
+### What is Linking (Referencing)?
+Storing related data in **separate collections** and connecting
+them via a shared reference field (like a foreign key in SQL).
+```json
+// parent collection
+{ "_id": "P1", "name": "Parent Document" }
+
+// child collection
+{ "_id": "C1", "parentId": "P1", "field": "value" }
+{ "_id": "C2", "parentId": "P1", "field": "value" }
+```
+
+**When to use**
+- Child data needs to be queried independently
+- A parent can have many or unbounded children
+- Child data is shared across multiple parents
+
+**Pros**
+- Collections stay lean and manageable
+- Child data can be queried, filtered, updated independently
+- Scales well for large datasets
+
+**Cons**
+- Requires two queries or `$lookup` to retrieve related data
+- No atomic updates across both collections by default
+
+
+**Linking Orders to Customer**
+
+```json
+// customers collection
+{ "CustomerID": "ALFKI", "CompanyName": "Alfreds Futterkiste", "Country": "Germany" }
+
+// orders collection
+{ "OrderID": 10643, "CustomerID": "ALFKI", "OrderDate": "1997-08-25", "TotalAmount": 814.50 }
+{ "OrderID": 10692, "CustomerID": "ALFKI", "OrderDate": "1997-10-03", "TotalAmount": 878.00 }
+```
+
+**Retrieve customer then fetch linked orders separately**
+
+```java
+MongoCollection<Document> customers = db.getCollection("customers");
+MongoCollection<Document> orders    = db.getCollection("orders");
+
+// Step 1: fetch the customer
+Document customer = customers
+        .find(Filters.eq("CustomerID", "ALFKI"))
+        .first();
+
+if (customer != null) {
+    System.out.println("Company : " + customer.getString("CompanyName"));
+
+    // Step 2: fetch all orders belonging to that customer
+    FindIterable<Document> customerOrders = orders
+            .find(Filters.eq("CustomerID", "ALFKI"));
+
+    for (Document order : customerOrders) {
+        System.out.println("  OrderID : " + order.getInteger("OrderID")
+                + " | Date: "  + order.getString("OrderDate")
+                + " | Total: " + order.getDouble("TotalAmount"));
+    }
+}
+```
+
+
+---
+
+**Recommendation for Northwind**
+Use **linking** — customers accumulate orders over time (unbounded),
+and orders are frequently queried independently by date, amount, or
+product. Embedding would cause documents to grow without limit and
+make cross-customer order analysis painful.
+
+---
+
+### Case Study: Book & Author Storage Strategies
+
+---
+
+#### Option 1: Embedding Authors into Book
+
+Best when the number of authors is small and bounded, and authors
+are always read together with the book.
+```json
+{
+  "_id": 1,
+  "title": "Database Systems",
+  "isbn": "123456",
+  "authors": [
+    { "authorId": 1, "name": "John Doe" },
+    { "authorId": 2, "name": "Jane Smith" }
+  ]
+}
+```
+
+**When to use**
+- A book has a small, fixed number of authors (rarely more than 3–5)
+- Authors are always displayed together with the book
+- You do not need to search or update authors independently
+
+**Pros**
+- Single query fetches book + all authors
+- Simple structure, no joins needed
+
+**Cons**
+- Searching authors across all books requires scanning nested arrays
+- Updating an author (e.g. name change) requires updating every book they appear in
+
+**Java — retrieve book with embedded authors**
+
+```java
+MongoCollection<Document> books = db.getCollection("books");
+
+Document book = books
+        .find(Filters.eq("_id", 1))
+        .first();
+
+if (book != null) {
+    System.out.println("Title : " + book.getString("title"));
+
+    List<Document> authors = book.getList("authors", Document.class);
+    for (Document author : authors) {
+        System.out.println("  AuthorID : " + author.getInteger("authorId")
+                + " | Name: " + author.getString("name"));
+    }
+}
+```
+
+---
+
+#### Option 2: Linking Authors to Book
+
+Best when authors need to be searched, updated, or queried
+independently across all books.
+```json
+// books collection
+{ "_id": 1, "title": "Database Systems", "isbn": "123456", "authorIds": [1, 2] }
+
+// authors collection
+{ "_id": 1, "name": "John Doe",   "country": "USA", "bio": "..." }
+{ "_id": 2, "name": "Jane Smith", "country": "UK",  "bio": "..." }
+```
+
+**When to use**
+- You need to search authors by name, country, or other fields
+- Authors appear in multiple books and have rich profiles
+- Author data needs to be updated independently
+
+**Pros**
+- Authors collection can be indexed directly — fast searches
+- Updating an author updates it once for all books
+- Authors can be queried independently (e.g. all books by an author)
+
+**Cons**
+- Requires two queries to fetch a book with its authors
+- Slightly more complex code
+
+**Java — search authors efficiently with an index**
+
+```java
+// Create an index on name for fast lookups (run once at startup)
+authors.createIndex(new Document("name", 1));
+
+// Search author by name — fast with index
+Document author = authors
+        .find(Filters.eq("name", "John Doe"))
+        .first();
+
+if (author != null)
+    System.out.println("Found: " + author.getString("name")
+            + " | Country: " + author.getString("country"));
+```
+
+**Java — retrieve book then fetch linked authors**
+```java
+MongoCollection<Document> books   = db.getCollection("books");
+MongoCollection<Document> authors = db.getCollection("authors");
+
+// Step 1: fetch the book
+Document book = books
+        .find(Filters.eq("_id", 1))
+        .first();
+
+if (book != null) {
+    System.out.println("Title : " + book.getString("title"));
+
+    // Step 2: fetch each linked author by ID
+    List<Integer> authorIds = book.getList("authorIds", Integer.class);
+    for (int authorId : authorIds) {
+        Document author = authors
+                .find(Filters.eq("_id", authorId))
+                .first();
+        if (author != null)
+            System.out.println("  AuthorID : " + author.getInteger("_id")
+                    + " | Name: " + author.getString("name"));
+    }
+}
+```
+
+---
+
+**Summary**
+
+| | Embedding | Linking |
+|---|---|---|
+| Author count | Small and bounded | Any size |
+| Always read with book? | Yes | No |
+| Frequent author searches? | No | Yes |
+| Independent author updates? | No | Yes |
+| Query style | Single query | Two queries |
+| Index on authors? | Not effective | Yes — fast |
 
