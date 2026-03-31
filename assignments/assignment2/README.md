@@ -11,7 +11,7 @@ The objective of this assignment is to extend the previously designed **Library 
     - One integrated with **PostgreSQL**
     - One integrated with **MongoDB**
 3. Performing **CRUD operations** on selected entities in both systems
-4. Comparing relational and NoSQL approaches conceptually
+
 
 ---
 
@@ -32,7 +32,7 @@ Transform the relational schema into a **MongoDB document model**.
     - **Referencing** (e.g., Loans referencing Members)
 - Justify your design decisions
 
-### Example (Simplified):
+**Example (Simplified)**
 
 {
 "_id": 1,
@@ -65,7 +65,7 @@ Develop a Java application connected to **PostgreSQL**.
 ### Requirements:
 
 - Use **JDBC**
-- Perform CRUD operations on **at least 2 tables**
+- Perform CRUD operations on **at least 1 tables**
 
 
 **Required Operations:**
@@ -84,12 +84,12 @@ Develop a separate Java application connected to **MongoDB**.
 ### Requirements:
 
 - Use **MongoDB Java Driver**
-- Perform CRUD operations on **at least 2 collections**
+- Perform CRUD operations on **at least 1 collections**
 
 ### Required Operations:
 
 - Insert documents
-- Query documents
+- Retrieve documents (SELECT)
 - Update documents
 - Delete documents
 
@@ -101,8 +101,8 @@ Develop a separate Java application connected to **MongoDB**.
 Submit a **single PDF report** including:
 
 1. MongoDB Data Model Design
-2. Java Application Design Explanation
-3. Screenshots or outputs of CRUD operations
+2. Screenshots or outputs of CRUD operations
+3. Source code for both applications.
 
 
 ---
@@ -110,10 +110,9 @@ Submit a **single PDF report** including:
 
 ## Notes
 
-- Maintain consistency with Assignment 1 design
 - Use meaningful naming conventions
 - Keep applications simple but functional
-- Focus on correctness rather than UI design
+- Focus on correctness rather than appearance
 
 ---
 
