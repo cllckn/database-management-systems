@@ -1,10 +1,11 @@
-package cc.ku.dbms.module4.exercises.exercise4;
-
 import java.sql.*;
 
 /**
  * Full CRUD operations on the Northwind (nw) PostgreSQL database.
- * Table: customers (CustomerID, CompanyName, ContactName, Country)
+ * Table: categories
+ * - CategoryID (Primary Key)
+ * - CategoryName
+ * - Description
  *
  * Ensure the PostgreSQL JDBC driver is on the classpath before running.
  */
@@ -26,9 +27,6 @@ public class Main {
                 return;
             }
 
-            // ── CREATE ────────────────────────────────────────────────────────
-            System.out.println("=== CREATE ===");
-            addNewCategory(conn, 10, "new category", "description");
 
             // ── READ (all) ────────────────────────────────────────────────────
             System.out.println("\n=== READ (all) ===");
@@ -38,55 +36,17 @@ public class Main {
             System.out.println("\n=== READ (single: NEWCO) ===");
             readCategoryById(conn, 4);
 
-            // ── UPDATE ────────────────────────────────────────────────────────
-            System.out.println("\n=== UPDATE ===");
-            updateCustomer(conn, "NEWCO", "Updated Company Ltd.", "Bob Jones", "France");
-
-            // ── READ after update ─────────────────────────────────────────────
-            System.out.println("\n=== READ after UPDATE ===");
-            readCategoryById(conn, 5);
-
-            // ── DELETE ────────────────────────────────────────────────────────
-            System.out.println("\n=== DELETE ===");
-            deleteCategory(conn, 10);
-
-            // ── Confirm deletion ──────────────────────────────────────────────
-            System.out.println("\n=== READ after DELETE ===");
-            readCategoryById(conn, 5);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // ── CREATE ────────────────────────────────────────────────────────────────
-    /**
-     * Inserts a new customer row.
-     * Uses a PreparedStatement to prevent SQL injection.
-     */
-    public static void addNewCategory(Connection conn,
-                                      int CategoryID,
-                                      String CategoryName,
-                                      String Description
-                                      ) throws SQLException {
 
-        String sql = "INSERT INTO categories (\"CategoryID\", \"CategoryName\", \"Description\") "
-                + "VALUES (?, ?, ?)";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, CategoryID);
-            pstmt.setString(2, CategoryName);
-            pstmt.setString(3, Description);
-
-
-            int rowsAffected = pstmt.executeUpdate();
-            System.out.println("Inserted " + rowsAffected + " row(s). CategoryID: " + CategoryID);
-        }
-    }
 
     // ── READ (all) ────────────────────────────────────────────────────────────
     /**
-     * Reads and prints all customers.
+     * Reads and prints all categories.
      */
     public static void readAllCategories(Connection conn) throws SQLException {
 
@@ -106,7 +66,7 @@ public class Main {
 
     // ── READ (single) ─────────────────────────────────────────────────────────
     /**
-     * Reads and prints a single customer by CustomerID.
+     * Reads and prints a single customer by CategoryID.
      */
     public static void readCategoryById(Connection conn, int categoryID) throws SQLException {
 
@@ -124,56 +84,11 @@ public class Main {
         }
     }
 
-    // ── UPDATE ────────────────────────────────────────────────────────────────
-    /**
-     * Updates an existing customer's CompanyName, ContactName, and Country.
-     */
-    public static void updateCustomer(Connection conn,
-                                      String customerID,
-                                      String newCompanyName,
-                                      String newContactName,
-                                      String newCountry) throws SQLException {
 
-        String sql = "UPDATE customers "
-                + "SET \"CompanyName\" = ?, \"ContactName\" = ?, \"Country\" = ? "
-                + "WHERE \"CustomerID\" = ?";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, newCompanyName);
-            pstmt.setString(2, newContactName);
-            pstmt.setString(3, newCountry);
-            pstmt.setString(4, customerID);
-
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0)
-                System.out.println("Updated CustomerID: " + customerID);
-            else
-                System.out.println("No customer found with ID: " + customerID);
-        }
-    }
-
-    // ── DELETE ────────────────────────────────────────────────────────────────
-    /**
-     * Deletes a customer by CustomerID.
-     */
-    public static void deleteCategory(Connection conn, int categoryID) throws SQLException {
-
-        String sql = "DELETE FROM categories WHERE \"CategoryID\" = ?";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, categoryID);
-
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0)
-                System.out.println("Deleted CustomerID: " + categoryID);
-            else
-                System.out.println("No customer found with ID: " + categoryID);
-        }
-    }
 
     // ── Helper ────────────────────────────────────────────────────────────────
     /**
-     * Prints a single customer row from the current ResultSet position.
+     * Prints a single category row from the current ResultSet position.
      */
     private static void printCategory(ResultSet rs) throws SQLException {
         System.out.printf("ID: %-5d | Category: %-20s | Description: %-30s\n ",
