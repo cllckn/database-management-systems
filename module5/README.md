@@ -3,37 +3,39 @@
 
 <!-- TOC -->
 * [Module 5: NoSQL Databases](#module-5-nosql-databases)
-  * [NoSQL Databases](#nosql-databases)
-    * [Comparison with Relational DB:](#comparison-with-relational-db)
-    * [Main Types of NoSQL Databases](#main-types-of-nosql-databases)
-    * [MongoDB NoSQL Database](#mongodb-nosql-database)
+  * [1. NoSQL Databases](#1-nosql-databases)
+    * [1.1 Comparison with Relational DB:](#11-comparison-with-relational-db)
+    * [1.2 Main Types of NoSQL Databases](#12-main-types-of-nosql-databases)
+    * [1.3 MongoDB NoSQL Database](#13-mongodb-nosql-database)
       * [Two Key Structures in a Cluster**](#two-key-structures-in-a-cluster)
-  * [Using a Programming Language to Interact With a Database](#using-a-programming-language-to-interact-with-a-database)
-    * [Database Drivers – Core Functions](#database-drivers--core-functions)
-    * [Database Operations with Java and MongoDB](#database-operations-with-java-and-mongodb)
+  * [2. Using a Programming Language to Interact With a Database](#2-using-a-programming-language-to-interact-with-a-database)
+    * [2.1 Database Drivers – Core Functions](#21-database-drivers--core-functions)
+    * [2.2 Database Operations with Java and MongoDB](#22-database-operations-with-java-and-mongodb)
+      * [Initializing A New Project Using IntelliJ IDEA for Java-Based Program Development](#initializing-a-new-project-using-intellij-idea-for-java-based-program-development)
+      * [Loading Database Driver Into The Project Environment](#loading-database-driver-into-the-project-environment)
       * [Example Workflow (Conceptual)](#example-workflow-conceptual)
-      * [IntelliJ IDEA for Java Development](#intellij-idea-for-java-development)
-  * [Implementing Relationships: Embedding vs Linking](#implementing-relationships-embedding-vs-linking)
-    * [What is Embedding?](#what-is-embedding)
-    * [What is Linking (Referencing)?](#what-is-linking-referencing)
-    * [Case Study: Book & Author Storage Strategies](#case-study-book--author-storage-strategies)
-      * [Option 1: Embedding Authors into Book](#option-1-embedding-authors-into-book)
-      * [Option 2: Linking Authors to Book](#option-2-linking-authors-to-book)
+      * [A Java-based program for MongoDB CRUD operations](#a-java-based-program-for-mongodb-crud-operations)
+  * [3. Implementing Relationships: Embedding vs Linking](#3-implementing-relationships-embedding-vs-linking)
+    * [3.1 What is Embedding?](#31-what-is-embedding)
+    * [3.2 What is Linking (Referencing)?](#32-what-is-linking-referencing)
+    * [3.3 Case Study: Book & Author Storage Strategies](#33-case-study-book--author-storage-strategies)
 <!-- TOC -->
 
 
 
-## NoSQL Databases
+## 1. NoSQL Databases
 - **NoSQL** (AKA Not Only SQL) databases are  designed for scalability, flexibility, and high-performance.
 - They are capable of handling large-scale, unstructured, semi-structured, and rapidly changing data.
 
-### Comparison with Relational DB:
+---
+
+### 1.1 Comparison with Relational DB:
 
 ![](../resources/figures/sql-vs-nosql.png)
 
+---
 
-
-### Main Types of NoSQL Databases
+### 1.2 Main Types of NoSQL Databases
 
 1. **Document-Oriented Databases**
 - Store data as documents (usually in JSON or BSON format).
@@ -112,8 +114,9 @@
     - Recommendation engines
     - Fraud detection and knowledge graphs
 
+---
 
-### MongoDB NoSQL Database
+### 1.3 MongoDB NoSQL Database
 
 MongoDB is a popular NoSQL database that stores data in a flexible, document-oriented format instead of the traditional
 table-and-row structure used by relational databases. Data is organized into collections, and each collection contains
@@ -135,6 +138,8 @@ together as a single unified database system, providing:
 - Scalability
 - Redundancy
 - High availability
+
+---
 
 #### Two Key Structures in a Cluster**
 
@@ -334,15 +339,17 @@ Shard 2 → IDs 6–10
 ```
 
 
+---
 
-
-## Using a Programming Language to Interact With a Database
+## 2. Using a Programming Language to Interact With a Database
 
 Modern applications often need to store, retrieve, and manipulate data dynamically.
 To perform these database operations from within an application, database drivers are essential.
 These drivers act as a bridge between the programming language and the database management system (DBMS).
 
-### Database Drivers – Core Functions
+---
+
+### 2.1 Database Drivers – Core Functions
 Database drivers typically provide the following core capabilities:
 - **Establishing a connection** to the database.
 - **Executing queries**.
@@ -351,17 +358,32 @@ Database drivers typically provide the following core capabilities:
 - **Closing the connection** after operations are completed.
 
 
+---
 
-### Database Operations with Java and MongoDB
+### 2.2 Database Operations with Java and MongoDB
 
-You can use MongoDB Cloud (https://account.mongodb.com/account/login
-) without installation, or install MongoDB on your computer from the following
-link: https://www.mongodb.com/try/download/community
+#### Initializing A New Project Using IntelliJ IDEA for Java-Based Program Development
 
-#### Example Workflow (Conceptual)
-1. **Load the drivers** using maven package manager.
+
+To develop a Java program, an IDE and JDK are required.
+
+**IntelliJ IDEA**
+- Popular IDE for Java based development.
+- Download Link: [IntelliJ](https://www.jetbrains.com/idea/download)
+- Install and start IntelliJ IDEA
+- File -> New -> Project -> Java
+  - give a name, choose a location
+  - Build system: Maven
+  - JDK -> choose a proper JDK, download if not exist
+  - check "add sample code" option
+
+  
+#### Loading Database Driver Into The Project Environment
+
+**Load the drivers** using maven package manager.
 
 `pom.xml`
+
 ```xml
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -405,25 +427,32 @@ link: https://www.mongodb.com/try/download/community
 
 
 ```
-2. **Establish a connection** to the MongoDB database using
-   a connection string (URL(socket address), username, and password).
-3. **Perform db operations**.
+
+--- 
+
+#### Example Workflow (Conceptual)
+1. **Load the driver** in the project environment so that the Java application can
+   communicate with the database.
+2. **Establish a connection** to the MongoDB database using a connection string (URL(socket address), username, and password).
+3. **Define and execute MongoDB statements**.
 4. **Process the results** returned by the query.
-5. **Close** the connection.
+5. **Close** the statement and connection to free resources.
 
 
-
-#### IntelliJ IDEA for Java Development
-
-To develop a Java program, an IDE and JDK are required.
-
-[Click here for details](https://github.com/cllckn/software-testing/tree/main/module1#setting-up-the-development-environment)
+---
 
 
-**Code Example: A Java-based program for DB CRUD operations**
+#### A Java-based program for MongoDB CRUD operations
 
-* Define `nw.customers` collection.
-* Insert the following sample records.
+**Prerequisite Setup**
+
+To construct MongoDB database, you can use MongoDB Cloud (https://account.mongodb.com/account/login
+) without installation, or install MongoDB on your computer from the following
+link: https://www.mongodb.com/try/download/community
+
+1. Define `nw.customers` collection in MongoDB. 
+2. Insert the following sample records.
+
 
 ```json
 [
@@ -641,12 +670,15 @@ public class MongoDBCRUDOperations {
 
 ---
 
-## Implementing Relationships: Embedding vs Linking
+## 3. Implementing Relationships: Embedding vs Linking
 
 
-### What is Embedding?
+### 3.1 What is Embedding?
+
 Storing related data **inside** the same document.
+
 The child data lives as a nested array or object within the parent.
+
 ```json
 {
   "name": "Parent Document",
@@ -656,6 +688,21 @@ The child data lives as a nested array or object within the parent.
   ]
 }
 ```
+
+
+**Embedding Orders into Customer**
+```json
+{
+  "CustomerID": "ALFKI",
+  "CompanyName": "Alfreds Futterkiste",
+  "Country": "Germany",
+  "Orders": [
+    { "OrderID": 10643, "OrderDate": "1997-08-25", "TotalAmount": 814.50 },
+    { "OrderID": 10692, "OrderDate": "1997-10-03", "TotalAmount": 878.00 }
+  ]
+}
+```
+
 
 **When to use**
 - Related data is always read together
@@ -672,18 +719,6 @@ The child data lives as a nested array or object within the parent.
 - Child data cannot be queried independently
 - Updating one child rewrites the whole document
 
-**Embedding Orders into Customer**
-```json
-{
-  "CustomerID": "ALFKI",
-  "CompanyName": "Alfreds Futterkiste",
-  "Country": "Germany",
-  "Orders": [
-    { "OrderID": 10643, "OrderDate": "1997-08-25", "TotalAmount": 814.50 },
-    { "OrderID": 10692, "OrderDate": "1997-10-03", "TotalAmount": 878.00 }
-  ]
-}
-```
 
 **Retrieve customer with embedded orders**
 ```java
@@ -708,9 +743,11 @@ if (customer != null) {
 
 ---
 
-### What is Linking (Referencing)?
+### 3.2 What is Linking (Referencing)?
+
 Storing related data in **separate collections** and connecting
 them via a shared reference field (like a foreign key in SQL).
+
 ```json
 // parent collection
 { "_id": "P1", "name": "Parent Document" }
@@ -719,6 +756,21 @@ them via a shared reference field (like a foreign key in SQL).
 { "_id": "C1", "parentId": "P1", "field": "value" }
 { "_id": "C2", "parentId": "P1", "field": "value" }
 ```
+
+
+
+**Linking Orders to Customer**
+
+```json
+// customers collection
+{ "CustomerID": "ALFKI", "CompanyName": "Alfreds Futterkiste", "Country": "Germany" }
+
+// orders collection
+{ "OrderID": 10643, "CustomerID": "ALFKI", "OrderDate": "1997-08-25", "TotalAmount": 814.50 }
+{ "OrderID": 10692, "CustomerID": "ALFKI", "OrderDate": "1997-10-03", "TotalAmount": 878.00 }
+```
+
+
 
 **When to use**
 - Child data needs to be queried independently
@@ -735,16 +787,6 @@ them via a shared reference field (like a foreign key in SQL).
 - No atomic updates across both collections by default
 
 
-**Linking Orders to Customer**
-
-```json
-// customers collection
-{ "CustomerID": "ALFKI", "CompanyName": "Alfreds Futterkiste", "Country": "Germany" }
-
-// orders collection
-{ "OrderID": 10643, "CustomerID": "ALFKI", "OrderDate": "1997-08-25", "TotalAmount": 814.50 }
-{ "OrderID": 10692, "CustomerID": "ALFKI", "OrderDate": "1997-10-03", "TotalAmount": 878.00 }
-```
 
 **Retrieve customer then fetch linked orders separately**
 
@@ -778,16 +820,15 @@ if (customer != null) {
 **Recommendation for Northwind**
 Use **linking** — customers accumulate orders over time (unbounded),
 and orders are frequently queried independently by date, amount, or
-product. Embedding would cause documents to grow without limit and
-make cross-customer order analysis painful.
+product. 
 
 ---
 
-### Case Study: Book & Author Storage Strategies
+### 3.3 Case Study: Book & Author Storage Strategies
 
 ---
 
-#### Option 1: Embedding Authors into Book
+**Option 1: Embedding Authors into Book**
 
 Best when the number of authors is small and bounded, and authors
 are always read together with the book.
@@ -816,29 +857,9 @@ are always read together with the book.
 - Searching authors across all books requires scanning nested arrays
 - Updating an author (e.g. name change) requires updating every book they appear in
 
-**Java — retrieve book with embedded authors**
-
-```java
-MongoCollection<Document> books = db.getCollection("books");
-
-Document book = books
-        .find(Filters.eq("_id", 1))
-        .first();
-
-if (book != null) {
-    System.out.println("Title : " + book.getString("title"));
-
-    List<Document> authors = book.getList("authors", Document.class);
-    for (Document author : authors) {
-        System.out.println("  AuthorID : " + author.getInteger("authorId")
-                + " | Name: " + author.getString("name"));
-    }
-}
-```
-
 ---
 
-#### Option 2: Linking Authors to Book
+**Option 2: Linking Authors to Book**
 
 Best when authors need to be searched, updated, or queried
 independently across all books.
@@ -865,47 +886,6 @@ independently across all books.
 - Requires two queries to fetch a book with its authors
 - Slightly more complex code
 
-**Java — search authors efficiently with an index**
-
-```java
-// Create an index on name for fast lookups (run once at startup)
-authors.createIndex(new Document("name", 1));
-
-// Search author by name — fast with index
-Document author = authors
-        .find(Filters.eq("name", "John Doe"))
-        .first();
-
-if (author != null)
-    System.out.println("Found: " + author.getString("name")
-            + " | Country: " + author.getString("country"));
-```
-
-**Java — retrieve book then fetch linked authors**
-```java
-MongoCollection<Document> books   = db.getCollection("books");
-MongoCollection<Document> authors = db.getCollection("authors");
-
-// Step 1: fetch the book
-Document book = books
-        .find(Filters.eq("_id", 1))
-        .first();
-
-if (book != null) {
-    System.out.println("Title : " + book.getString("title"));
-
-    // Step 2: fetch each linked author by ID
-    List<Integer> authorIds = book.getList("authorIds", Integer.class);
-    for (int authorId : authorIds) {
-        Document author = authors
-                .find(Filters.eq("_id", authorId))
-                .first();
-        if (author != null)
-            System.out.println("  AuthorID : " + author.getInteger("_id")
-                    + " | Name: " + author.getString("name"));
-    }
-}
-```
 
 ---
 
