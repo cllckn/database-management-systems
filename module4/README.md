@@ -4,8 +4,8 @@
 <!-- TOC -->
 * [Module 4: Fundamentals of Structured Query Language (SQL)](#module-4-fundamentals-of-structured-query-language-sql)
   * [1. Introduction to Structured Query Language (SQL)](#1-introduction-to-structured-query-language-sql)
-    * [**Setting Up the Working Environment**](#setting-up-the-working-environment)
-    * [SQL Functions and Categories](#sql-functions-and-categories)
+    * [1.1 Setting Up the Working Environment](#11-setting-up-the-working-environment)
+    * [1.2 SQL Functions and Categories](#12-sql-functions-and-categories)
   * [2. Basic SQL Data Definition Language (DDL) Statements (CREATE, ALTER, DROP)](#2-basic-sql-data-definition-language-ddl-statements-create-alter-drop)
     * [2.1.CREATE](#21create)
       * [CREATE DATABASE](#create-database)
@@ -52,7 +52,7 @@
       * [Initializing A New Project Using IntelliJ IDEA for Java-Based Program Development](#initializing-a-new-project-using-intellij-idea-for-java-based-program-development)
       * [Loading Database Driver Into The Project Environment](#loading-database-driver-into-the-project-environment)
       * [Example Workflow (Conceptual)](#example-workflow-conceptual)
-      * [A Java-based program for DB operations](#a-java-based-program-for-db-operations)
+      * [A Java-based program for PostgreSQL DB CRUD operations](#a-java-based-program-for-postgresql-db-crud-operations)
 <!-- TOC -->
 
 
@@ -67,7 +67,7 @@ SQL is used to interact with relational database management systems (RDBMS).
 ![](../resources/figures/database-system-horizontal-with-sql.png)
 
 
-### **Setting Up the Working Environment**
+### 1.1 Setting Up the Working Environment
 
 To work with SQL databases efficiently, a proper working environment is required.
 
@@ -115,7 +115,7 @@ CREATE ROLE lectureuser WITH
 
 ---
 
-### SQL Functions and Categories
+### 1.2 SQL Functions and Categories
 
 SQL functions can be divided into two main categories:
 
@@ -1477,7 +1477,7 @@ Database drivers typically provide the following core capabilities:
 
 To develop a Java program, an IDE and JDK are required.
 
-**1. IntelliJ IDEA** 
+**IntelliJ IDEA** 
 - Popular IDE for Java based development.
 - Download Link: [IntelliJ](https://www.jetbrains.com/idea/download)
 - Install and start IntelliJ IDEA
@@ -1556,7 +1556,18 @@ The **PostgreSQL JDBC driver** implements this API and allows Java programs to w
 
 ---
 
-#### A Java-based program for DB operations
+#### A Java-based program for PostgreSQL DB CRUD operations
+
+
+**Prerequisite Setup**
+
+1. Open your database client (pgAdmin, IntelliJ, etc.).
+2. Construct a new empty database named `northwind`
+3. [Download **Northwind sample database**](../resources/dbs/northwind.backup)
+4. Connect to the `northwind` database using your database client (pgAdmin, IntelliJ, etc.).
+5. Import (restore) the Northwind sample database.
+
+Ensure that the `customers` table exists and contains data.
 
 
 ```java
