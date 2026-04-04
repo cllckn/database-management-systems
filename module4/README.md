@@ -49,8 +49,10 @@
   * [4. Using a Programming Language to Interact With a Database](#4-using-a-programming-language-to-interact-with-a-database)
     * [4.1.Database Drivers – Core Functions](#41database-drivers--core-functions)
     * [4.2.Database Operations with Java and PostgreSQL](#42database-operations-with-java-and-postgresql)
+      * [Initializing A New Project Using IntelliJ IDEA for Java-Based Program Development](#initializing-a-new-project-using-intellij-idea-for-java-based-program-development)
+      * [Loading Database Driver Into The Project Environment](#loading-database-driver-into-the-project-environment)
       * [Example Workflow (Conceptual)](#example-workflow-conceptual)
-      * [IntelliJ IDEA for Java Development](#intellij-idea-for-java-development)
+      * [A Java-based program for DB operations](#a-java-based-program-for-db-operations)
 <!-- TOC -->
 
 
@@ -1365,10 +1367,10 @@ SELECT "CompanyName", "ContactName" INTO customers_backup FROM "customers";
 
 ### 3.6 INSERT
 
----
-**Data integrity constraints are enforced when insert, update, and delete statements are executed. If a data integrity 
-violation occurs, the operation is aborted, ensuring that data remains consistent and accurate.**
----
+>***Data integrity constraints are enforced when DDL statements are executed. If a data integrity violation occurs,
+the operation is aborted, ensuring that data remains consistent and accurate.***
+
+
 
 Add new records to a table.
 - **Data integrity constraints** are enforced during the insertion process.
@@ -1456,6 +1458,8 @@ Modern applications often need to store, retrieve, and manipulate data dynamical
 To perform these database operations from within an application, database drivers are essential.
 These drivers act as a bridge between the programming language and the database management system (DBMS).
 
+---
+
 ### 4.1.Database Drivers – Core Functions
 Database drivers typically provide the following core capabilities:
 - **Establishing a connection** to the database.
@@ -1464,8 +1468,60 @@ Database drivers typically provide the following core capabilities:
 - **Managing transactions** to ensure data consistency.
 - **Closing the connection** after operations are completed.
 
+---
 
 ### 4.2.Database Operations with Java and PostgreSQL
+
+
+#### Initializing A New Project Using IntelliJ IDEA for Java-Based Program Development
+
+To develop a Java program, an IDE and JDK are required.
+
+**1. IntelliJ IDEA** 
+- Popular IDE for Java based development.
+- Download Link: [IntelliJ](https://www.jetbrains.com/idea/download)
+- Install and start IntelliJ IDEA
+- File -> New -> Project -> Java
+  - give a name, choose a location
+  - Build system: Maven
+  - JDK -> choose a proper JDK, download if not exist
+  - check "add sample code" option
+  - write the following code snippet
+
+~~~java
+/**
+ * Must be stored as HelloWorld.java
+ *
+ */
+public class HelloWorld {
+
+    public static void main(String[] s) {
+
+        System.out.println("Hello World");
+    }
+
+}
+~~~
+
+- Open a terminal
+- Compiling
+~~~console
+javac HelloWorld.java
+~~~
+
+- Running
+~~~console
+java HelloWorld.java
+~~~
+
+- Output
+~~~console
+Hello World
+~~~
+
+---
+
+#### Loading Database Driver Into The Project Environment
 
 Java applications can seamlessly interact with PostgreSQL databases using **JDBC** (Java Database Connectivity).  
 JDBC is a **standard API** that defines a set of interfaces and classes for connecting to relational databases,
@@ -1479,59 +1535,18 @@ It provides:
 
 The **PostgreSQL JDBC driver** implements this API and allows Java programs to work directly with PostgreSQL databases.
 
-You can download the PostgreSQL JDBC driver from [https://jdbc.postgresql.org/download/](https://jdbc.postgresql.org/download/)
+* You can download the PostgreSQL JDBC driver from [https://jdbc.postgresql.org/download/](https://jdbc.postgresql.org/download/)
 
-or through maven with the following configuration:
-
-
-`pom.xml`
-```xml
-
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>cc.ku</groupId>
-    <artifactId>java-projects</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <dependencies>
-        <!-- postgresql -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.8</version>
-        </dependency>
-        <!-- mongodb -->
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-bom</artifactId>
-            <version>5.6.0</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-sync</artifactId>
-            <version>5.6.0</version>
-        </dependency>
-      
-    </dependencies>
-</project>
+* To import the downloaded `postgresl...jar` file into the project
+  * Right-click on the root of the project in the Intellij
+  * Click `Òpen Module Settings` -> `Libraries` -> `(+ icon)New Project Library`
+  * Choose the downloaded `postgresl...jar` file
 
 
-```
-
+--- 
 
 #### Example Workflow (Conceptual)
-1. **Load the driver**(library or JAR file - using maven or manual download ) in the project environment so that the Java application can
+1. **Load the driver** in the project environment so that the Java application can
    communicate with the database.
 2. **Establish a connection** to the PostgreSQL database using a connection string (URL(socket address), username, and password).
 3. **Define and execute SQL statements**.
@@ -1539,15 +1554,9 @@ or through maven with the following configuration:
 5. **Close** the statement and connection to free resources.
 
 
+---
 
-#### IntelliJ IDEA for Java Development
-
-To develop a Java program, an IDE and JDK are required. 
-
-[Click here for details](https://github.com/cllckn/software-testing/tree/main/module1#setting-up-the-development-environment)
-
-
-**Code Example: A Java-based program for DB operations**
+#### A Java-based program for DB operations
 
 
 ```java
