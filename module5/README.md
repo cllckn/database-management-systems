@@ -780,10 +780,11 @@ if (customer != null) {
 
 ---
 
-**Recommendation for Northwind**
-Use **linking** — customers accumulate orders over time (unbounded),
-and orders are frequently queried independently by date, amount, or
-product. 
+>**Recommendation for Northwind**
+>
+>Use **linking** — customers accumulate orders over time (unbounded),
+>and orders are frequently queried independently by date, amount, or
+>product. 
 
 ---
 
