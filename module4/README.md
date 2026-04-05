@@ -1458,6 +1458,9 @@ Modern applications often need to store, retrieve, and manipulate data dynamical
 To perform these database operations from within an application, database drivers are essential.
 These drivers act as a bridge between the programming language and the database management system (DBMS).
 
+<img src="../resources/figures/db-driver.png" width="80%">
+
+
 ---
 
 ### 4.1.Database Drivers – Core Functions
