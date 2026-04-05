@@ -37,6 +37,8 @@
 
 ### 1.2 Main Types of NoSQL Databases
 
+<img src="../resources/figures/nosql-data-models.png" width="80%">
+
 1. **Document-Oriented Databases**
 - Store data as documents (usually in JSON or BSON format).
 - Each document can have a flexible structure.
@@ -123,6 +125,9 @@ table-and-row structure used by relational databases. Data is organized into col
 documents represented in BSON (Binary JSON). Because documents can have varying structures, MongoDB is schema-less,
 allowing applications to evolve without modifying fixed table definitions.
 
+<img src="../resources/figures/mongodb-structure.png" width="80%">
+
+
 One of MongoDB’s key strengths is its ability to handle large volumes of unstructured or semi-structured data while
 maintaining high performance. It offers rich querying capabilities, indexing, and aggregation tools similar to SQL
 features but designed for flexible document data. MongoDB also provides automatic generation of a unique _id field
@@ -139,6 +144,8 @@ together as a single unified database system, providing:
 - Redundancy
 - High availability
 
+<img src="../resources/figures/mongodb-cluster.png" width="80%">
+
 ---
 
 #### Two Key Structures in a Cluster**
@@ -149,6 +156,9 @@ Provides  redundancy and high availability.
 
 The same data is copied across multiple nodes.
 
+<img src="../resources/figures/mongodb-replicaset.png" width="80%">
+
+
 
 - One **Primary** node handles all writes
 - One or more **Secondary** nodes replicate data from the primary
@@ -156,29 +166,6 @@ The same data is copied across multiple nodes.
 
 In a replica set, read performance can also be improved by directing read operations to the nearest replica node.
 
-
-```text
-               +----------------------+
-               |     Client App       |
-               +-----------+----------+
-                           |
-                           v
-                 +--------------------+
-                 |     PRIMARY        |
-                 |  (Read & Write)    |
-                 +----+-----------+---+
-                      |           |
-        --------------+           +--------------
-        |                                      |
-        v                                      v
-+--------------------+               +--------------------+
-|   SECONDARY 1      |               |   SECONDARY 2      |
-|  (Read / Failover) |               |  (Read / Failover) |
-+--------------------+               +--------------------+
-
-SECONDARIES replicate data **from the PRIMARY**
-If PRIMARY fails → one SECONDARY becomes PRIMARY
-```
 ---
 
 2) **Sharding**
@@ -187,6 +174,8 @@ Provides **horizontal scalability**.
 
 Large datasets are split and distributed across multiple (shards).
 
+<img src="../resources/figures/mongodb-sharding.png" width="80%">
+
 
 - Data is divided into **shards** — each shard holds a portion of the data
 - A **shard key** determines how data is distributed
@@ -194,50 +183,12 @@ Large datasets are split and distributed across multiple (shards).
 
 
 
-```text
-
-                               Config Servers
-                              ┌──────┬──────┬──────┐
-                              │  C1  │  C2  │  C3  │
-                              └──────┴──────┴──────┘
-                                    ↑
-                              ┌─────────────┐
-        Clients → → → → → → → │   MONGOS    │ ← Query Router
-                              └─────────────┘
-                                    ↓
-        ┌─────────────┬────────────────┬───────────────┬
-        │             │                │               │
-┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-│   SHARD A   │ │   SHARD B   │ │   SHARD C   │ │   SHARD D   │
-│  (Replica   │ │  (Replica   │ │  (Replica   │ │  (Replica   │
-│    Set)     │ │    Set)     │ │    Set)     │ │    Set)     │
-│ ┌─────────┐ │ │ ┌─────────┐ │ │ ┌─────────┐ │ │ ┌─────────┐ │
-│ │ Primary │ │ │ │ Primary │ │ │ │ Primary │ │ │ │ Primary │ │
-│ ├─────────┤ │ │ ├─────────┤ │ │ ├─────────┤ │ │ ├─────────┤ │
-│ │Secondary│ │ │ │Secondary│ │ │ │Secondary│ │ │ │Secondary│ │
-│ ├─────────┤ │ │ ├─────────┤ │ │ ├─────────┤ │ │ ├─────────┤ │
-│ │Secondary│ │ │ │Secondary│ │ │ │Secondary│ │ │ │Secondary│ │
-│ └─────────┘ │ │ └─────────┘ │ │ └─────────┘ │ │ └─────────┘ │
-└─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
-
-```
-
 ---
 
 **Key Difference**
 
-| | Replica Set | Sharding |
-|---|---|---|
-| Purpose | Redundancy & availability | Scalability & performance |
-| Data distribution | Same data on every node | Different data on each node |
-| Handles | Node failures | Large data volumes & high traffic |
+<img src="../resources/figures/mongodb-replicaset-sharding.png" width="80%">
 
-
-**In Practice**
-
-A production MongoDB cluster typically uses **both together** —
-sharding splits the data for scale, and each shard is itself
-a replica set for fault tolerance.
 
 **Example**
 
@@ -346,6 +297,11 @@ Shard 2 → IDs 6–10
 Modern applications often need to store, retrieve, and manipulate data dynamically.
 To perform these database operations from within an application, database drivers are essential.
 These drivers act as a bridge between the programming language and the database management system (DBMS).
+
+
+<img src="../resources/figures/db-driver.png" width="80%">
+
+
 
 ---
 
@@ -679,6 +635,7 @@ Storing related data **inside** the same document.
 
 The child data lives as a nested array or object within the parent.
 
+
 ```json
 {
   "name": "Parent Document",
@@ -691,6 +648,9 @@ The child data lives as a nested array or object within the parent.
 
 
 **Embedding Orders into Customer**
+
+<img src="../resources/figures/mongodb-embedding.png" width="80%">
+
 ```json
 {
   "CustomerID": "ALFKI",
@@ -761,6 +721,9 @@ them via a shared reference field (like a foreign key in SQL).
 
 **Linking Orders to Customer**
 
+<img src="../resources/figures/mongodb-linking.png" width="80%" alt="Linking Orders to Customer">
+
+
 ```json
 // customers collection
 { "CustomerID": "ALFKI", "CompanyName": "Alfreds Futterkiste", "Country": "Germany" }
@@ -826,77 +789,5 @@ product.
 
 ### 3.3 Case Study: Book & Author Storage Strategies
 
----
-
-**Option 1: Embedding Authors into Book**
-
-Best when the number of authors is small and bounded, and authors
-are always read together with the book.
-```json
-{
-  "_id": 1,
-  "title": "Database Systems",
-  "isbn": "123456",
-  "authors": [
-    { "authorId": 1, "name": "John Doe" },
-    { "authorId": 2, "name": "Jane Smith" }
-  ]
-}
-```
-
-**When to use**
-- A book has a small, fixed number of authors (rarely more than 3–5)
-- Authors are always displayed together with the book
-- You do not need to search or update authors independently
-
-**Pros**
-- Single query fetches book + all authors
-- Simple structure, no joins needed
-
-**Cons**
-- Searching authors across all books requires scanning nested arrays
-- Updating an author (e.g. name change) requires updating every book they appear in
-
----
-
-**Option 2: Linking Authors to Book**
-
-Best when authors need to be searched, updated, or queried
-independently across all books.
-```json
-// books collection
-{ "_id": 1, "title": "Database Systems", "isbn": "123456", "authorIds": [1, 2] }
-
-// authors collection
-{ "_id": 1, "name": "John Doe",   "country": "USA", "bio": "..." }
-{ "_id": 2, "name": "Jane Smith", "country": "UK",  "bio": "..." }
-```
-
-**When to use**
-- You need to search authors by name, country, or other fields
-- Authors appear in multiple books and have rich profiles
-- Author data needs to be updated independently
-
-**Pros**
-- Authors collection can be indexed directly — fast searches
-- Updating an author updates it once for all books
-- Authors can be queried independently (e.g. all books by an author)
-
-**Cons**
-- Requires two queries to fetch a book with its authors
-- Slightly more complex code
-
-
----
-
-**Summary**
-
-| | Embedding | Linking |
-|---|---|---|
-| Author count | Small and bounded | Any size |
-| Always read with book? | Yes | No |
-| Frequent author searches? | No | Yes |
-| Independent author updates? | No | Yes |
-| Query style | Single query | Two queries |
-| Index on authors? | Not effective | Yes — fast |
+<img src="../resources/figures/book-author-embedded-linked.png" width="80%" alt="book-author-embedded-linked">
 
