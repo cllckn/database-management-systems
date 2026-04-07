@@ -7,7 +7,7 @@
     * [1.1 Comparison with Relational DB:](#11-comparison-with-relational-db)
     * [1.2 Main Types of NoSQL Databases](#12-main-types-of-nosql-databases)
     * [1.3 MongoDB NoSQL Database](#13-mongodb-nosql-database)
-      * [Two Key Structures in a Cluster**](#two-key-structures-in-a-cluster)
+      * [Two Key Structures in a Cluster](#two-key-structures-in-a-cluster)
   * [2. Using a Programming Language to Interact With a Database](#2-using-a-programming-language-to-interact-with-a-database)
     * [2.1 Database Drivers – Core Functions](#21-database-drivers--core-functions)
     * [2.2 Database Operations with Java and MongoDB](#22-database-operations-with-java-and-mongodb)
@@ -31,8 +31,14 @@
 
 ### 1.1 Comparison with Relational DB:
 
+<img src="../resources/figures/relational-model-vs-nosql-big-picture.png" alt="relational model vs nosql" width="80%">
+
 ![](../resources/figures/sql-vs-nosql.png)
 
+
+>**Vertical scaling is limited by the maximum physical capacity of a single machine, whereas horizontal scaling is 
+> theoretically limitless because you can infinitely add more standard servers to a distributed cluster.**
+> 
 ---
 
 ### 1.2 Main Types of NoSQL Databases
@@ -148,7 +154,7 @@ together as a single unified database system, providing:
 
 ---
 
-#### Two Key Structures in a Cluster**
+#### Two Key Structures in a Cluster
 
 1) **Replica Set**
 
@@ -164,7 +170,7 @@ The same data is copied across multiple nodes.
 - One or more **Secondary** nodes replicate data from the primary
 - If the primary fails, a secondary is **automatically promoted** to primary
 
-In a replica set, read performance can also be improved by directing read operations to the nearest replica node.
+>**In a replica set, read performance can also be improved by directing read operations to the nearest replica node.**
 
 ---
 
@@ -667,7 +673,7 @@ The child data lives as a nested array or object within the parent.
 **When to use**
 - Related data is always read together
 - Child data belongs to one parent only
-- Child count is small and bounded
+- Child count is small and bounded(has a limit)
 
 **Pros**
 - Single query fetches everything
@@ -680,7 +686,16 @@ The child data lives as a nested array or object within the parent.
 - Updating one child rewrites the whole document
 
 
+
+> **Note:** In MongoDB, the document is the unit of atomicity. If you embed related data within a single document, you 
+> ensure that all related updates occur atomically, preventing partial updates and maintaining data consistency.
+>
+> In contrast, in the relational model, similar guarantees can be achieved using **transaction mechanisms**(e.g., ACID 
+> transactions), which may involve coordinating multiple operations across different tables to ensure consistency.
+
+
 **Retrieve customer with embedded orders**
+
 ```java
 MongoCollection<Document> customers = db.getCollection("customers");
 
@@ -737,11 +752,11 @@ them via a shared reference field (like a foreign key in SQL).
 
 **When to use**
 - Child data needs to be queried independently
-- A parent can have many or unbounded children
+- A parent can have many or unbounded(ne clear limit) children
 - Child data is shared across multiple parents
 
 **Pros**
-- Collections stay lean and manageable
+- Collections stay manageable
 - Child data can be queried, filtered, updated independently
 - Scales well for large datasets
 
@@ -782,9 +797,10 @@ if (customer != null) {
 
 >**Recommendation for Northwind**
 >
->Use **linking** — customers accumulate orders over time (unbounded),
->and orders are frequently queried independently by date, amount, or
->product. 
+>Use **linking** 
+> - customers accumulate orders over time (unbounded),
+> - orders have many parents (cstomer, employee) 
+> - orders are frequently queried independently by date, amount, or product. 
 
 ---
 
