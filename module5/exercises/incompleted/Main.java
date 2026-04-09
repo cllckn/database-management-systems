@@ -1,21 +1,23 @@
-package cc.ku.dbms.module5.exercises.exercise1.incompleted;
+package cc.st;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 /**
  * Full CRUD operations on the Northwind MongoDB database.
- * Collection: customers
- * Fields: CustomerID, CompanyName, ContactName, Country
+ * Collection: categories
+ * Fields: _id, name, description
  *
- * Dependencies (add to pom.xml or build.gradle):
- *   MongoDB Java Driver: org.mongodb:mongodb-driver-sync:4.11.0
+ * Dependencies (add to pom.xml ):
+ *
  */
 public class Main {
 
     // ── Connection settings ───────────────────────────────────────────────────
+
     private static final String URI         ="mongodb+srv://lectureuser:lecturepassword@cluster0.zzzplef.mongodb.net/?appName=Cluster0";
     //private static final String URI         = "mongodb+srv://lectureuser:lecturepassword@cluster0.zxbhndn.mongodb.net/?appName=Cluster0";
     private static final String DB_NAME     = "northwinddb";
@@ -28,17 +30,17 @@ public class Main {
         try (MongoClient mongoClient = MongoClients.create(URI)) {
 
             MongoDatabase database   = mongoClient.getDatabase(DB_NAME);
-            MongoCollection<Document> customers = database.getCollection(COLLECTION);
+            MongoCollection<Document> categories = database.getCollection(COLLECTION);
 
             System.out.println("Connected to MongoDB — database: " + DB_NAME + "\n");
 
             // ── READ (all) ────────────────────────────────────────────────────
             System.out.println("\n=== READ (all) ===");
-            readAllCustomers(customers);
+            readAllCategories(categories);
 
             // ── READ (single) ─────────────────────────────────────────────────
-            System.out.println("\n=== READ (single: NEWCO) ===");
-            readCustomerById(customers, "NEWCO");
+            System.out.println("\n=== READ (single: 69d6a6652cec4485bc7701fd) ===");
+            readCategoriesById(categories, "69d6a6652cec4485bc7701fd");
 
         }
     }
@@ -46,34 +48,36 @@ public class Main {
 
     // ── READ (all) ────────────────────────────────────────────────────────────
     /**
-     * Reads and prints all customer documents.
+     * Reads and prints all categories documents.
      */
-    public static void readAllCustomers(MongoCollection<Document> collection) {
+    public static void readAllCategories(MongoCollection<Document> collection) {
 
         FindIterable<Document> docs = collection.find();
 
         int count = 0;
         for (Document doc : docs) {
-            printCustomer(doc);
+            printCategory(doc);
             count++;
         }
         System.out.println("Total documents: " + count);
     }
 
-    // ── READ (single) ─────────────────────────────────────────────────────────
-    /**
-     * Finds a single customer document by CustomerID.
-     */
-    public static void readCustomerById(MongoCollection<Document> collection,
-                                        String customerID) {
+    // ── READ (single category) ─────────────────────────────────────────────────────────
 
-        Bson filter = Filters.eq("CustomerID", customerID);
+    public static void readCategoriesById(MongoCollection<Document> collection,
+                                          String id) {
+
+        // Convert String to ObjectId
+        //String idString = "65f1a2b3c4d5e6f7a8b9c0d1";
+        ObjectId objectId = new ObjectId(id);
+
+        Bson filter = Filters.eq("_id", objectId);
         Document doc = collection.find(filter).first();
 
         if (doc != null)
-            printCustomer(doc);
+            printCategory(doc);
         else
-            System.out.println("No customer found with CustomerID: " + customerID);
+            System.out.println("No category found with id: " + id);
     }
 
 
@@ -81,11 +85,12 @@ public class Main {
     /**
      * Prints a customer document in a formatted table row.
      */
-    private static void printCustomer(Document doc) {
-        System.out.printf("ID: %-10s | Company: %-30s | Contact: %-20s | Country: %s%n",
-                doc.getString("CustomerID"),
-                doc.getString("CompanyName"),
-                doc.getString("ContactName"),
-                doc.getString("Country"));
+    private static void printCategory(Document doc) {
+        Object id = doc.get("_id");
+        String idString = (id != null) ? id.toString() : null;
+        System.out.printf("ID: %-10s | name: %-30s | description: %-20s\n ",
+                idString,
+                doc.getString("name"),
+                doc.getString("description"));
     }
 }
