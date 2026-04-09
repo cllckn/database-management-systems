@@ -9,9 +9,7 @@ Delete)** operations on the `categories` collection in MongoDB.
 
 ---
 
-## Prerequisite Setup
-
-## Task 1 — Define a New Database
+## Prerequisite Setup — Define a New Database
 
 1. Connect to MongoDB Atlas.
 2. Construct a new empty database and collection:
@@ -33,7 +31,7 @@ northwinddb.categories
 
 ---
 
-## Task 3 — Understand the categories Table
+## Task 1 — Understand the categories Table
 
 The `categories` table typically includes:
 
@@ -44,16 +42,16 @@ Students will perform CRUD operations on this table.
 
 ---
 
-## Task 4 — Java Application Development
+## Task 2 — Java Application Development
 
 Develop a **Java console application** that interacts with MongoDB.
 
 
-## Task 5 — Implement CRUD Operations
+## Task 3 — Implement CRUD Operations
 
 
 
-## Task 6 — Testing
+## Task 4 — Testing
 
 Test your application by:
 
