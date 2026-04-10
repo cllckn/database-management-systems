@@ -160,12 +160,14 @@ Students will be evaluated based on the following components:
 
 ## Exams Schedule
 
-| **Component**                   | **Date**                                 |
-|---------------------------------|------------------------------------------|
-| Assignment 1 Oral Examination   | Week 7 (the week starting March 2, 2026) |
-| Assignment 2 Oral Examination   | Week 13 (the week starting April 13, 2026)                |
-| Midterm Exam                    | TBA                                      |
-| Final Exam                      | TBA                                      |
+| **Component**                   | **Date**                                   |
+|---------------------------------|--------------------------------------------|
+| Assignment 1 Oral Examination   | Week 7 (the week starting March 2, 2026)   |
+| Assignment 2 Oral Examination   | Week 13 (the week starting April 13, 2026) |
+| Midterm Exam                    | Week 14 – April 21, 2026             |
+| Final Exam                      | TBA                                        |
+
+
 
 
 ## Course Policies
