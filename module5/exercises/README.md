@@ -12,18 +12,22 @@ Delete)** operations on the `categories` collection in MongoDB.
 ## Prerequisite Setup — Define a New Database
 
 1. Connect to MongoDB Atlas.
-2. Construct a new empty database and collection:
-northwinddb.categories
-3. Insert the following records
+2. Construct a new empty database `northwind` and collection `categories`.
+3. Insert the following records:
+4. 
 ```json
 [
   {
-    "name": "SSD",
-    "description": "persistence storage"
+    "name": "electronics",
+    "description": "description of electronics category"
   },
   {
-    "name": "RAM",
-    "description": "temporary storage"
+    "name": "computer",
+    "description": "description of electronics category"
+  },
+  {
+    "name": "robotics",
+    "description": "description of robotics category"
   }
 ]
 
@@ -33,10 +37,11 @@ northwinddb.categories
 
 ## Task 1 — Understand the categories Table
 
-The `categories` table typically includes:
+The `categories` table includes:
 
-- name
-- description
+- `name`
+- `description`
+- `_id` field is added by dbms automatically and can be used as primary key.
 
 Students will perform CRUD operations on this table.
 
