@@ -363,14 +363,17 @@ To develop a Java program, an IDE and JDK are required.
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+  
+  
 
     <dependencies>
         <!-- postgresql -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.8</version>
-        </dependency>
+        </dependency>-->
+      
         <!-- mongodb -->
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -383,8 +386,9 @@ To develop a Java program, an IDE and JDK are required.
             <artifactId>mongodb-driver-sync</artifactId>
             <version>5.6.0</version>
         </dependency>
-      
     </dependencies>
+  
+  
 </project>
 
 
