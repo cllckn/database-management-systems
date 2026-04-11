@@ -1,9 +1,9 @@
-# **Module 6: Intermediate SQL & Query Optimization**
+# Module 6: Intermediate SQL & Query Optimization
 
 
 
 <!-- TOC -->
-* [**Module 6: Intermediate SQL & Query Optimization**](#module-6-intermediate-sql--query-optimization)
+* [Module 6: Intermediate SQL & Query Optimization](#module-6-intermediate-sql--query-optimization)
   * [1. Aggregate Functions And Grouping](#1-aggregate-functions-and-grouping)
   * [2. Subqueries in SQL](#2-subqueries-in-sql)
   * [3. Set Operations](#3-set-operations)
@@ -13,13 +13,11 @@
       * [Types of Indexes](#types-of-indexes)
       * [Implementation](#implementation)
       * [Best Practices for Indexes](#best-practices-for-indexes)
-  * [Exercise2](#exercise2)
     * [Other Optimization Techniques](#other-optimization-techniques)
       * [EXPLAIN ANALYZE - Analyzing Queries and Identifying Bottlenecks](#explain-analyze---analyzing-queries-and-identifying-bottlenecks)
       * [Writing Efficient SQL Queries](#writing-efficient-sql-queries)
       * [Database Design & Server Configuration](#database-design--server-configuration)
   * [6. Transactions](#6-transactions)
-  * [Exercise1](#exercise1)
 <!-- TOC -->
 
 ---
@@ -457,11 +455,6 @@ WHERE first_name = 'Jane';  -- One of the rows should have first_name set to 'EX
 
 ---
 
----
-[Exercise2](./exercises)
----
-
-
 
 
 ### Other Optimization Techniques
@@ -589,9 +582,4 @@ WHERE "ProductID"  = 11;
 -- End of transaction. Make changes permanent.
 COMMIT;
 ```
-
-
----
-[Exercise1](./exercises)
----
 
