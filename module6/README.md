@@ -1,7 +1,5 @@
 # Module 6: Intermediate SQL & Query Optimization
 
-
-
 <!-- TOC -->
 * [Module 6: Intermediate SQL & Query Optimization](#module-6-intermediate-sql--query-optimization)
   * [1. Aggregate Functions And Grouping](#1-aggregate-functions-and-grouping)
@@ -194,6 +192,8 @@ WHERE "CustomerID" IN (SELECT "CustomerID" FROM "orders");
 
 These operators combine the results of two or more SELECT statements.
 
+<img src="../resources/figures/set-operations.png" width="80%">
+
 **For set operations, the SELECT statements must have the same number of columns and 
 compatible data types in the corresponding columns.**
 
@@ -201,6 +201,9 @@ compatible data types in the corresponding columns.**
 * UNION ALL: Returns all rows from both queries, including duplicates.
 * INTERSECT: Returns rows that are present in both queries.
 * EXCEPT (or MINUS in some other SQL dialects): Returns rows that are present in the first query but not in the second.
+
+
+
 
 ```sql
 -- Combine two SELECT result sets and remove duplicates, then sort by the second column (Country).
@@ -234,6 +237,8 @@ ORDER BY 2;
 
 ## 4. Views
 A view is a virtual table based on a SELECT query. They simplify complex queries and enhance reusability.
+
+<img src="../resources/figures/views.png" width="80%">
 
 Views are dynamic because they generate results on the fly by executing the underlying query each time 
 they are accessed, reflecting the most current data.
@@ -274,6 +279,8 @@ Ensuring that your SQL queries execute efficiently and return results quickly is
 application responsiveness and scalability. Performance optimization in DBMS involves a range of techniques, 
 from writing efficient SQL queries to leveraging database features such as indexing, appropriate normalization, 
 and fine-tuning server configuration.
+
+
 
 ### Index
 
@@ -318,6 +325,9 @@ Although indexes are commonly associated with `SELECT` statements, they play a b
 
 **Index Scan vs. Sequential Scan**
 
+<img src="../resources/figures/index.png" width="80%">
+
+
 - **Index Scan**  
   The DBMS uses an index to directly locate matching rows, avoiding a full table scan.
 
@@ -327,6 +337,9 @@ Although indexes are commonly associated with `SELECT` statements, they play a b
 ---
 
 #### Types of Indexes
+
+<img src="../resources/figures/indexing-types.png" width="80%">
+
 
 **1. Primary Index**
 - Automatically created for the Primary Key
