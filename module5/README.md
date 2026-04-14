@@ -419,7 +419,7 @@ link: https://www.mongodb.com/try/download/community
 1. Define `nw.customers` collection in MongoDB. 
 2. In case of using MongoDB Atlas:
    - Main Menu → Database Access → Database Users → Add a database user with an admin role
-     Main Menu → Network Access → IP Access List → Add your IP address
+   - Main Menu → Network Access → IP Access List → Add your IP address
 3. Insert the following sample records.
 
 
