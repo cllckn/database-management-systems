@@ -417,7 +417,10 @@ To construct MongoDB database, you can use MongoDB Cloud (https://account.mongod
 link: https://www.mongodb.com/try/download/community
 
 1. Define `nw.customers` collection in MongoDB. 
-2. Insert the following sample records.
+2. In case of using MongoDB Atlas:
+   - Main Menu → Database Access → Database Users → Add a database user with an admin role
+     Main Menu → Network Access → IP Access List → Add your IP address
+3. Insert the following sample records.
 
 
 ```json
@@ -454,6 +457,10 @@ link: https://www.mongodb.com/try/download/community
   }
 ]
 ```
+
+4. Initialize a new Java project in IntelliJ IDEA with Maven support.
+5. Add (or install) database drivers using Maven.
+6. Write and run the following program. **Ensure that the connection string (URI) is updated accordingly in the code.**
 
 ```java
 
