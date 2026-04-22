@@ -9,12 +9,6 @@ database paradigms**, learning when and how each approach is applied in modern s
 practical exercises, students will design schemas, write queries, manipulate data, and work with multiple database 
 technologies while following best practices in security, performance, and data management.
 
-This course provides a hands-on introduction to database systems and data management principles. Students will study 
-relational and NoSQL database models, database design using the Entity–Relationship (ER) model,standard SQL, query 
-optimization, transactions, SQL programming, and database security. Through practical exercises, students will design 
-databases, 
-implement schemas, write and optimize SQL queries, interact with databases using programming languages, and apply 
-security mechanisms in real-world scenarios.
 
 
 ## Course Objectives
