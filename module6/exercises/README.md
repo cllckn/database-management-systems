@@ -1,52 +1,51 @@
-# Hands-On Exercise 1: Design and Implementation of a Blogging Platform
+# Hands-On Exercise 1: Indexing for Query Optimization
 
-**Objective:** 
+## Objective:
 
-Model, implement, and enforce business rules in a PostgreSQL database using ER design, SQL schema, functions, and triggers.
-
-
-
-## Assignment Description
-
-You are required to desig and implement a database for a blogging platform. 
-This system should allow authors to write posts, categorize them, and attach images. 
-You will build the ER diagram, define the relational schema, and use triggers and functions to maintain data quality.
+Understand how indexing affects query performance.
 
 
-## Business Rules
+## Task 1 — Define a New Database
 
-1. Each author must have a name, unique email and username.
-2. An author can write multiple posts, but a post must belong to one author.
-3. Each post includes:
-   - A title
-   - Content
-   - A publish timestamp
-4. Each post must belong to one category.
-5. A category name must be unique.
-6. A post can have multiple images, but each image must belong to one post.
+1. Open your database client (pgAdmin, intelliJ, etc.).
+2. Construct a new empty database named:
+
+```
+pagila_lab
+```
+
+---
+
+## Task 2 — Import the Northwind Database
+
+[Download **Pagila sample database**](../../resources/dbs/pagila.backup)
 
 
 
-## Tasks
+1. Connect to the `pagila_lab` database using your database client (pgAdmin, intelliJ, etc.).
+2. Import (restore) the Pagila sample database.
 
-### 1. ER Diagram
-Draw an Entity-Relationship (ER) diagram based on the business rules. Identify entities, attributes, and relationships 
-using proper notation.
+The imported database should include several tables.
 
-### 2. Relational Schema
-Transform your ER diagram into relational schema 
 
-### 3. Implementation using SQL DDL statements. 
-Define tables, relationships, and other constraints.
+---
 
-### 3. Function / Stored Procedure
-Write a stored procedure or function to insert a new post. The function should:
-- Accept the title, content, author ID, and category ID as input
-- Insert the post into the database with the current timestamp
+## Task 3 — Add index to speed up the queries
 
-### 4. Trigger
-Define a trigger on the authors table to enforce consistent and valid usernames:
-- Automatically trims spaces
-- Convert to all lower case characters
-- Validate that the username is not null or empty; if it is, raise an exception to prevent insertion or update.
+1. **Query Without Index:**
+
+   Run a `SELECT` query on the `rental` table that filters rows by a specific `customer_id` value using `EXPLAIN ANALYZE`.
+
+   Record the scan type (such as sequential scan), estimated cost, and execution time.
+
+2. **Add Index:**
+
+   Define a B-tree index on the `customer_id` field on the `rental` table.
+
+
+3. **Query With Index:**
+
+   Run the same query again using `EXPLAIN ANALYZE`.
+
+   Compare the scan type, cost, and execution time with the previous result.
 
